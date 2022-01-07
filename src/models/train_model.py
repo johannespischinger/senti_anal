@@ -54,15 +54,15 @@ def eval_model(model, data_loader, criterian):
 
             eval_loss.append(loss.item())
             correct_pred += torch.sum(pred_classes==targets)
-            total_pred += targets.shape[0]
+            total_pred += targets.shape[0]           
     return correct_pred / total_pred , np.mean(eval_loss)
 
 def train():
     train_set, val_set, test_set = get_datasets()
-    
-    train_loader = torch.utils.data.DataLoader(train_set)
-    val_loader = torch.utils.data.DataLoader(val_set)
-    val_loader = torch.utils.data.DataLoader(test_set)
+    batch_size = 64
+    train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size)
+    val_loader = torch.utils.data.DataLoader(val_set, batch_size=batch_size)
+    test_loader = torch.utils.data.DataLoader(test_set, batch_size=batch_size)
     
     num_classes = 2
     class_names = ['negative', 'positive']

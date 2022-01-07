@@ -20,9 +20,10 @@ class AmazonPolarity(Dataset):
         encoding = self.tokenizer.encode_plus(
             sample,
             add_special_tokens=True,
-            truncation=True,
+            padding = 'max_length',
+            max_length = self.max_len,
+            truncation=True, 
             return_token_type_ids=False,
-            pad_to_max_length=True,
             return_attention_mask=True,
             return_tensors='pt'
         )
