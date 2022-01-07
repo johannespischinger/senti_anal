@@ -37,8 +37,8 @@ Tools planned (or already implemented) to be used in the project:
 | [Hydra](https://hydra.cc/docs/intro/)                                                                                               |       Managing of config files for training       | 
 | [Cookiecutter](https://github.com/cookiecutter/cookiecutter)                                                                        |          Setup the project environement           |
 | [black](https://github.com/psf/black/commit/61fe8418cc868723759fb08d76adab1542bb7630) [flake8](https://flake8.pycqa.org/en/latest/) |                   Coding style                    |
-| [isort](https://github.com/PyCQA/isort)                                                                                             |                Sorting of imports           |
-|tbd |                                                   |
+| [isort](https://github.com/PyCQA/isort)                                                                                             |                Sorting of imports                 |
+|[dvc]](https://dvc.org)                                                                                                              |                   Data Versioning                 |
 
 
 
