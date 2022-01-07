@@ -2,7 +2,6 @@
 /BERT_Sentiment.ipynb """
 # -*- coding: utf-8 -*-
 import logging
-from pathlib import Path
 from datasets import load_dataset
 from src.data.dataset import AmazonPolarity
 import transformers
@@ -63,8 +62,5 @@ def get_datasets(
 if __name__ == "__main__":
     log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     logging.basicConfig(level=logging.INFO, format=log_fmt)
-
-    # not used in this stub but often useful for finding various files
-    project_dir = Path(__file__).resolve().parents[2]
 
     get_datasets()
