@@ -1,19 +1,47 @@
+"""Code based on https://github.com/Nitesh0406/-Fine-Tuning-BERT-base-for-Sentiment-Analysis./blob/main
+/BERT_Sentiment.ipynb """
 # -*- coding: utf-8 -*-
-import click
 import logging
 from pathlib import Path
-from dotenv import find_dotenv, load_dotenv
+from datasets import load_dataset
+from dataset import AmazonPolarity
+import transformers
 
 
-@click.command()
-@click.argument('input_filepath', type=click.Path(exists=True))
-@click.argument('output_filepath', type=click.Path())
-def main(input_filepath, output_filepath):
+def main(output_filepath=None, val_size=0.2, max_len=128):
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
     """
     logger = logging.getLogger(__name__)
-    logger.info('making final data set from raw data')
+    logger.info('Downloading data...')
+    training_dataset = load_dataset("amazon_polarity", split="train")
+    train_split = training_dataset.train_test_split(test_size=val_size)
+    train_dataset = train_split["train"]
+    val_dataset = train_split["test"]
+
+    test_dataset = load_dataset("amazon_polarity", split="test")
+
+    tokenizer = transformers.BertTokenizer.from_pretrained("bert-base-cased")
+    train_data = AmazonPolarity(
+        sample=train_dataset.data[2].to_numpy(),
+        target=train_dataset.data[0].to_numpy(),
+        tokenizer=tokenizer,
+        max_len=max_len,
+                   )
+    val_data = AmazonPolarity(
+        sample=val_dataset.data[2].to_numpy(),
+        target=val_dataset.data[0].to_numpy(),
+        tokenizer=tokenizer,
+        max_len=max_len,
+                   )
+    test_data = AmazonPolarity(
+        sample=test_dataset.data[2].to_numpy(),
+        target=test_dataset.data[0].to_numpy(),
+        tokenizer=tokenizer,
+        max_len=max_len,
+                   )
+
+    return train_data, val_data, test_data
 
 
 if __name__ == '__main__':
@@ -22,9 +50,5 @@ if __name__ == '__main__':
 
     # not used in this stub but often useful for finding various files
     project_dir = Path(__file__).resolve().parents[2]
-
-    # find .env automagically by walking up directories until it's found, then
-    # load up the .env entries as environment variables
-    load_dotenv(find_dotenv())
 
     main()
