@@ -1,0 +1,7 @@
+defaults:
+  - experiments: exp0
+  - _self_
+
+hydra:
+  run:
+    dir: ../../models/runs/${now:%Y-%m-%d_%H-%M-%S}

@@ -1,0 +1,6 @@
+experiments:
+  learning_rate: 1.0e-05
+  epochs: 1
+  num_warmup_steps: 0
+  max_norm: 1.0
+  seed: 42
