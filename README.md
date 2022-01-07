@@ -95,3 +95,10 @@ Project Organization
 
 
 --------
+## Dev Installation
+
+```
+conda create -y --name py39senti python=3.9 pip
+conda activate py39senti
+pip install -r requirements.txt
+```
