@@ -81,10 +81,9 @@ def train(cfg: DictConfig) -> None:
     torch.manual_seed(config.seed)
     train_set, val_set, test_set = get_datasets()
 
-    batch_size = 64
-    train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size)
-    val_loader = torch.utils.data.DataLoader(val_set, batch_size=batch_size)
-    test_loader = torch.utils.data.DataLoader(test_set, batch_size=batch_size)
+    train_loader = torch.utils.data.DataLoader(train_set, batch_size=config.batch_size)
+    val_loader = torch.utils.data.DataLoader(val_set, batch_size=config.batch_size)
+    test_loader = torch.utils.data.DataLoader(test_set, batch_size=config.batch_size)
 
     num_classes = 2
     class_names = ["negative", "positive"]
