@@ -1,48 +1,48 @@
 Senti_anal
 ==============================
 
-Final project for course MLOps course at DTU. (use of pytorch) 
+Final project for course MLOps course at DTU. 
 
 Project Description
 ------------
 
 **_Overall goal of the project:_**
 
-Building and running a sentimental analysis model using a pretrained model "Bert" from the huggingface/transformer framework and the dataset "amazon_polarity".
-The dataset contains of about ~35 mio. reviews Amazon up to March 2013 (in total about 18 years of reviews). 
-The overall goal is to learn working with the huggingface/transformer library, applying the various taught tools/frameworks from [SkafteNicki/dtu_mlops](https://github.com/SkafteNicki/dtu_mlops) to setup a proper ML operations project. 
-As a result of the project, the model should analyse new Amazon reviews and classify them either as positive or negative rating. 
+Building and running a sentimental analysis model using a pretrained model "Bert" from the huggingface/transformer 
+framework based on the dataset [amazon_polarity](https://huggingface.co/datasets/amazon_polarity).
+The dataset contains of about ~35 mio. reviews from Amazon up to March 2013 (in total about 18 years of reviews). 
+As a result of the project, the model should analyse new Amazon reviews and classify them either as positive or 
+negative rating. 
+The overall goal is to learn working with the huggingface/transformer library, applying the various taught 
+tools/frameworks from [SkafteNicki/dtu_mlops](https://github.com/SkafteNicki/dtu_mlops) 
+to setup a proper ML operations project. 
 
+As already mentioned above, we are using the [Transformer framework](https://github.com/huggingface/transformers) 
+to access the pretrained BERT embeddings and to use the preprocessing tools (e.g. tokenizer) for the sentimental analysis. 
+The dataset is  directly loaded from the huggingface hub. 
+As benchmark model we use the frozen embeddings of BERT and add a final classification layer as proposed in this 
+[jupyter notebook](https://github.com/Nitesh0406/-Fine-Tuning-BERT-base-for-Sentiment-Analysis./blob/main/BERT_Sentiment.ipynb).
+As a second idea we want to use the already fine-tuned BERT embeddings from another sentiment analysis task from this 
+project [fabriceyhc/bert-base-uncased-amazon_polarity](https://huggingface.co/fabriceyhc/bert-base-uncased-amazon_polarity/tree/main).
+If training on the normal BERT model takes too long we may consider switching to 
+[DistilBERT](https://medium.com/huggingface/distilbert-8cf3380435b5) since it has only 66mio 
+parameters compared with 340mio parameters from BERT.
 
-**_What framework are you going to use (Kornia, Transformer, Pytorch-Geometrics):_**
+Tools planned (or already implemented) to be used in the project:
 
-As already mentioned above, this project is using the [Transformer framework](https://github.com/huggingface/transformers) to access the pretrained NLP model for the sentimental analysis.
-
-
-**_How to you intend to include the framework into your project:_**
-
-The project intents to directly access a pretrained model from [fabriceyhc/bert-base-uncased-amazon_polarity](https://huggingface.co/fabriceyhc/bert-base-uncased-amazon_polarity/tree/main). This way the usage of a classifier and tokenizer is already done in advance. 
-In addition, other tools and frameworks support the setup and the configuration of the project:
-    
-| Tools/ Frameworks/<br/>Configurations/ Packages                                       |                      Purpose                      |
-|---------------------------------------------------------------------------------------|:-------------------------------------------------:|
-| [Conda environement](https://docs.conda.io/en/latest/)                                | Closed environment to facilitate package handling |
-| [Wandb](https://wandb.ai/site)                                                        |                Experiment logging                 |
-| [Hydra](https://hydra.cc/docs/intro/)                                                 |       Managing of config files for training       | 
-| [Cookiecutter](https://github.com/cookiecutter/cookiecutter)                          |          Setup the project environement           |
-| [black](https://github.com/psf/black/commit/61fe8418cc868723759fb08d76adab1542bb7630) |                   Coding style                    |
-| [isort](https://github.com/PyCQA/isort)                                               |                Sorting of imports                 |
+| Tools/ Frameworks/<br/>Configurations/ Packages                                                                                     |                      Purpose                      |
+|---------------------------------------------------------------------------------------                                              |:-------------------------------------------------:|
+| [Conda environement](https://docs.conda.io/en/latest/)                                                                              | Closed environment to facilitate package handling |
+| [Wandb](https://wandb.ai/site)                                                                                                      |                Experiment logging                 |
+| [Hydra](https://hydra.cc/docs/intro/)                                                                                               |       Managing of config files for training       | 
+| [Cookiecutter](https://github.com/cookiecutter/cookiecutter)                                                                        |          Setup the project environement           |
+| [black](https://github.com/psf/black/commit/61fe8418cc868723759fb08d76adab1542bb7630) [flake8](https://flake8.pycqa.org/en/latest/) |                   Coding style                    |
+| [isort](https://github.com/PyCQA/isort)                                                                                             |                Sorting of imports           |
 |tbd |                                                   |
 
 
-**_What data are you going to run on (initially, may change):_**
-
-At the moment, the idea is to use the dataset [amazon_polarity](https://huggingface.co/datasets/amazon_polarity) to either classify new ratings as positive or negative.
 
 
-**_What deep learning models do you expect to use:_**
-
-At the moment, this project is using a pretrained version of the BERT model. 
 
 
 Project Organization
