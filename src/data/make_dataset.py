@@ -4,7 +4,7 @@
 import logging
 from pathlib import Path
 from datasets import load_dataset
-from dataset import AmazonPolarity
+from src.data.dataset import AmazonPolarity
 import transformers
 
 
