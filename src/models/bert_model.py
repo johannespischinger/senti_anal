@@ -8,6 +8,7 @@ class SentimentClassifier(nn.Module):
     def __init__(self, bert_name: str = "bert-base-cased", num_classes: int =2):
         super(SentimentClassifier,self).__init__()
         self.bert = BertForSequenceClassification.from_pretrained(bert_name)
+        # TODO: freeze model / model w.o. classification parameters
         self.linear = nn.Linear(self.bert.config.hidden_size,num_classes)
         self.softmax = nn.Softmax(dim = 1)
         
