@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from src.data.make_dataset import train_loader, val_loader
+from src.data.make_dataset import get_datasets
 from src.models.bert_model import SentimentClassifier
 import transformers
 import numpy as np
@@ -58,20 +58,24 @@ def eval_model(model, data_loader, criterian):
     return correct_pred / total_pred , np.mean(eval_loss)
 
 def train():
-    train_loader = train_loader()
-    val_loader = val_loader()
+    train_set, val_set, test_set = get_datasets()
+    
+    train_loader = torch.utils.data.DataLoader(train_set)
+    val_loader = torch.utils.data.DataLoader(val_set)
+    val_loader = torch.utils.data.DataLoader(test_set)
+    
     num_classes = 2
     class_names = ['negative', 'positive']
-    model = SentimentClassifier(num_classes)
+    model = SentimentClassifier()
 
 
     learning_rate = 1e-5
-    EPOCHS = 20
+    EPOCHS = 1
     total_steps = len(train_loader) * EPOCHS
 
     criterian = torch.nn.CrossEntropyLoss()
 
-    optimizer = transformers.AdamW(params = model.parameters(),lr = learning_rate, correct_bias= False)
+    optimizer = transformers.AdamW(params = model.parameters(), lr = learning_rate, correct_bias= False)
 
     scheduler = transformers.get_linear_schedule_with_warmup(optimizer = optimizer,
                                                             num_warmup_steps = 0,
@@ -85,7 +89,6 @@ def train():
         # training part 
         
         print(f'epoch : {epoch+1}/{EPOCHS}')
-        model = SentimentClassifier(num_classes)
         train_acc , train_loss = train_model(model,
                                             train_loader,
                                             criterian,
@@ -112,3 +115,8 @@ def train():
             best_model_name = f'best_model_state_{val_acc}.bin'
             torch.save(model.state_dict(), best_model_name)
             best_accuracy = val_acc
+            
+    # print(classification_report(y_test, y_pred, target_names=class_names))
+    
+if __name__ == "__main__": 
+    train()
