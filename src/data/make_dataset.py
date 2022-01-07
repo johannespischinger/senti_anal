@@ -8,7 +8,7 @@ from dataset import AmazonPolarity
 import transformers
 
 
-def get_datasets(output_filepath=None, val_size=0.2, max_len=128):
+def get_datasets(output_filepath=None, val_size=0.2, max_len=128, tokenizer_name: str = "bert-base-cased"):
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
     """
@@ -21,7 +21,7 @@ def get_datasets(output_filepath=None, val_size=0.2, max_len=128):
 
     test_dataset = load_dataset("amazon_polarity", split="test")
 
-    tokenizer = transformers.BertTokenizer.from_pretrained("bert-base-cased")
+    tokenizer = transformers.BertTokenizer.from_pretrained(tokenizer_name)
     train_data = AmazonPolarity(
         sample=train_dataset.data[2].to_numpy(),
         target=train_dataset.data[0].to_numpy(),

@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from src.data.make_dataset import train_loader, val_loader
+from src.data.make_dataset import get_datasets
 from src.models.bert_model import SentimentClassifier
 import transformers
 import numpy as np
@@ -58,8 +58,12 @@ def eval_model(model, data_loader, criterian):
     return correct_pred / total_pred , np.mean(eval_loss)
 
 def train():
-    train_loader = train_loader()
-    val_loader = val_loader()
+    train_set, val_set, test_set = get_datasets()
+    
+    train_loader = torch.utils.data.DataLoader(train_set)
+    val_loader = torch.utils.data.DataLoader(val_set)
+    val_loader = torch.utils.data.DataLoader(test_set)
+    
     num_classes = 2
     class_names = ['negative', 'positive']
     model = SentimentClassifier(num_classes)
@@ -112,3 +116,5 @@ def train():
             best_model_name = f'best_model_state_{val_acc}.bin'
             torch.save(model.state_dict(), best_model_name)
             best_accuracy = val_acc
+            
+    # print(classification_report(y_test, y_pred, target_names=class_names))
