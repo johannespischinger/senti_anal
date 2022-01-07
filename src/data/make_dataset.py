@@ -8,7 +8,7 @@ from dataset import AmazonPolarity
 import transformers
 
 
-def main(output_filepath=None, val_size=0.2, max_len=128):
+def get_datasets(output_filepath=None, val_size=0.2, max_len=128):
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
     """
@@ -51,4 +51,4 @@ if __name__ == '__main__':
     # not used in this stub but often useful for finding various files
     project_dir = Path(__file__).resolve().parents[2]
 
-    main()
+    get_datasets()
