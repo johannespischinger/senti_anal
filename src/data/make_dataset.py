@@ -6,6 +6,9 @@ from pathlib import Path
 from datasets import load_dataset
 from src.data.dataset import AmazonPolarity
 import transformers
+import os
+
+ROOT_PATH = Path(__file__).resolve().parents[2]
 
 
 def get_datasets(
@@ -20,16 +23,18 @@ def get_datasets(
     logger = logging.getLogger(__name__)
     logger.info("Downloading data...")
 
+
     # Optional:set "streaming = True"
+
     training_dataset = load_dataset(
-        "amazon_polarity", split="train", cache_dir="../../data/raw/"
+        "amazon_polarity", split="train", cache_dir=os.path.join(ROOT_PATH, "/data/raw/")
     )
     train_split = training_dataset.train_test_split(test_size=val_size)
     train_dataset = train_split["train"]
     val_dataset = train_split["test"]
 
     test_dataset = load_dataset(
-        "amazon_polarity", split="test", cache_dir="../../data/raw/"
+        "amazon_polarity", split="test", cache_dir=os.path.join(ROOT_PATH, "/data/raw/")
     )
 
     tokenizer = transformers.BertTokenizer.from_pretrained(tokenizer_name)
