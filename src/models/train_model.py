@@ -1,6 +1,5 @@
 import torch
 from torch import nn
-from src.data.make_dataset import get_datasets
 from src.models.bert_model import SentimentClassifier
 import transformers
 import numpy as np
@@ -90,8 +89,6 @@ def train(cfg: DictConfig) -> None:
     val_loader = DataLoader(val_set, batch_size=config.batch_size)
     test_loader = DataLoader(test_set, batch_size=config.batch_size)
 
-    num_classes = 2
-    class_names = ["negative", "positive"]
     model = SentimentClassifier()
 
     config.learning_rate = 1e-5
