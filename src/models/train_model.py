@@ -1,5 +1,4 @@
 import torch
-from torch import nn
 from src.models.bert_model import SentimentClassifier
 import transformers
 import numpy as np
@@ -14,13 +13,12 @@ from torch.utils.data import DataLoader
 from torch import nn
 from typing import Any
 
-
 logger = logging.getLogger(__name__)
 ROOT_PATH = Path(__file__).resolve().parents[2]
 
 
 def train_model(
-    model: nn.Module,
+        model: nn.Module,
         data_loader: DataLoader,
         criterion: Any,
         optimizer: Any,
@@ -56,7 +54,7 @@ def train_model(
 def eval_model(model: nn.Module,
                data_loader: DataLoader,
                criterion: Any,
-) -> [torch.Tensor, float]:
+               ) -> [torch.Tensor, float]:
     model.eval()
     eval_loss = []
     correct_pred = 0
@@ -75,8 +73,8 @@ def eval_model(model: nn.Module,
 
             eval_loss.append(loss.item())
 
-            correct_pred += torch.sum(pred_classes==targets)
-            total_pred += targets.shape[0]           
+            correct_pred += torch.sum(pred_classes == targets)
+            total_pred += targets.shape[0]
     return correct_pred / total_pred, np.mean(eval_loss)
 
 
@@ -94,12 +92,11 @@ def train(cfg: DictConfig) -> None:
     train_set = torch.load(os.path.join(ROOT_PATH, "data/processed/train_dataset.pt"))
     val_set = torch.load(os.path.join(ROOT_PATH, "data/processed/val_dataset.pt"))
 
-
     train_loader = DataLoader(train_set, batch_size=config.batch_size)
     val_loader = DataLoader(val_set, batch_size=config.batch_size)
 
-
     model = SentimentClassifier()
+    wandb.watch(model, log_freq=100)
 
     config.learning_rate = 1e-5
     config.epochs = 1
