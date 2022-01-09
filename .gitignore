@@ -88,3 +88,9 @@ target/
 # Mypy cache
 .mypy_cache/
 /data
+
+# models runs
+models/runs
+
+# amazon polarity files
+/**.lock
