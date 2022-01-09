@@ -10,9 +10,12 @@ from omegaconf import DictConfig
 import wandb
 import os
 import logging
+from pathlib import Path
+from torch.utils.data import DataLoader
 
 
 logger = logging.getLogger(__name__)
+ROOT_PATH = Path(__file__).resolve().parents[2]
 
 
 def train_model(
@@ -76,14 +79,16 @@ def train(cfg: DictConfig) -> None:
         name=os.getcwd().split("/")[-1],
         job_type="train",
     )
-
     config = cfg.experiments
     torch.manual_seed(config.seed)
-    train_set, val_set, test_set = get_datasets()
 
-    train_loader = torch.utils.data.DataLoader(train_set, batch_size=config.batch_size)
-    val_loader = torch.utils.data.DataLoader(val_set, batch_size=config.batch_size)
-    test_loader = torch.utils.data.DataLoader(test_set, batch_size=config.batch_size)
+    train_set = torch.load(os.path.join(ROOT_PATH, "data/processed/train_dataset.pt"))
+    val_set = torch.load(os.path.join(ROOT_PATH, "data/processed/val_dataset.pt"))
+    test_set = torch.load(os.path.join(ROOT_PATH, "data/processed/test_dataset.pt"))
+
+    train_loader = DataLoader(train_set, batch_size=config.batch_size)
+    val_loader = DataLoader(val_set, batch_size=config.batch_size)
+    test_loader = DataLoader(test_set, batch_size=config.batch_size)
 
     num_classes = 2
     class_names = ["negative", "positive"]
