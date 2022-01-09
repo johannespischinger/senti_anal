@@ -13,10 +13,10 @@ ROOT_PATH = Path(__file__).resolve().parents[2]
 
 
 def get_datasets(
-        val_size=0.2,
-        max_len=128,
+        val_size: float = 0.2,
+        max_len: int = 128,
         tokenizer_name: str = "bert-base-cased",
-):
+) -> None:
     """Runs data processing scripts to turn raw data from (../raw) into
     cleaned data ready to be analyzed (saved in ../processed).
     """

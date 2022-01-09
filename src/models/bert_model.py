@@ -14,7 +14,7 @@ class SentimentClassifier(nn.Module):
         self.linear = nn.Linear(self.model_bert.config.hidden_size,num_classes)
         self.softmax = nn.Softmax(dim = 1)
         
-    def forward(self, input_ids: torch.LongTensor , attention_mask: torch.FloatTensor):
+    def forward(self, input_ids: torch.LongTensor, attention_mask: torch.FloatTensor):
         """
         inputs:
             input_ids: Indices of input sequence tokens in the vocabulary from BertTokenizer

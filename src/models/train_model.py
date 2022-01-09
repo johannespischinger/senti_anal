@@ -11,6 +11,8 @@ import os
 import logging
 from pathlib import Path
 from torch.utils.data import DataLoader
+from torch import nn
+from typing import Any
 
 
 logger = logging.getLogger(__name__)
@@ -18,8 +20,13 @@ ROOT_PATH = Path(__file__).resolve().parents[2]
 
 
 def train_model(
-    model, data_loader, criterian, optimizer, scheduler, max_norm=1.0
-):
+    model: nn.Module,
+        data_loader: DataLoader,
+        criterion: Any,
+        optimizer: Any,
+        scheduler: Any,
+        max_norm: float = 1.0,
+) -> [torch.Tensor, np.float]:
     model.train()
     train_loss = []
     correct_pred = 0
@@ -31,7 +38,7 @@ def train_model(
 
         # forward prop
         predictions = model(input_ids, attention_masks)
-        loss = criterian(predictions, targets)
+        loss = criterion(predictions, targets)
         _, pred_classes = torch.max(predictions, dim=1)
         # backprop
         loss.backward()
@@ -46,7 +53,10 @@ def train_model(
     return correct_pred / total_pred, np.mean(train_loss)
 
 
-def eval_model(model, data_loader, criterion):
+def eval_model(model: nn.Module,
+               data_loader: DataLoader,
+               criterion: Any,
+) -> [torch.Tensor, float]:
     model.eval()
     eval_loss = []
     correct_pred = 0
@@ -67,7 +77,7 @@ def eval_model(model, data_loader, criterion):
 
             correct_pred += torch.sum(pred_classes==targets)
             total_pred += targets.shape[0]           
-    return correct_pred / total_pred , np.mean(eval_loss)
+    return correct_pred / total_pred, np.mean(eval_loss)
 
 
 @hydra.main(config_path="config", config_name="default_config.yaml")
@@ -83,11 +93,11 @@ def train(cfg: DictConfig) -> None:
 
     train_set = torch.load(os.path.join(ROOT_PATH, "data/processed/train_dataset.pt"))
     val_set = torch.load(os.path.join(ROOT_PATH, "data/processed/val_dataset.pt"))
-    test_set = torch.load(os.path.join(ROOT_PATH, "data/processed/test_dataset.pt"))
+
 
     train_loader = DataLoader(train_set, batch_size=config.batch_size)
     val_loader = DataLoader(val_set, batch_size=config.batch_size)
-    test_loader = DataLoader(test_set, batch_size=config.batch_size)
+
 
     model = SentimentClassifier()
 
