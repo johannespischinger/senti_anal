@@ -80,6 +80,7 @@ def eval_model(model: nn.Module,
 
 @hydra.main(config_path="config", config_name="default_config.yaml")
 def train(cfg: DictConfig) -> None:
+    a = os.getcwd()
     wandb.init(
         project="BERT",
         entity="senti_anal",
@@ -152,8 +153,8 @@ def train(cfg: DictConfig) -> None:
 
         # saving model if performance improved
         if val_acc > best_accuracy:
-            best_model_name = f"best_model_state_{val_acc}.bin"
-            torch.save(model.state_dict(), best_model_name)
+            best_model_name = f"best_model_state_{val_acc:.2}.bin"
+            torch.save(model.state_dict(), os.path.join(os.getcwd(), best_model_name))
             best_accuracy = val_acc
 
 
