@@ -80,7 +80,6 @@ def eval_model(model: nn.Module,
 
 @hydra.main(config_path="config", config_name="default_config.yaml")
 def train(cfg: DictConfig) -> None:
-    a = os.getcwd()
     wandb.init(
         project="BERT",
         entity="senti_anal",
