@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# transformer documentation build configuration file, created by
+# opensentiment documentation build configuration file, created by
 # sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -17,7 +17,7 @@ import sys
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-# sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('..'))
 
 # -- General configuration -----------------------------------------------------
 
@@ -26,7 +26,7 @@ import sys
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = []
+extensions = ['sphinx.ext.autodoc']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -41,7 +41,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "transformer"
+project = "opensentiment"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -183,8 +183,8 @@ latex_elements = {
 latex_documents = [
     (
         "index",
-        "transformer.tex",
-        "transformer Documentation",
+        "opensentiment.tex",
+        "opensentiment Documentation",
         "Group 22",
         "manual",
     ),
@@ -216,7 +216,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ("index", "transformer", "transformer Documentation", ["Group 22"], 1)
+    ("index", "opensentiment", "opensentiment Documentation", ["Group 22"], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -231,10 +231,10 @@ man_pages = [
 texinfo_documents = [
     (
         "index",
-        "transformer",
-        "transformer Documentation",
+        "opensentiment",
+        "opensentiment Documentation",
         "Group 22",
-        "transformer",
+        "opensentiment",
         "Final project for course MLOps course at DTU",
         "Miscellaneous",
     ),
