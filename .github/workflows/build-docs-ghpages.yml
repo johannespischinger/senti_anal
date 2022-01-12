@@ -1,9 +1,11 @@
 name: build-docs
 
-on: 
-  pull_request:
-    branches:
-    - master
+on:
+  workflow_run:
+    # Reuse the name of your tests workflow
+    workflows: Python3.9 pytest 
+    branches: master
+    types: completed
 
 jobs:
   deploy_docs:
@@ -54,4 +56,4 @@ jobs:
     #     branch: gh-pages
     #     directory: gh-pages
     #     github_token: ${{ secrets.GITHUB_TOKEN }} 
-          # TODO: Johannes, add secrets.GITHUB_TOKEN, then uncomment
+          ## TODO: Johannes, add secrets.GITHUB_TOKEN, then uncomment
