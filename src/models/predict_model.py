@@ -14,7 +14,7 @@ def predict(model_name: str, batch_size: int = 64) -> None:
         project="BERT",
         entity="senti_anal",
         name=os.getcwd().split("/")[-1],
-        job_type="test"
+        job_type="test",
     )
 
     models_path = os.path.join(ROOT_PATH, "models/runs")
@@ -22,7 +22,9 @@ def predict(model_name: str, batch_size: int = 64) -> None:
     model.eval()
     wandb.watch(model, log_freq=100)
 
-    test_set = torch.load(os.path.join(ROOT_PATH, "data/processed/test_dataset.pt"))
+    test_set = torch.load(
+        os.path.join(ROOT_PATH, "data/processed/test_dataset.pt")
+    )
     test_loader = DataLoader(test_set, batch_size=batch_size)
 
     total_pred = 0
@@ -38,9 +40,5 @@ def predict(model_name: str, batch_size: int = 64) -> None:
             corr_pred += torch.sum(pred_class == targets)
             total_pred += targets.shape[0]
 
-    wandb.log(
-        {
-            "test_acc": corr_pred/total_pred
-        }
-    )
+    wandb.log({"test_acc": corr_pred / total_pred})
     logger.info(f"Final test accuracy: {corr_pred/total_pred}")

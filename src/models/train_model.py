@@ -18,12 +18,12 @@ ROOT_PATH = Path(__file__).resolve().parents[2]
 
 
 def train_model(
-        model: nn.Module,
-        data_loader: DataLoader,
-        criterion: Any,
-        optimizer: Any,
-        scheduler: Any,
-        max_norm: float = 1.0,
+    model: nn.Module,
+    data_loader: DataLoader,
+    criterion: Any,
+    optimizer: Any,
+    scheduler: Any,
+    max_norm: float = 1.0,
 ) -> [torch.Tensor, np.float]:
     model.train()
     train_loss = []
@@ -51,10 +51,11 @@ def train_model(
     return correct_pred / total_pred, np.mean(train_loss)
 
 
-def eval_model(model: nn.Module,
-               data_loader: DataLoader,
-               criterion: Any,
-               ) -> [torch.Tensor, float]:
+def eval_model(
+    model: nn.Module,
+    data_loader: DataLoader,
+    criterion: Any,
+) -> [torch.Tensor, float]:
     model.eval()
     eval_loss = []
     correct_pred = 0
@@ -89,8 +90,12 @@ def train(cfg: DictConfig) -> None:
     config = cfg.experiments
     torch.manual_seed(config.seed)
 
-    train_set = torch.load(os.path.join(ROOT_PATH, "data/processed/train_dataset.pt"))
-    val_set = torch.load(os.path.join(ROOT_PATH, "data/processed/val_dataset.pt"))
+    train_set = torch.load(
+        os.path.join(ROOT_PATH, "data/processed/train_dataset.pt")
+    )
+    val_set = torch.load(
+        os.path.join(ROOT_PATH, "data/processed/val_dataset.pt")
+    )
 
     train_loader = DataLoader(train_set, batch_size=config.batch_size)
     val_loader = DataLoader(val_set, batch_size=config.batch_size)
@@ -153,7 +158,9 @@ def train(cfg: DictConfig) -> None:
         # saving model if performance improved
         if val_acc > best_accuracy:
             best_model_name = f"best_model_state_{val_acc:.2}.bin"
-            torch.save(model.state_dict(), os.path.join(os.getcwd(), best_model_name))
+            torch.save(
+                model.state_dict(), os.path.join(os.getcwd(), best_model_name)
+            )
             best_accuracy = val_acc
 
 
