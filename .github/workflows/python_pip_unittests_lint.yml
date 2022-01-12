@@ -43,10 +43,10 @@ jobs:
       run: |
         pytest tests
 
-    # - name: Generate Report
-    #     run: |
-    #       coverage run -m pytest tests
-    #       coverage xml
-    #   - name: Upload coverage to Codecov
-    #     uses: codecov/codecov-action@v2
+    - name: Generate Report
+        run: |
+          coverage run -m pytest tests
+          coverage xml
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
 
