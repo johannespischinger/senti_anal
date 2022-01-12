@@ -1,4 +1,4 @@
-name: Python 3.9 pip unittests lint
+name: Python3.9 pytest
 
 on: 
   pull_request:
@@ -45,7 +45,7 @@ jobs:
 
     - name: Generate Report
       run: |
-        coverage run -m --source=. pytest tests
+        coverage run -m --source=./src pytest tests
         coverage xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
