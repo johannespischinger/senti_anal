@@ -1,6 +1,4 @@
 import torch
-from torch import nn
-from src.data.make_dataset import get_datasets
 from src.models.bert_model import SentimentClassifier
 import transformers
 import numpy as np
@@ -10,14 +8,23 @@ from omegaconf import DictConfig
 import wandb
 import os
 import logging
-
+from pathlib import Path
+from torch.utils.data import DataLoader
+from torch import nn
+from typing import Any
 
 logger = logging.getLogger(__name__)
+ROOT_PATH = Path(__file__).resolve().parents[2]
 
 
 def train_model(
-    model, data_loader, criterian, optimizer, scheduler, max_norm=1.0
-):
+    model: nn.Module,
+    data_loader: DataLoader,
+    criterion: Any,
+    optimizer: Any,
+    scheduler: Any,
+    max_norm: float = 1.0,
+) -> [torch.Tensor, np.float]:
     model.train()
     train_loss = []
     correct_pred = 0
@@ -29,7 +36,7 @@ def train_model(
 
         # forward prop
         predictions = model(input_ids, attention_masks)
-        loss = criterian(predictions, targets)
+        loss = criterion(predictions, targets)
         _, pred_classes = torch.max(predictions, dim=1)
         # backprop
         loss.backward()
@@ -44,7 +51,11 @@ def train_model(
     return correct_pred / total_pred, np.mean(train_loss)
 
 
-def eval_model(model, data_loader, criterion):
+def eval_model(
+    model: nn.Module,
+    data_loader: DataLoader,
+    criterion: Any,
+) -> [torch.Tensor, float]:
     model.eval()
     eval_loss = []
     correct_pred = 0
@@ -63,9 +74,9 @@ def eval_model(model, data_loader, criterion):
 
             eval_loss.append(loss.item())
 
-            correct_pred += torch.sum(pred_classes==targets)
-            total_pred += targets.shape[0]           
-    return correct_pred / total_pred , np.mean(eval_loss)
+            correct_pred += torch.sum(pred_classes == targets)
+            total_pred += targets.shape[0]
+    return correct_pred / total_pred, np.mean(eval_loss)
 
 
 @hydra.main(config_path="config", config_name="default_config.yaml")
@@ -76,18 +87,21 @@ def train(cfg: DictConfig) -> None:
         name=os.getcwd().split("/")[-1],
         job_type="train",
     )
-
     config = cfg.experiments
     torch.manual_seed(config.seed)
-    train_set, val_set, test_set = get_datasets()
 
-    train_loader = torch.utils.data.DataLoader(train_set, batch_size=config.batch_size)
-    val_loader = torch.utils.data.DataLoader(val_set, batch_size=config.batch_size)
-    test_loader = torch.utils.data.DataLoader(test_set, batch_size=config.batch_size)
+    train_set = torch.load(
+        os.path.join(ROOT_PATH, "data/processed/train_dataset.pt")
+    )
+    val_set = torch.load(
+        os.path.join(ROOT_PATH, "data/processed/val_dataset.pt")
+    )
 
-    num_classes = 2
-    class_names = ["negative", "positive"]
+    train_loader = DataLoader(train_set, batch_size=config.batch_size)
+    val_loader = DataLoader(val_set, batch_size=config.batch_size)
+
     model = SentimentClassifier()
+    wandb.watch(model, log_freq=100)
 
     config.learning_rate = 1e-5
     config.epochs = 1
@@ -143,8 +157,10 @@ def train(cfg: DictConfig) -> None:
 
         # saving model if performance improved
         if val_acc > best_accuracy:
-            best_model_name = f"best_model_state_{val_acc}.bin"
-            torch.save(model.state_dict(), best_model_name)
+            best_model_name = f"best_model_state_{val_acc:.2}.bin"
+            torch.save(
+                model.state_dict(), os.path.join(os.getcwd(), best_model_name)
+            )
             best_accuracy = val_acc
 
 
