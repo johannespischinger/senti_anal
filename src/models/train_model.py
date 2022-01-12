@@ -1,5 +1,5 @@
 import torch
-from src.models.bert_model import SentimentClassifier
+from opensentiment.models.bert_model import SentimentClassifier
 import transformers
 import numpy as np
 from collections import defaultdict

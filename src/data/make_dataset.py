@@ -3,7 +3,7 @@
 # -*- coding: utf-8 -*-
 import logging
 from datasets import load_dataset
-from src.data.dataset import AmazonPolarity
+from opensentiment.data.dataset import AmazonPolarity
 import transformers
 import os
 from pathlib import Path
