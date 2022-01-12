@@ -33,6 +33,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
+        pip install -e .
     # - name: Install test dependencies # done already in requirements
     #   run: |
     #     pip install flake8 pytest coverage isort 

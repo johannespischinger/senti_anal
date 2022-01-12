@@ -102,7 +102,9 @@ Default configuration:
 conda create -y --name py39senti python=3.9 pip
 conda activate py39senti
 pip install -r requirements.txt
+pip install -e .
 ```
+
 CUDA 11.3 configuration
 ```
 # run Default configuration
