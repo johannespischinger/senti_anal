@@ -10,6 +10,11 @@ wandb==0.12.9
 torch==1.10.1
 # end torch specific installation
 
+# precommit-hook
+black
+
+# 
+
 # start tests
 flake8
 pytest
