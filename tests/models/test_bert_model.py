@@ -1,4 +1,4 @@
-from src.models.bert_model import SentimentClassifier
+from opensentiment.models.bert_model import SentimentClassifier
 
 
 class TestSentimentClassifier:

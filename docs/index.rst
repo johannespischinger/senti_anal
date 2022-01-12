@@ -1,9 +1,9 @@
-.. transformer documentation master file, created by
+.. opensentiment documentation master file, created by
    sphinx-quickstart.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-transformer documentation!
+opensentiment documentation!
 ==============================================
 
 Contents:

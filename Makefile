@@ -7,7 +7,7 @@
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUCKET = [OPTIONAL] your-bucket-for-syncing-data (do not include 's3://')
 PROFILE = default
-PROJECT_NAME = transformer
+PROJECT_NAME = opensentiment
 PYTHON_INTERPRETER = python3
 
 ifeq (,$(shell which conda))
@@ -27,7 +27,7 @@ requirements: test_environment
 
 ## Make Dataset
 data: requirements
-	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/raw data/processed
+	$(PYTHON_INTERPRETER) opensentiment/data/make_dataset.py data/raw data/processed
 
 ## Delete all compiled Python files
 clean:
@@ -36,7 +36,7 @@ clean:
 
 ## Lint using flake8
 lint:
-	flake8 src
+	flake8 opensentiment
 
 ## Upload Data to S3
 sync_data_to_s3:
