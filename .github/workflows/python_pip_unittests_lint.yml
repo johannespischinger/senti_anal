@@ -23,7 +23,7 @@ jobs:
       with:
         python-version: 3.9
         cache: 'pip'
-        cache-dependency-path: '**/requirements.txt'
+        cache-dependency-path: '**/requirements*.txt'
         
 #     - name: Add conda to system path
 #       run: |
@@ -33,9 +33,9 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
-    - name: Install test dependencies
-      run: |
-        pip install flake8 pytest coverage isort 
+    # - name: Install test dependencies
+    #   run: |
+    #     pip install flake8 pytest coverage isort 
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
