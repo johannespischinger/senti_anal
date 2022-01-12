@@ -6,7 +6,7 @@ on:
     - master
 
 jobs:
-  build-linux:
+  deploy_docs:
     runs-on: ubuntu-latest
 
     steps:
@@ -37,19 +37,21 @@ jobs:
     
     - name: Commit documentation changes
       run: |
+        mkdir -p gh-pages
         cp -r docs/_build/html/* gh-pages/
         cd gh-pages
         touch .nojekyll
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add .
+        git add . 
         git commit -m "Update documentation" -a || true
         # The above command will fail if no changes were present, so we ignore
         # that.
-        
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        branch: gh-pages
-        directory: gh-pages
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    # - name: Push changes to github repo/gh-pages
+    #   uses: ad-m/github-push-action@master
+    #   with:
+    #     branch: gh-pages
+    #     directory: gh-pages
+    #     github_token: ${{ secrets.GITHUB_TOKEN }} 
+          # TODO: Johannes, add secrets.GITHUB_TOKEN, then uncomment
