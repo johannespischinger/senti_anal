@@ -101,3 +101,6 @@ models/runs
 # wandb logs
 **/wandb/*
 
+# model files
+**/*model*.pt
+
