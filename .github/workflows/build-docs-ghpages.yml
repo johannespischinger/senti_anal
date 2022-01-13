@@ -45,6 +45,7 @@ jobs:
       run: |
         mkdir -p /tmp/gh-pages-dir/
         cp -r docs/_build/html/* /tmp/gh-pages-dir/
+        cp -r .gitignore /tmp/gh-pages-dir/
         # delete all local files and untrack
         git rm -rf .
         cp -r /tmp/gh-pages-dir/ .
