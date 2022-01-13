@@ -43,7 +43,7 @@ jobs:
     
     - name: Commit documentation changes
       run: |
-        mkdir -p gh-pages-dir
+        mkdir -p /tmp/gh-pages-dir/
         cp -r docs/_build/html/* /tmp/gh-pages-dir/
         # delete all local files and untrack
         git rm -rf .
