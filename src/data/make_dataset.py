@@ -17,7 +17,8 @@ def get_datasets(
         max_len: int = 128,
         tokenizer_name: str = "bert-base-cased",
 ) -> None:
-    """Runs data processing scripts to turn raw data from (../raw) into
+    """
+    Runs data processing scripts to turn raw data from (../raw) into
     cleaned data ready to be analyzed (saved in ../processed).
     """
     logger = logging.getLogger(__name__)
