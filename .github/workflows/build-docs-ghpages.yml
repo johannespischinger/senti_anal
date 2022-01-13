@@ -54,10 +54,11 @@ jobs:
         # move all files to gh-pages branch
         cp -r branch-dir/docs/_build/html/* gh-pages-dir/
         cp -r branch-dir/.gitignore gh-pages-dir/
-        # delete all local files and untrack
+        # configure gh-pages-dir / gh-pages branch
         ls -a
         cd gh-pages-dir
         ls -a
+        # create nojekyll file
         touch .nojekyll
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
