@@ -45,11 +45,10 @@ jobs:
       run: |
         mkdir -p gh-pages-dir
         cp -r docs/_build/html/* gh-pages-dir/
-        cd gh-pages-dir
-        touch .nojekyll
+        touch gh-pages-dir/.nojekyll
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add . 
+        git add gh-pages-dir/*
         git commit -m "Update documentation" -a || true
         # The above command will fail if no changes were present, so we ignore
         # that.
@@ -59,4 +58,3 @@ jobs:
       with:
          branch: refs/heads/gh-pages
          directory: gh-pages-dir
-        #  github_token: ${{ secrets.SECRET_TOKEN }}
