@@ -5,13 +5,13 @@ on:
     workflows: ["Python3.9 pytest"]
     branches: [master]
     types: [completed]
-  # # on releases
-  # release:
-  #   types: [published, created, edited]
-  # pull_request:
-  #   branches:
-  #     - master
-  #     - dev
+  # on releases
+  release:
+    types: [published, created, edited]
+  pull_request:
+    branches:
+      - master
+      - dev
 
 jobs:
   deploy_docs:
