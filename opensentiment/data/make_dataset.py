@@ -8,8 +8,7 @@ import transformers
 import os
 from pathlib import Path
 import torch
-
-ROOT_PATH = Path(__file__).resolve().parents[2]
+from opensentiment.utils import get_project_root
 
 
 def get_datasets(
@@ -25,14 +24,16 @@ def get_datasets(
     logger.info("Downloading data...")
 
     training_dataset = load_dataset(
-        "amazon_polarity", split="train", cache_dir=os.path.join(ROOT_PATH, "data/raw")
+        "amazon_polarity",
+        split="train",
+        cache_dir=os.path.join(get_project_root(), "data/raw"),
     )
     train_split = training_dataset.train_test_split(test_size=val_size)
     train_dataset = train_split["train"]
     val_dataset = train_split["test"]
 
     test_dataset = load_dataset(
-        "amazon_polarity", split="test", cache_dir=os.path.join(ROOT_PATH)
+        "amazon_polarity", split="test", cache_dir=os.path.join(get_project_root())
     )
 
     logger.info("Create training dataset...")
@@ -58,9 +59,15 @@ def get_datasets(
         max_len=max_len,
     )
 
-    torch.save(train_data, os.path.join(ROOT_PATH, "data/processed/train_dataset.pt"))
-    torch.save(val_data, os.path.join(ROOT_PATH, "data/processed/val_dataset.pt"))
-    torch.save(test_data, os.path.join(ROOT_PATH, "data/processed/test_dataset.pt"))
+    torch.save(
+        train_data, os.path.join(get_project_root(), "data/processed/train_dataset.pt")
+    )
+    torch.save(
+        val_data, os.path.join(get_project_root(), "data/processed/val_dataset.pt")
+    )
+    torch.save(
+        test_data, os.path.join(get_project_root(), "data/processed/test_dataset.pt")
+    )
     logger.info("... datasets successfully created and saved")
 
 

@@ -3,20 +3,28 @@ import transformers
 from pathlib import Path
 import torch
 import os
-
-ROOT_PATH = Path(__name__).resolve().parents[2]
+import pytest
+from opensentiment.utils import get_project_root
 
 
 class TestAmazonPolarity:
     def test_dataset(self):
-        tokenizer = transformers.BertTokenizer.from_pretrained(
-            tokenizer_name="bert-base-cased"
-        )
+        assert os.path.exists(
+            os.path.join(get_project_root(), "tests/dummy_dataset/test_dataset.pt")
+        ), "dummy_dataset not existing"
+
+        tokenizer = transformers.BertTokenizer.from_pretrained("bert-base-cased")
         samples = torch.load(
-            os.path.join(ROOT_PATH, "tests/dummy_dataset/test_dataset.pt")
+            os.path.join(get_project_root(), "tests/dummy_dataset/test_dataset.pt")
         )
         dataset = AmazonPolarity(samples.sample[:2], samples.target[:2], tokenizer, 128)
 
+        assert (
+            hasattr(dataset, "review")
+            and hasattr(dataset, "input_id")
+            and hasattr(dataset, "attention_mask")
+            and hasattr(dataset, "target")
+        ), f"missing arributes of dataset {dataset.__dict__}"
         assert dataset.review, "Missing samples in dataset"
         assert dataset.input_id, "Missing input ids in dataset"
         assert (
