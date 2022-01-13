@@ -119,6 +119,7 @@ def train(cfg: DictConfig) -> Tuple[Dict, str]:
 
     history = defaultdict(list)
     best_accuracy = 0
+    best_model_name = "untrained_model.pt"
 
     for epoch in range(config.epochs):
 
@@ -156,9 +157,9 @@ def train(cfg: DictConfig) -> Tuple[Dict, str]:
         # saving model if performance improved
         if val_acc > best_accuracy:
             best_model_name = f"best_model_state_{val_acc:.2}.pt"
-            torch.save(model.state_dict(), os.path.join(os.getcwd(), best_model_name))
             best_accuracy = val_acc
 
+    torch.save(model.state_dict(), os.path.join(os.getcwd(), best_model_name))
     return history, best_model_name
 
 
