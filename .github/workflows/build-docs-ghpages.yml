@@ -5,7 +5,7 @@ on:
     workflows: ["Python3.9 pytest"]
     branches: [master]
     types: [completed]
-  # on releases
+  # on releases, future
   release:
     types: [published, created, edited]
   pull_request:
