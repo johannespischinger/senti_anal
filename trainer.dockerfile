@@ -16,12 +16,14 @@ RUN pip install -r requirements.txt --no-cache-dir
 
 RUN git clone --branch dev https://github.com/johannespischinger/senti_anal.git
 
+WORKDIR /senti_anal
 
+ENTRYPOINT ["sh", "run_docker.sh"]
 # Run dvc
 
 # Sets up the entry point to invoke the training file.
 
-#ENTRYPOINT ["python", "-u", "src/models/train_model.py"]
+
 
 # export PROJECT_ID=$(gcloud config list project --format "value(core.project)")
 # export IMAGE_REPO_NAME=mnist_pytorch_custom_container
