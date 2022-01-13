@@ -49,7 +49,7 @@ def create_sample_dataset(
 
     save_path = os.path.join(ROOT_PATH, "data/dummy")
     os.makedirs(save_path, exist_ok=True)
-    logger.info(f"Saving dummy datasets to: {save_path}")
+    logger.info(f"Saving truncated datasets to: {save_path}")
     torch.save(train_data, os.path.join(save_path, "train_dummy.pt"))
     torch.save(val_data, os.path.join(save_path, "val_dummy.pt"))
     torch.save(test_data, os.path.join(save_path, "test_dummy.pt"))
