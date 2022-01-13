@@ -3,21 +3,19 @@
 
 # external requirements
 click
-Sphinx
-coverage
-awscli
-flake8
+# awscli~=1.22.30
+flake8~=4.0.1
 python-dotenv>=0.5.1
 torch==1.10.1
 transformers~=4.15.0
 datasets~=1.17.0
 setuptools~=58.0.4
-pre-commit
+pre-commit~=2.16.0
 pipreqs
+black~=21.12b0
 scikit-learn~=1.0.2
-dvc
-'dvc[gdrive]'
-src~=0.1.0
+dvc~=2.9.3
+dvc[gs]
 numpy~=1.22.0
 wandb~=0.12.9
 omegaconf~=2.1.1
