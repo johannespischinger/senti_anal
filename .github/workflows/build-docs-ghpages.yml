@@ -8,10 +8,6 @@ on:
   # on releases, future
   release:
     types: [published, created, edited]
-  pull_request:
-    branches:
-      - master
-      - dev
 
 jobs:
   deploy_docs:
