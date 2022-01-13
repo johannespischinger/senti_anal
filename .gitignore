@@ -97,3 +97,7 @@ models/runs
 
 # Google credentioals
 *.json
+
+# wandb logs
+opensentiment/wandb/
+

@@ -43,6 +43,14 @@ jobs:
     - name: Test with pytest
       run: |
         pytest tests
+    
+    - name: test create shinx docs
+      # create shpinx api autodocs of opensentiment and move them to docs
+      # makefile: make html build the the docs/_build/html/
+      run: |
+        sphinx-apidoc -o ./docs ./opensentiment 
+        cd docs
+        make html
 
     - name: Generate Report
       run: |
