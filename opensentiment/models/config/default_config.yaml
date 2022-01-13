@@ -2,6 +2,9 @@ defaults:
   - experiments: exp0
   - _self_
 
+
+wandb_key_api: ""
+
 hydra:
   run:
     dir: ../../models/runs/${now:%Y-%m-%d_%H-%M-%S}

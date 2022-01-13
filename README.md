@@ -107,6 +107,7 @@ Default configuration:
 conda create -y --name py39senti python=3.9 pip
 conda activate py39senti
 pip install -r requirements.txt
+pip install -r requirements_dev.txt
 pip install -e .
 ```
 

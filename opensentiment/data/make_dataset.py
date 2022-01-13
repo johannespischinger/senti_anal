@@ -17,14 +17,15 @@ def get_datasets(
     max_len: int = 128,
     tokenizer_name: str = "bert-base-cased",
 ) -> None:
-    """Runs data processing scripts to turn raw data from (../raw) into
+    """
+    Runs data processing scripts to turn raw data from (../raw) into
     cleaned data ready to be analyzed (saved in ../processed).
     """
     logger = logging.getLogger(__name__)
     logger.info("Downloading data...")
 
     training_dataset = load_dataset(
-        "amazon_polarity", split="train", cache_dir=os.path.join(ROOT_PATH)
+        "amazon_polarity", split="train", cache_dir=os.path.join(ROOT_PATH, "data/raw")
     )
     train_split = training_dataset.train_test_split(test_size=val_size)
     train_dataset = train_split["train"]
@@ -57,16 +58,10 @@ def get_datasets(
         max_len=max_len,
     )
 
-    torch.save(
-        train_data, os.path.join(ROOT_PATH, "data/processed/train_dataset.pt")
-    )
-    torch.save(
-        val_data, os.path.join(ROOT_PATH, "data/processed/val_dataset.pt")
-    )
-    torch.save(
-        test_data, os.path.join(ROOT_PATH, "data/processed/test_dataset.pt")
-    )
-    logger.info(f"... datasets successfully created and saved")
+    torch.save(train_data, os.path.join(ROOT_PATH, "data/processed/train_dataset.pt"))
+    torch.save(val_data, os.path.join(ROOT_PATH, "data/processed/val_dataset.pt"))
+    torch.save(test_data, os.path.join(ROOT_PATH, "data/processed/test_dataset.pt"))
+    logger.info("... datasets successfully created and saved")
 
 
 if __name__ == "__main__":
