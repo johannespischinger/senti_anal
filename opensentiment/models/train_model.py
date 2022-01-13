@@ -104,13 +104,10 @@ def train(cfg: DictConfig) -> Tuple[Dict, str]:
     wandb.watch(model, log_freq=100)
 
     total_steps = len(train_loader) * config.epochs
-
     criterion = torch.nn.CrossEntropyLoss()
-
     optimizer = transformers.AdamW(
         params=model.parameters(), lr=config.learning_rate, correct_bias=False
     )
-
     scheduler = transformers.get_linear_schedule_with_warmup(
         optimizer=optimizer,
         num_warmup_steps=config.num_warmup_steps,
