@@ -7,10 +7,10 @@ echo "git_tag=$3"
 git pull
 if [ "$3" != "" ]
 then
-  echo "checkout {$3}"
+  echo "git checkout {$3}"
   git checkout "$3" data.dvc
 else
-  echo "checkout v1.0"
+  echo "git checkout v1.0"
   git checkout v1.0 data.dvc
 fi
 
