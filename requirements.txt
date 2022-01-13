@@ -21,3 +21,6 @@ numpy~=1.22.0
 wandb~=0.12.9
 omegaconf~=2.1.1
 hydra-core==1.1.1
+fastapi==0.71.0
+uvicorn==0.16.0 
+uvicorn[standard]
