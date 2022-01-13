@@ -96,4 +96,4 @@ models/runs
 /**.lock
 
 # wandb logs
-opensentiment/wandb
+opensentiment/wandb/
