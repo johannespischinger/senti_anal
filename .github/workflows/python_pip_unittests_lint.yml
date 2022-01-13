@@ -54,7 +54,7 @@ jobs:
 
     - name: Generate Report
       run: |
-        coverage run -m --source=./opensentiment pytest tests -m "not long"
+        coverage run -m --source=./opensentiment pytest tests -m "not (download or long)"
         coverage xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2

@@ -18,4 +18,5 @@ exclude = '''
 [tool.pytest.ini_options]
 markers = [
     "long: marks tests as long time (deselect with '-m \"not long\"')",
+    "download: marks tests as download maybe required (deselect with '-m \"not download\"')",
 ]

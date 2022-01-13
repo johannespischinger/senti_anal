@@ -1,6 +1,8 @@
 from opensentiment.data.make_dataset import get_datasets
+import pytest
 
 
+@pytest.mark.download
 class TestMakeDataset:
     def test_make_dataset(self):
         train, val = get_datasets(val_size=0.2)
