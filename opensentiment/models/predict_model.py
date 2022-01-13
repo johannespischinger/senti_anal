@@ -22,9 +22,7 @@ def predict(model_name: str, batch_size: int = 64) -> None:
     model.eval()
     wandb.watch(model, log_freq=100)
 
-    test_set = torch.load(
-        os.path.join(ROOT_PATH, "data/processed/test_dataset.pt")
-    )
+    test_set = torch.load(os.path.join(ROOT_PATH, "data/processed/test_dataset.pt"))
     test_loader = DataLoader(test_set, batch_size=batch_size)
 
     total_pred = 0

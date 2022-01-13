@@ -13,7 +13,7 @@ ROOT_PATH = Path(__file__).resolve().parents[2]
 
 def truncate_dataset(file, steps: int = 1000) -> Tuple[np.array, np.array]:
     train_set = torch.load(os.path.join(ROOT_PATH, f"data/processed/{file}"))
-    return train_set.sample[::steps], train_set.target[:steps]
+    return train_set.sample[::steps], train_set.target[::steps]
 
 
 def create_sample_dataset(
@@ -49,7 +49,7 @@ def create_sample_dataset(
 
     save_path = os.path.join(ROOT_PATH, "data/dummy")
     os.makedirs(save_path, exist_ok=True)
-    logger.info(f"Saving dummy datasets to: {save_path}")
+    logger.info(f"Saving truncated datasets to: {save_path}")
     torch.save(train_data, os.path.join(save_path, "train_dummy.pt"))
     torch.save(val_data, os.path.join(save_path, "val_dummy.pt"))
     torch.save(test_data, os.path.join(save_path, "test_dummy.pt"))
