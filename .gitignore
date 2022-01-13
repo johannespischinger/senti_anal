@@ -94,3 +94,6 @@ models/runs
 
 # amazon polarity files
 /**.lock
+
+# wandb logs
+opensentiment/wandb
