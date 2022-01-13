@@ -1,13 +1,16 @@
 name: build-docs
 
 on:
-  workflow_run:
-    workflows: ["Python3.9 pytest"]
-    branches: [master]
-    types: [completed]
+  # workflow_run:
+  #   workflows: ["Python3.9 pytest"]
+  #   branches: [master]
+  #   types: [completed]
+  # release:
+  #   types: [published, created, edited]
   pull_request:
     branches:
-    - master
+      - master
+      - dev
 
 jobs:
   deploy_docs:
