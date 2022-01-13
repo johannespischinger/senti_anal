@@ -103,8 +103,6 @@ def train(cfg: DictConfig) -> Tuple[Dict, str]:
     model = SentimentClassifier()
     wandb.watch(model, log_freq=100)
 
-    config.learning_rate = 1e-5
-    config.epochs = 1
     total_steps = len(train_loader) * config.epochs
 
     criterion = torch.nn.CrossEntropyLoss()
