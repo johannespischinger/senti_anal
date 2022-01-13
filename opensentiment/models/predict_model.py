@@ -9,7 +9,11 @@ ROOT_PATH = Path(__file__).resolve().parents[2]
 logger = logging.getLogger(__name__)
 
 
-def predict(model_name: str, batch_size: int = 64) -> None:
+def predict(
+    model_name: str,
+    batch_size: int = 64,
+    data_path: str = "tests/dummy_dataset",
+) -> None:
     wandb.init(
         project="BERT",
         entity="senti_anal",
@@ -22,7 +26,7 @@ def predict(model_name: str, batch_size: int = 64) -> None:
     model.eval()
     wandb.watch(model, log_freq=100)
 
-    test_set = torch.load(os.path.join(ROOT_PATH, "data/processed/test_dataset.pt"))
+    test_set = torch.load(os.path.join(ROOT_PATH, f"{data_path}/test_dataset.pt"))
     test_loader = DataLoader(test_set, batch_size=batch_size)
 
     total_pred = 0

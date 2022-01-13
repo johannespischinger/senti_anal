@@ -24,7 +24,7 @@ def train_model(
     optimizer: Any,
     scheduler: Any,
     max_norm: float = 1.0,
-) -> [torch.Tensor, np.float]:
+) -> [torch.Tensor, np.float64]:
     model.train()
     train_loss = []
     correct_pred = 0
@@ -92,8 +92,10 @@ def train(cfg: DictConfig) -> None:
     config = cfg.experiments
     torch.manual_seed(config.seed)
 
-    train_set = torch.load(os.path.join(ROOT_PATH, "data/processed/train_dataset.pt"))
-    val_set = torch.load(os.path.join(ROOT_PATH, "data/processed/val_dataset.pt"))
+    train_set = torch.load(
+        os.path.join(ROOT_PATH, f"{config.data_path}/train_dataset.pt")
+    )
+    val_set = torch.load(os.path.join(ROOT_PATH, f"{config.data_path}/val_dataset.pt"))
 
     train_loader = DataLoader(train_set, batch_size=config.batch_size)
     val_loader = DataLoader(val_set, batch_size=config.batch_size)
