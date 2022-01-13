@@ -20,6 +20,13 @@ jobs:
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: 'branch-dir'
+    - name: Checkout gh-pages branch
+      uses: actions/checkout@v2
+      with:
+        ref: 'refs/heads/gh-pages'
+        path: 'gh-pages-dir'
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
@@ -29,6 +36,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        cd branch-dir
         pip install -r requirements.txt
         pip install -r requirements_dev.txt
         pip install -e .
@@ -37,6 +45,7 @@ jobs:
       # create shpinx api autodocs of opensentiment and move them to docs
       # makefile: make html build the the docs/_build/html/
       run: |
+        cd branch-dir
         sphinx-apidoc -o ./docs ./opensentiment 
         cd docs
         make html
@@ -44,11 +53,10 @@ jobs:
     - name: Commit documentation changes
       run: |
         mkdir -p /tmp/gh-pages-dir/
-        cp -r docs/_build/html/* /tmp/gh-pages-dir/
-        cp -r .gitignore /tmp/gh-pages-dir/
+        cp -r branch-dir/docs/_build/html/* gh-pages-dir/
+        cp -r branch-dir/.gitignore gh-pages-dir/
         # delete all local files and untrack
-        git rm -rf .
-        cp -r /tmp/gh-pages-dir/ .
+        cd gh-pages-dir
         touch .nojekyll
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
@@ -62,4 +70,4 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
          branch: refs/heads/gh-pages
-         directory: .
+         directory: gh-pages-dir/
