@@ -58,16 +58,10 @@ def get_datasets(
         max_len=max_len,
     )
 
-    torch.save(
-        train_data, os.path.join(ROOT_PATH, "data/processed/train_dataset.pt")
-    )
-    torch.save(
-        val_data, os.path.join(ROOT_PATH, "data/processed/val_dataset.pt")
-    )
-    torch.save(
-        test_data, os.path.join(ROOT_PATH, "data/processed/test_dataset.pt")
-    )
-    logger.info(f"... datasets successfully created and saved")
+    torch.save(train_data, os.path.join(ROOT_PATH, "data/processed/train_dataset.pt"))
+    torch.save(val_data, os.path.join(ROOT_PATH, "data/processed/val_dataset.pt"))
+    torch.save(test_data, os.path.join(ROOT_PATH, "data/processed/test_dataset.pt"))
+    logger.info("... datasets successfully created and saved")
 
 
 if __name__ == "__main__":

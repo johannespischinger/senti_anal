@@ -16,7 +16,7 @@ pre-commit
 pipreqs
 scikit-learn~=1.0.2
 dvc
-"dvc[gdrive]"
+'dvc[gdrive]'
 src~=0.1.0
 numpy~=1.22.0
 wandb~=0.12.9
