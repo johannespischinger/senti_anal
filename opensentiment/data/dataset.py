@@ -20,16 +20,17 @@ class AmazonPolarity(Dataset):
         encoding = self.tokenizer.encode_plus(
             sample,
             add_special_tokens=True,
-            padding = 'max_length',
-            max_length = self.max_len,
-            truncation=True, 
+            padding="max_length",
+            max_length=self.max_len,
+            truncation=True,
             return_token_type_ids=False,
             return_attention_mask=True,
-            return_tensors='pt'
+            return_tensors="pt",
         )
 
-        return {'review': sample,
-                'input_id': encoding['input_ids'].flatten(),
-                'attention_mask': encoding['attention_mask'].flatten(),
-                'target': torch.tensor(self.target[index], dtype=torch.long)
-                }
+        return {
+            "review": sample,
+            "input_id": encoding["input_ids"].flatten(),
+            "attention_mask": encoding["attention_mask"].flatten(),
+            "target": torch.tensor(self.target[index], dtype=torch.long),
+        }
