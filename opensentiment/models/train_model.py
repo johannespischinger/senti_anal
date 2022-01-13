@@ -157,7 +157,7 @@ def train(cfg: DictConfig) -> None:
 
         # saving model if performance improved
         if val_acc > best_accuracy:
-            best_model_name = f"best_model_state_{val_acc:.2}.bin"
+            best_model_name = f"best_model_state_{val_acc:.2}.pt"
             torch.save(model.state_dict(), os.path.join(os.getcwd(), best_model_name))
             best_accuracy = val_acc
 
