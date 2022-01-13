@@ -99,5 +99,8 @@ models/runs
 *.json
 
 # wandb logs
-opensentiment/wandb/
+**/wandb/*
+
+# model files
+**/*model*.pt
 

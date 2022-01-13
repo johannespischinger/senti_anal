@@ -12,9 +12,9 @@ from pathlib import Path
 from torch.utils.data import DataLoader
 from torch import nn
 from typing import Any, Tuple, Dict
+from opensentiment.utils import get_project_root
 
 logger = logging.getLogger(__name__)
-ROOT_PATH = Path(__file__).resolve().parents[2]
 
 
 def train_model(
@@ -93,9 +93,11 @@ def train(cfg: DictConfig) -> Tuple[Dict, str]:
     torch.manual_seed(config.seed)
 
     train_set = torch.load(
-        os.path.join(ROOT_PATH, f"{config.data_path}/train_dataset.pt")
+        os.path.join(get_project_root(), f"{config.data_path}/train_dataset.pt")
     )
-    val_set = torch.load(os.path.join(ROOT_PATH, f"{config.data_path}/val_dataset.pt"))
+    val_set = torch.load(
+        os.path.join(get_project_root(), f"{config.data_path}/val_dataset.pt")
+    )
 
     train_loader = DataLoader(train_set, batch_size=config.batch_size)
     val_loader = DataLoader(val_set, batch_size=config.batch_size)

@@ -5,7 +5,8 @@ from torch.utils.data import DataLoader
 import logging
 import wandb
 
-ROOT_PATH = Path(__file__).resolve().parents[2]
+from opensentiment.utils import get_project_root
+
 logger = logging.getLogger(__name__)
 
 
@@ -21,12 +22,14 @@ def predict(
         job_type="test",
     )
 
-    models_path = os.path.join(ROOT_PATH, "models/runs")
+    models_path = os.path.join(get_project_root(), "models/runs")
     model = torch.load(os.path.join(models_path, model_name))
     model.eval()
     wandb.watch(model, log_freq=100)
 
-    test_set = torch.load(os.path.join(ROOT_PATH, f"{data_path}/test_dataset.pt"))
+    test_set = torch.load(
+        os.path.join(get_project_root(), f"{data_path}/test_dataset.pt")
+    )
     test_loader = DataLoader(test_set, batch_size=batch_size)
 
     total_pred = 0
