@@ -19,7 +19,8 @@ jobs:
     # only run if pytest successfull
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout current branch
+      uses: actions/checkout@v2
       with:
         path: 'branch-dir'
     - name: Checkout gh-pages branch
@@ -33,14 +34,12 @@ jobs:
         python-version: 3.9
         cache: 'pip'
         cache-dependency-path: '**/requirements*.txt'
-
     - name: Install dependencies
       run: |
         cd branch-dir
         pip install -r requirements.txt
         pip install -r requirements_dev.txt
         pip install -e .
-
     - name: create shinx docs
       # create shpinx api autodocs of opensentiment and move them to docs
       # makefile: make html build the the docs/_build/html/
@@ -52,11 +51,13 @@ jobs:
     
     - name: Commit documentation changes
       run: |
-        mkdir -p /tmp/gh-pages-dir/
+        # move all files to gh-pages branch
         cp -r branch-dir/docs/_build/html/* gh-pages-dir/
         cp -r branch-dir/.gitignore gh-pages-dir/
         # delete all local files and untrack
+        ls -a
         cd gh-pages-dir
+        ls -a
         touch .nojekyll
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
