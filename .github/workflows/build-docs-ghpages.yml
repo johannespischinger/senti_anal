@@ -56,3 +56,11 @@ jobs:
          branch: gh-pages
          directory: gh-pages
          github_token: ${{ secrets.SECRET_TOKEN }}
+         
+  on-failure-docs:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - name: print error
+        run: |
+          echo "job not running"
