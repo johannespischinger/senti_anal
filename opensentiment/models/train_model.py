@@ -81,6 +81,8 @@ def eval_model(
 
 @hydra.main(config_path="config", config_name="default_config.yaml")
 def train(cfg: DictConfig) -> None:
+    if cfg.wandb_key_api != "":
+        os.environ["WANDB_API_KEY"] = cfg.wandb_key_api
     wandb.init(
         project="BERT",
         entity="senti_anal",
