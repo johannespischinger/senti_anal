@@ -11,7 +11,7 @@ import logging
 from pathlib import Path
 from torch.utils.data import DataLoader
 from torch import nn
-from typing import Any
+from typing import Any, Tuple, Dict
 
 logger = logging.getLogger(__name__)
 ROOT_PATH = Path(__file__).resolve().parents[2]
@@ -80,7 +80,7 @@ def eval_model(
 
 
 @hydra.main(config_path="config", config_name="default_config.yaml")
-def train(cfg: DictConfig) -> None:
+def train(cfg: DictConfig) -> Tuple[Dict, str]:
     if cfg.wandb_key_api != "":
         os.environ["WANDB_API_KEY"] = cfg.wandb_key_api
     wandb.init(
@@ -160,6 +160,8 @@ def train(cfg: DictConfig) -> None:
             best_model_name = f"best_model_state_{val_acc:.2}.pt"
             torch.save(model.state_dict(), os.path.join(os.getcwd(), best_model_name))
             best_accuracy = val_acc
+
+    return history, best_model_name
 
 
 if __name__ == "__main__":

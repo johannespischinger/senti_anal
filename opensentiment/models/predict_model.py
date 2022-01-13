@@ -13,7 +13,7 @@ def predict(
     model_name: str,
     batch_size: int = 64,
     data_path: str = "tests/dummy_dataset",
-) -> None:
+) -> float:
     wandb.init(
         project="BERT",
         entity="senti_anal",
@@ -43,4 +43,5 @@ def predict(
             total_pred += targets.shape[0]
 
     wandb.log({"test_acc": corr_pred / total_pred})
-    logger.info(f"Final test accuracy: {corr_pred/total_pred}")
+    logger.info(f"Final test accuracy: {corr_pred/total_pred:.4}")
+    return corr_pred / total_pred
