@@ -1,0 +1,21 @@
+opensentiment.features package
+==============================
+
+Submodules
+----------
+
+opensentiment.features.build\_features module
+---------------------------------------------
+
+.. automodule:: opensentiment.features.build_features
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: opensentiment.features
+   :members:
+   :undoc-members:
+   :show-inheritance:

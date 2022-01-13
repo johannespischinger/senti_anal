@@ -1,0 +1,37 @@
+opensentiment.data package
+==========================
+
+Submodules
+----------
+
+opensentiment.data.dataset module
+---------------------------------
+
+.. automodule:: opensentiment.data.dataset
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+opensentiment.data.make\_dataset module
+---------------------------------------
+
+.. automodule:: opensentiment.data.make_dataset
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+opensentiment.data.utils module
+-------------------------------
+
+.. automodule:: opensentiment.data.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: opensentiment.data
+   :members:
+   :undoc-members:
+   :show-inheritance:

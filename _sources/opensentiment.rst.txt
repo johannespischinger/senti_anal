@@ -1,0 +1,32 @@
+opensentiment package
+=====================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   opensentiment.data
+   opensentiment.features
+   opensentiment.models
+   opensentiment.visualization
+
+Submodules
+----------
+
+opensentiment.utils module
+--------------------------
+
+.. automodule:: opensentiment.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: opensentiment
+   :members:
+   :undoc-members:
+   :show-inheritance:

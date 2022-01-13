@@ -1,0 +1,21 @@
+opensentiment.visualization package
+===================================
+
+Submodules
+----------
+
+opensentiment.visualization.visualize module
+--------------------------------------------
+
+.. automodule:: opensentiment.visualization.visualize
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: opensentiment.visualization
+   :members:
+   :undoc-members:
+   :show-inheritance:

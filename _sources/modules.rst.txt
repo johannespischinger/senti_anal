@@ -1,0 +1,7 @@
+opensentiment
+=============
+
+.. toctree::
+   :maxdepth: 4
+
+   opensentiment
