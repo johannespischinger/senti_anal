@@ -25,7 +25,7 @@ def get_datasets(
     logger.info("Downloading data...")
 
     training_dataset = load_dataset(
-        "amazon_polarity", split="train", cache_dir=os.path.join(ROOT_PATH)
+        "amazon_polarity", split="train", cache_dir=os.path.join(ROOT_PATH, "data/raw")
     )
     train_split = training_dataset.train_test_split(test_size=val_size)
     train_dataset = train_split["train"]
