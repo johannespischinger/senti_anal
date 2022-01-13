@@ -109,6 +109,7 @@ conda activate py39senti
 pip install -r requirements.txt
 pip install -r requirements_dev.txt
 pip install -e .
+pre-commit install
 ```
 
 CUDA 11.3 configuration
