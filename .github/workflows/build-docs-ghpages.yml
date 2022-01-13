@@ -1,23 +1,23 @@
 name: build-docs
 
 on:
-  # workflow_run:
-  #   workflows: ["Python3.9 pytest"]
-  #   branches: [master]
-  #   types: [completed]
+  workflow_run:
+    workflows: ["Python3.9 pytest"]
+    branches: [master]
+    types: [completed]
   # # on releases
   # release:
   #   types: [published, created, edited]
-  pull_request:
-    branches:
-      - master
-      - dev
+  # pull_request:
+  #   branches:
+  #     - master
+  #     - dev
 
 jobs:
   deploy_docs:
     runs-on: ubuntu-latest
     # only run if pytest successfull
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
@@ -60,11 +60,3 @@ jobs:
          branch: gh-pages
          directory: gh-pages
          github_token: ${{ secrets.SECRET_TOKEN }}
-         
-  on-failure-docs:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    steps:
-      - name: print error
-        run: |
-          echo "job not running"
