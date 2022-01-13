@@ -1,3 +1,5 @@
+data_path: "tests/dummy_dataset"
+
 learning_rate: 1e-5
 epochs: 1
 batch_size: 64
