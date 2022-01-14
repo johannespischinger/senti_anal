@@ -3,45 +3,30 @@ from opensentiment.models.predict_model import predict
 from omegaconf import OmegaConf
 import pytest
 import os
-from pathlib import Path
 from opensentiment.utils import get_project_root
-
-CONFIG = OmegaConf.create(
-    {
-        "experiments": {
-            "data_path": "tests/dummy_dataset",
-            "learning_rate": 1e-05,
-            "epochs": 2,
-            "batch_size": 64,
-            "num_warmup_steps": 0,
-            "max_norm": 1.0,
-            "seed": 42,
-        },
-        "wandb_key_api": "",
-    }
-)
+from hydra import compose, initialize
+from datetime import datetime
 
 
-class TestTraining:
-    @pytest.mark.long
-    @pytest.mark.parametrize(
-        "config",
-        [
-            CONFIG,
-        ],
-    )
-    def test_train_model(self, config):
-        assert os.path.exists(
-            os.path.join(get_project_root(), config.experiments.data_path)
-        )
+@pytest.mark.long
+def test_train_model():
+    initialize(config_path="config", job_name="test")
+    config = compose(config_name="default_test_config.yaml")
+    assert os.path.exists(
+        os.path.join(get_project_root(), config.experiments.data_path)
+    ), f"{os.path.join(get_project_root(), config.experiments.data_path)}"
 
-        history, model_name = train(config)
-        assert len(history) == config.experiments.epochs, "Training not successful!"
-        if config.experiments.epochs >= 1:
-            assert (
-                history["train_loss"][0] >= history["train_loss"][-1]
-            ), "Training loss is not decreasing!"
+    datetime_ = datetime.now().strftime("model_%Y%m%d_%H%M%S")
+    wk_dir = os.path.join(get_project_root(), "models", "runs_test", datetime_)
+    os.makedirs(wk_dir, exist_ok=True)
+    os.chdir(wk_dir)
+    history, model_name = train(config)
+    assert len(history) == config.experiments.epochs, "Training not successful!"
+    if config.experiments.epochs >= 1:
+        assert (
+            history["train_loss"][0] >= history["train_loss"][-1]
+        ), "Training loss is not decreasing!"
 
-        # test predict
-        acc = predict(model_name)
-        assert acc <= 1.0 and 0.0 <= acc, "Accuracy cannot be higher than 100%"
+    # test predict
+    acc = predict(model_name, wk_dir)
+    assert 1.0 >= acc >= 0.0, "Accuracy cannot be higher than 100%"
