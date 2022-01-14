@@ -29,19 +29,12 @@ jobs:
         cache: 'pip'
         cache-dependency-path: '**/requirements*.txt'
         
-#     - name: Add conda to system path # not using conda
-#       run: |
-#         # $CONDA is an environment variable pointing to the root of the miniconda directory
-#         echo $CONDA/bin >> $GITHUB_PATH
-    
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
         pip install -r requirements_dev.txt
         pip install -e .
-    # - name: Install test dependencies # done already in requirements
-    #   run: |
-    #     pip install flake8 pytest coverage isort 
+
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
