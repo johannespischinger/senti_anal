@@ -23,7 +23,6 @@ CONFIG = OmegaConf.create(
 
 
 class TestTraining:
-    @pytest.mark.skip(reason="no way of currently testing this")
     @pytest.mark.long
     @pytest.mark.parametrize(
         "config",

@@ -2,7 +2,6 @@ from opensentiment.data.make_dataset import get_datasets
 import pytest
 
 
-@pytest.mark.skip(reason="no way of currently testing this")
 @pytest.mark.download
 class TestMakeDataset:
     def test_make_dataset(self):
