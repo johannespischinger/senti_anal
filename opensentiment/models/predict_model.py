@@ -4,6 +4,7 @@ import torch
 from torch.utils.data import DataLoader
 import logging
 import wandb
+from opensentiment.models.bert_model import SentimentClassifier
 
 from opensentiment.utils import get_project_root
 
@@ -12,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 def predict(
     model_name: str,
+    models_path: str,
     batch_size: int = 64,
     data_path: str = "tests/dummy_dataset",
 ) -> float:
@@ -22,8 +24,8 @@ def predict(
         job_type="test",
     )
 
-    models_path = os.path.join(get_project_root(), "models/runs")
-    model = torch.load(os.path.join(models_path, model_name))
+    model = SentimentClassifier()
+    model.load_state_dict(torch.load(os.path.join(models_path, model_name)))
     model.eval()
     wandb.watch(model, log_freq=100)
 

@@ -8,11 +8,10 @@ from omegaconf import DictConfig
 import wandb
 import os
 import logging
-from pathlib import Path
 from torch.utils.data import DataLoader
 from torch import nn
 from typing import Any, Tuple, Dict
-from opensentiment.utils import get_project_root
+from opensentiment.utils import get_project_root, save_to_model_gs
 
 logger = logging.getLogger(__name__)
 
@@ -81,7 +80,7 @@ def eval_model(
 
 @hydra.main(config_path="config", config_name="default_config.yaml")
 def train(cfg: DictConfig) -> Tuple[Dict, str]:
-    if cfg.wandb_key_api != "":
+    if cfg.wandb_key_api:
         os.environ["WANDB_API_KEY"] = cfg.wandb_key_api
     wandb.init(
         project="BERT",
@@ -158,6 +157,8 @@ def train(cfg: DictConfig) -> Tuple[Dict, str]:
             best_model_name = f"best_model_state_{val_acc:.2}.pt"
             best_accuracy = val_acc
 
+    if cfg.job_dir_gs:
+        save_to_model_gs(cfg.job_dir_gs, cfg.model_name)
     torch.save(model.state_dict(), os.path.join(os.getcwd(), best_model_name))
     return history, best_model_name
 
