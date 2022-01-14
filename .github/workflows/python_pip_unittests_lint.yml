@@ -13,7 +13,12 @@ jobs:
       max-parallel: 5
 
     env:
-      WANDB_MODE: offline 
+      WANDB_MODE: offline
+      WANDB_ENTITY: senti_anal
+      WANDB_PROJECT: BERT
+      # WANDB_API_KEY=$YOUR_API_KEY
+      WANDB_NAME: "github ci tests"
+      WANDB_NOTES: "Python3.9 pytest in github actions"
 
     steps:
     - uses: actions/checkout@v2
