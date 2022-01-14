@@ -7,6 +7,7 @@ Final project for course MLOps course at DTU.
 ![CI pytest](https://github.com/johannespischinger/senti_anal/actions/workflows/python_pip_unittests_lint.yml/badge.svg)
 ![build-docs](https://github.com/johannespischinger/senti_anal/actions/workflows/build-docs-ghpages.yml/badge.svg)
 
+[Read the docs](https://johannespischinger.github.io/senti_anal/)
 
 Project Description
 ------------
@@ -118,3 +119,4 @@ CUDA 11.3 configuration
 pip uninstall torch
 pip install torch==1.10.1+cu113 torchvision==0.11.2+cu113 torchaudio==0.10.1+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
 ```
+

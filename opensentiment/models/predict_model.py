@@ -5,11 +5,16 @@ from torch.utils.data import DataLoader
 import logging
 import wandb
 
-ROOT_PATH = Path(__file__).resolve().parents[2]
+from opensentiment.utils import get_project_root
+
 logger = logging.getLogger(__name__)
 
 
-def predict(model_name: str, batch_size: int = 64) -> None:
+def predict(
+    model_name: str,
+    batch_size: int = 64,
+    data_path: str = "tests/dummy_dataset",
+) -> float:
     wandb.init(
         project="BERT",
         entity="senti_anal",
@@ -17,12 +22,14 @@ def predict(model_name: str, batch_size: int = 64) -> None:
         job_type="test",
     )
 
-    models_path = os.path.join(ROOT_PATH, "models/runs")
+    models_path = os.path.join(get_project_root(), "models/runs")
     model = torch.load(os.path.join(models_path, model_name))
     model.eval()
     wandb.watch(model, log_freq=100)
 
-    test_set = torch.load(os.path.join(ROOT_PATH, "data/processed/test_dataset.pt"))
+    test_set = torch.load(
+        os.path.join(get_project_root(), f"{data_path}/test_dataset.pt")
+    )
     test_loader = DataLoader(test_set, batch_size=batch_size)
 
     total_pred = 0
@@ -39,4 +46,5 @@ def predict(model_name: str, batch_size: int = 64) -> None:
             total_pred += targets.shape[0]
 
     wandb.log({"test_acc": corr_pred / total_pred})
-    logger.info(f"Final test accuracy: {corr_pred/total_pred}")
+    logger.info(f"Final test accuracy: {corr_pred/total_pred:.4}")
+    return corr_pred / total_pred

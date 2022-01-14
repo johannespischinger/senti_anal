@@ -94,3 +94,13 @@ models/runs
 
 # amazon polarity files
 /**.lock
+
+# Google credentioals
+*.json
+
+# wandb logs
+**/wandb/*
+
+# model files
+**/*model*.pt
+

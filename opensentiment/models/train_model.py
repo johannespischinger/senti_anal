@@ -11,10 +11,10 @@ import logging
 from pathlib import Path
 from torch.utils.data import DataLoader
 from torch import nn
-from typing import Any
+from typing import Any, Tuple, Dict
+from opensentiment.utils import get_project_root
 
 logger = logging.getLogger(__name__)
-ROOT_PATH = Path(__file__).resolve().parents[2]
 
 
 def train_model(
@@ -24,7 +24,7 @@ def train_model(
     optimizer: Any,
     scheduler: Any,
     max_norm: float = 1.0,
-) -> [torch.Tensor, np.float]:
+) -> [torch.Tensor, np.float64]:
     model.train()
     train_loss = []
     correct_pred = 0
@@ -80,7 +80,7 @@ def eval_model(
 
 
 @hydra.main(config_path="config", config_name="default_config.yaml")
-def train(cfg: DictConfig) -> None:
+def train(cfg: DictConfig) -> Tuple[Dict, str]:
     if cfg.wandb_key_api != "":
         os.environ["WANDB_API_KEY"] = cfg.wandb_key_api
     wandb.init(
@@ -92,8 +92,12 @@ def train(cfg: DictConfig) -> None:
     config = cfg.experiments
     torch.manual_seed(config.seed)
 
-    train_set = torch.load(os.path.join(ROOT_PATH, "data/processed/train_dataset.pt"))
-    val_set = torch.load(os.path.join(ROOT_PATH, "data/processed/val_dataset.pt"))
+    train_set = torch.load(
+        os.path.join(get_project_root(), f"{config.data_path}/train_dataset.pt")
+    )
+    val_set = torch.load(
+        os.path.join(get_project_root(), f"{config.data_path}/val_dataset.pt")
+    )
 
     train_loader = DataLoader(train_set, batch_size=config.batch_size)
     val_loader = DataLoader(val_set, batch_size=config.batch_size)
@@ -101,16 +105,11 @@ def train(cfg: DictConfig) -> None:
     model = SentimentClassifier()
     wandb.watch(model, log_freq=100)
 
-    config.learning_rate = 1e-5
-    config.epochs = 1
     total_steps = len(train_loader) * config.epochs
-
     criterion = torch.nn.CrossEntropyLoss()
-
     optimizer = transformers.AdamW(
         params=model.parameters(), lr=config.learning_rate, correct_bias=False
     )
-
     scheduler = transformers.get_linear_schedule_with_warmup(
         optimizer=optimizer,
         num_warmup_steps=config.num_warmup_steps,
@@ -119,6 +118,7 @@ def train(cfg: DictConfig) -> None:
 
     history = defaultdict(list)
     best_accuracy = 0
+    best_model_name = "untrained_model.pt"
 
     for epoch in range(config.epochs):
 
@@ -155,9 +155,11 @@ def train(cfg: DictConfig) -> None:
 
         # saving model if performance improved
         if val_acc > best_accuracy:
-            best_model_name = f"best_model_state_{val_acc:.2}.bin"
-            torch.save(model.state_dict(), os.path.join(os.getcwd(), best_model_name))
+            best_model_name = f"best_model_state_{val_acc:.2}.pt"
             best_accuracy = val_acc
+
+    torch.save(model.state_dict(), os.path.join(os.getcwd(), best_model_name))
+    return history, best_model_name
 
 
 if __name__ == "__main__":
