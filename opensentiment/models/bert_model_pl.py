@@ -8,7 +8,7 @@ class SentimentClassifierPL(pl.LightningModule):
     def __init__(
         self,
         hydraconfig,
-        tokenizer_name: str = "bert-base-cased",
+        model_name_or_path: str = "bert-base-cased",
         num_classes: int = 2,
         train_batch_size=64,
     ):
@@ -16,7 +16,7 @@ class SentimentClassifierPL(pl.LightningModule):
         self.train_batch_size = train_batch_size
         self.hydraconfig = hydraconfig  # hydra config
 
-        self.model_bert = BertModel.from_pretrained(tokenizer_name)
+        self.model_bert = BertModel.from_pretrained(model_name_or_path)
         # TODO: freeze model / model w.o. classification parameters
         for name, param in self.model_bert.named_parameters():
             # if 'classifier' not in name: # exclude the classifier layer
