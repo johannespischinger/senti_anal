@@ -13,6 +13,7 @@ from torch import nn
 from typing import Any, Tuple, Dict
 from opensentiment.utils import get_project_root, save_to_model_gs
 from tqdm import tqdm
+from typing import List
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +25,7 @@ def train_model(
     optimizer: Any,
     scheduler: Any,
     max_norm: float = 1.0,
-) -> [torch.Tensor, np.float64]:
+) -> List[torch.Tensor, np.float64]:
     model.train()
     train_loss = []
     correct_pred = 0
