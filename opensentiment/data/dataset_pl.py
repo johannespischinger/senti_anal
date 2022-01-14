@@ -125,9 +125,10 @@ class AmazonPolarityDataModule(pl.LightningDataModule):
 
 
 if __name__ == "__main__":
-    dm = AmazonPolarityDataModule("bert-base-cased", only_take_every_n_sample=1)
+    dm = AmazonPolarityDataModule("bert-base-cased", only_take_every_n_sample=64)
     dm.prepare_data()
     dm.setup("fit")
-    print(next(iter(dm.train_dataloader())))
-    print(next(iter(dm.train_dataloader())["attention_mask"].shape))
+    sample = next(iter(dm.train_dataloader()))
+    print(sample)
+    print([(x[0], x[1].shape) for x in sample.items()])
     print(len(iter(dm.train_dataloader())))
