@@ -28,6 +28,7 @@ def test_train_model():
         ), "Training loss is not decreasing!"
 
 
+
     # test predict
     acc = predict(model_name, wk_dir)
     assert 1.0 >= acc >= 0.0, "Accuracy cannot be higher than 100%"
