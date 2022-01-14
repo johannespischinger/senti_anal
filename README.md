@@ -3,8 +3,7 @@ Sentiment Analysis
 
 Final project for course MLOps course at DTU. 
 
-[![codecov](https://codecov.io/gh/johannespischinger/senti_anal/branch/master/graph/badge.svg?token=CI49NOMH1J)](https://codecov.io/gh/johannespischinger/senti_anal)
-![CI pytest](https://github.com/johannespischinger/senti_anal/actions/workflows/python_pip_unittests_lint.yml/badge.svg)
+[![codecov](https://codecov.io/gh/johannespischinger/senti_anal/branch/dev/graph/badge.svg?token=CI49NOMH1J)](https://codecov.io/gh/johannespischinger/senti_anal)![CI pytest](https://github.com/johannespischinger/senti_anal/actions/workflows/python_pip_unittests_lint.yml/badge.svg)
 ![build-docs](https://github.com/johannespischinger/senti_anal/actions/workflows/build-docs-ghpages.yml/badge.svg)
 
 [Read the docs](https://johannespischinger.github.io/senti_anal/)
