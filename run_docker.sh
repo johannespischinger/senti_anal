@@ -3,8 +3,9 @@
 echo "experiments=$a"
 echo "wandb_key_api=$2"
 echo "git_tag=$3"
+echo "job_dir_gs=$4"
 
-git pull
+#git pull
 if [ "$3" != "" ]
 then
   echo "git checkout {$3}"
@@ -15,9 +16,9 @@ else
 fi
 dvc pull
 
-if ["$a" != ""]
+if [ "$a" != "" ]
 then
   export a=exp0
 fi
 echo "Using $a experiment setting!"
-python -u opensentiment/models/train_model.py "experiments=$a" "wandb_key_api=$2"
+python -u opensentiment/models/train_model.py "experiments=$a" "wandb_key_api=$2" "job_dir_gs=$4"
