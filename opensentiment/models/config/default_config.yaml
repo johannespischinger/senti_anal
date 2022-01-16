@@ -2,7 +2,6 @@ defaults:
   - experiments: exp0
   - _self_
 
-model_name: "model.pth"
 job_dir_gs: ""
 wandb_key_api: ""
 

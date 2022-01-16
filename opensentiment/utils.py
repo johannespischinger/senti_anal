@@ -10,9 +10,9 @@ def get_project_root() -> Path:
 
 def save_to_model_gs(save_dir: str, model_name: str) -> None:
     scheme = "gs://"
-    bucket_name = save_dir[len(scheme) :].split("/")[0]
+    bucket_name = save_dir[len(scheme):].split("/")[0]
     prefix = "{}{}/".format(scheme, bucket_name)
-    bucket_path = save_dir[len(prefix) :].rstrip("/")
+    bucket_path = save_dir[len(prefix):].rstrip("/")
 
     datetime_ = datetime.now().strftime("model_%Y%m%d_%H%M%S")
 
