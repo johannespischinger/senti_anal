@@ -10,13 +10,12 @@ RUN apt update && \
   apt-get install -y wget && \
   rm -rf /var/lib.apt/lists/*
 
-COPY requirements.txt requirements.txt
-COPY setup.py setup.py
-RUN pip install -r requirements.txt --no-cache-dir
+# only for debugging purposes!
 
 RUN git clone --branch dev https://github.com/johannespischinger/senti_anal.git
-
 WORKDIR /senti_anal
+COPY data/ data/
+RUN pip install -r requirements.txt --no-cache-dir
 
 ENTRYPOINT ["sh", "run_docker.sh"]
 # Run dvc

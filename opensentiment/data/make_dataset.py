@@ -2,13 +2,17 @@
 /BERT_Sentiment.ipynb """
 # -*- coding: utf-8 -*-
 import logging
-from datasets import load_dataset
-from opensentiment.data.dataset import AmazonPolarity
-import transformers
 import os
-from pathlib import Path
+
+import hydra
+import omegaconf
+import pytorch_lightning as pl
 import torch
-from opensentiment.utils import get_project_root
+import transformers
+from datasets import load_dataset
+
+from opensentiment.data.dataset import AmazonPolarity
+from opensentiment.utils import get_logger_default, get_project_root
 
 
 def get_datasets(
@@ -20,13 +24,13 @@ def get_datasets(
     Runs data processing scripts to turn raw data from (../raw) into
     cleaned data ready to be analyzed (saved in ../processed).
     """
-    logger = logging.getLogger(__name__)
+    logger = get_logger_default(__name__)
     logger.info("Downloading data...")
 
     training_dataset = load_dataset(
         "amazon_polarity",
         split="train",
-        cache_dir=os.path.join(get_project_root(), "data/raw"),
+        cache_dir=os.path.join(get_project_root(), "data", "raw", "huggingface-cache"),
     )
     train_split = training_dataset.train_test_split(test_size=val_size)
     train_dataset = train_split["train"]
@@ -71,8 +75,20 @@ def get_datasets(
     logger.info("... datasets successfully created and saved")
 
 
+@hydra.main(
+    config_path=str(os.path.join(get_project_root(), "config")),
+    config_name="default.yaml",
+)
+def inital_cache_dataset(cfg: omegaconf.DictConfig):
+    data_module: pl.LightningDataModule = hydra.utils.instantiate(
+        cfg.data.datamodule, _recursive_=False
+    )
+    data_module.prepare_data()
+
+
 if __name__ == "__main__":
     log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     logging.basicConfig(level=logging.INFO, format=log_fmt)
 
+    inital_cache_dataset()
     get_datasets()

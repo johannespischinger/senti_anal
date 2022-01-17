@@ -1,11 +1,13 @@
-import torch
-from pathlib import Path
-import os
 import logging
-import transformers
-from opensentiment.data.dataset import AmazonPolarity
+import os
+from pathlib import Path
 from typing import Tuple
+
 import numpy as np
+import torch
+import transformers
+
+from opensentiment.data.dataset import AmazonPolarity
 from opensentiment.utils import get_project_root
 
 logger = logging.getLogger(__name__)

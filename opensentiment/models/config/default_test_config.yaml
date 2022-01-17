@@ -2,9 +2,10 @@ defaults:
   - experiments: exp0
   - _self_
 
+model_name: "model.pth"
 job_dir_gs: ""
 wandb_key_api: ""
 
 hydra:
   run:
-    dir: ../models/runs/${now:%Y-%m-%d_%H-%M-%S}
+    dir: ../../models/runs_test/${now:%Y-%m-%d_%H-%M-%S}

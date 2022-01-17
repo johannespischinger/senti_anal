@@ -1,5 +1,6 @@
-from opensentiment.api.fast.serve_api_helper import score_model
 from fastapi.encoders import jsonable_encoder
+
+from opensentiment.api.fast.serve_api_helper import score_model
 
 
 def test_score_model():
