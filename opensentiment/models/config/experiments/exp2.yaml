@@ -1,7 +1,7 @@
 data_path: "tests/dummy_dataset"
 
-learning_rate: 1e-5
-epochs: 1
+learning_rate: 1e-4
+epochs: 3
 batch_size: 64
 num_warmup_steps: 0
 max_norm: 1.0

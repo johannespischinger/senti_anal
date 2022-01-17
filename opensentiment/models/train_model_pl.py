@@ -13,6 +13,7 @@ from torch import nn
 from typing import Any, Tuple, Dict
 from opensentiment.utils import get_project_root, save_to_model_gs
 from tqdm import tqdm
+from typing import List
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +25,7 @@ def train_model(
     optimizer: Any,
     scheduler: Any,
     max_norm: float = 1.0,
-) -> [torch.Tensor, np.float64]:
+) -> List[torch.Tensor, np.float64]:
     model.train()
     train_loss = []
     correct_pred = 0
@@ -120,7 +121,6 @@ def train(cfg: DictConfig) -> Tuple[Dict, str]:
     best_accuracy = 0
     best_model_name = "untrained_model.pt"
 
-    logger.info("Start training:")
     for epoch in range(config.epochs):
 
         # training part
@@ -159,11 +159,9 @@ def train(cfg: DictConfig) -> Tuple[Dict, str]:
             best_model_name = f"best_model_state_{val_acc:.2}.pt"
             best_accuracy = val_acc
 
-    torch.save(model.state_dict(), os.path.join(os.getcwd(), best_model_name))
     if cfg.job_dir_gs:
-        logger.info(f"Uploading model google bucket: {cfg.job_dir_gs}")
-        save_to_model_gs(cfg.job_dir_gs, best_model_name)
-
+        save_to_model_gs(cfg.job_dir_gs, cfg.model_name)
+    torch.save(model.state_dict(), os.path.join(os.getcwd(), best_model_name))
     return history, best_model_name
 
 
