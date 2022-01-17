@@ -11,7 +11,8 @@ import logging
 from torch.utils.data import DataLoader
 from torch import nn
 from typing import Any, Tuple, Dict
-from opensentiment.utils import get_project_root, save_to_model_gs
+from opensentiment.utils import get_project_root
+from opensentiment.gcp.storage_utils import save_to_model_gs
 from tqdm import tqdm
 
 logger = logging.getLogger(__name__)
@@ -121,7 +122,6 @@ def train(cfg: DictConfig) -> Tuple[Dict, str]:
     best_model_name = "untrained_model.pt"
 
     for epoch in range(config.epochs):
-
         # training part
         print(f"epoch : {epoch + 1}/{config.epochs}")
         train_acc, train_loss = train_model(
