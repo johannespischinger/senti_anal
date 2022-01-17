@@ -63,7 +63,7 @@ def return_omegaconf_modified(modification_full: dict = {}):
     """
     hydra.core.global_hydra.GlobalHydra.instance().clear()
     initialize_config_dir(str(os.path.join(get_project_root(), "config")))
-    config_full = compose("default.yaml")
+    config_full = compose("unittest.yaml")
     config_full = deep_update(dict(config_full), modification_full)
 
     return omegaconf.OmegaConf.create(config_full)

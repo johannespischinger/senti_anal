@@ -1,0 +1,20 @@
+# log frequency
+val_check_interval: 1.0
+progress_bar_refresh_rate: 20
+
+wandb:
+  project: BERT
+  entity: senti_anal
+  log_model: True
+  mode: 'offline'
+  job_type: train
+
+wandb_key_api: ''
+
+wandb_watch:
+  log: 'all'
+  log_freq: 100
+
+lr_monitor:
+  logging_interval: "step"
+  log_momentum: False

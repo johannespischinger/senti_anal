@@ -13,7 +13,7 @@ from opensentiment.utils import get_project_root, return_omegaconf_modified
 @pytest.mark.skip
 @pytest.mark.long
 def test_train_model():
-    config = return_omegaconf_modified({})
+    config = return_omegaconf_modified({"logging": {"wandb": {"mode": "offline"}}})
     assert os.path.exists(
         os.path.join(get_project_root(), config.experiments.data_path)
     ), f"{os.path.join(get_project_root(), config.experiments.data_path)}"

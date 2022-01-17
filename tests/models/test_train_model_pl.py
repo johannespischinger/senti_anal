@@ -13,7 +13,16 @@ from opensentiment.utils import get_project_root, return_omegaconf_modified
 
 @pytest.mark.parametrize(
     "config",
-    [(return_omegaconf_modified({"train": {"pl_trainer": {"max_steps": 800}}}))],
+    [
+        (
+            return_omegaconf_modified(
+                {
+                    "train": {"pl_trainer": {"max_steps": 800}},
+                    "logging": {"wandb": {"mode": "offline"}},
+                }
+            )
+        )
+    ],
 )
 @pytest.mark.long  # 8 min
 def test_train(
@@ -28,7 +37,16 @@ def test_train(
 # 8 min
 @pytest.mark.parametrize(
     "config",
-    [(return_omegaconf_modified({"train": {"pl_trainer": {"fast_dev_run": True}}}))],
+    [
+        (
+            return_omegaconf_modified(
+                {
+                    "train": {"pl_trainer": {"fast_dev_run": True}},
+                    "logging": {"wandb": {"mode": "offline"}},
+                }
+            )
+        )
+    ],
 )
 def test_train2(
     config: omegaconf.OmegaConf,

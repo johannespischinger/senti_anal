@@ -7,7 +7,7 @@ import omegaconf
 import pytest
 import pytorch_lightning as pl
 
-from opensentiment.utils import get_project_root, return_omegaconf_modified
+from opensentiment.utils import return_omegaconf_modified
 
 
 @pytest.mark.parametrize(
@@ -21,7 +21,8 @@ from opensentiment.utils import get_project_root, return_omegaconf_modified
                             "only_take_every_n_sample": 512,
                             "num_workers": {"train": 0},
                         }
-                    }
+                    },
+                    "logging": {"wandb": {"mode": "offline"}},
                 }
             ),
             [
@@ -44,7 +45,8 @@ from opensentiment.utils import get_project_root, return_omegaconf_modified
                                 "test": 16,
                             },
                         }
-                    }
+                    },
+                    "logging": {"wandb": {"mode": "offline"}},
                 }
             ),
             [
