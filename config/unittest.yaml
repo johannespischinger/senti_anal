@@ -11,6 +11,6 @@ defaults:
   - logging: unittest
   - model: default
   - optim: default
-  - train: default
+  - train: unittest
 #    Decomment this parameter to get parallel job running
 #  - hydra/launcher: joblib
