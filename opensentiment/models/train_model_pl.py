@@ -1,15 +1,15 @@
-from pytorch_lightning.loggers import WandbLogger
+import logging
+import os
 from pathlib import Path
+from typing import Any, Dict, List, Tuple
 
-import pytorch_lightning as pl
 import hydra
 import omegaconf
+import pytorch_lightning as pl
+from pytorch_lightning.loggers import WandbLogger
+
 import wandb
-import os
-import logging
-from typing import Any, Tuple, Dict
 from opensentiment.utils import get_project_root
-from typing import List
 
 logger = logging.getLogger(__name__)
 

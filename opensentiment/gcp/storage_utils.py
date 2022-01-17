@@ -1,5 +1,6 @@
-from google.cloud import storage
 from datetime import datetime
+
+from google.cloud import storage
 
 
 def save_to_model_gs(save_dir: str, model_name: str) -> None:

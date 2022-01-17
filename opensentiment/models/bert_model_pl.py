@@ -1,9 +1,9 @@
+import datasets
+import hydra
 import pytorch_lightning as pl
 import torch
 from torch import nn
 from transformers import AutoConfig, AutoModelForSequenceClassification
-import hydra
-import datasets
 
 
 class SentimentClassifierPL(pl.LightningModule):

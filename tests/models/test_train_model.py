@@ -1,11 +1,13 @@
-from opensentiment.models.train_model import train
-from opensentiment.models.predict_model import predict
-from omegaconf import OmegaConf
-import pytest
 import os
-from opensentiment.utils import get_project_root
-from hydra import compose, initialize
 from datetime import datetime
+
+import pytest
+from hydra import compose, initialize
+from omegaconf import OmegaConf
+
+from opensentiment.models.predict_model import predict
+from opensentiment.models.train_model import train
+from opensentiment.utils import get_project_root
 
 
 @pytest.mark.long

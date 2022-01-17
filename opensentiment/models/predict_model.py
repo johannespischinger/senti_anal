@@ -1,11 +1,12 @@
+import logging
 import os
 from pathlib import Path
+
 import torch
 from torch.utils.data import DataLoader
-import logging
+
 import wandb
 from opensentiment.models.bert_model import SentimentClassifier
-
 from opensentiment.utils import get_project_root
 
 logger = logging.getLogger(__name__)

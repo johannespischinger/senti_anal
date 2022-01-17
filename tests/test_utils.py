@@ -1,7 +1,8 @@
-from webbrowser import get
-from opensentiment.utils import get_logger_default, get_project_root
-import os
 import logging
+import os
+from webbrowser import get
+
+from opensentiment.utils import get_logger_default, get_project_root
 
 
 def test_project_root():

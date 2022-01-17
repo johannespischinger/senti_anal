@@ -1,12 +1,13 @@
 import os
-from opensentiment.utils import get_project_root
-import pytorch_lightning as pl
-import pytest
-import omegaconf
-import hydra
-from typing import List, Tuple, Union, Dict
-
 from collections import abc
+from typing import Dict, List, Tuple, Union
+
+import hydra
+import omegaconf
+import pytest
+import pytorch_lightning as pl
+
+from opensentiment.utils import get_project_root
 
 
 def deep_update(src: dict, overrides: dict):

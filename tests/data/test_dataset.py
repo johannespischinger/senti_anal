@@ -1,10 +1,12 @@
-from opensentiment.data.dataset import AmazonPolarity
-import transformers
-from pathlib import Path
-import torch
-from torch.utils.data.dataloader import DataLoader
 import os
+from pathlib import Path
+
 import pytest
+import torch
+import transformers
+from torch.utils.data.dataloader import DataLoader
+
+from opensentiment.data.dataset import AmazonPolarity
 from opensentiment.utils import get_project_root
 
 

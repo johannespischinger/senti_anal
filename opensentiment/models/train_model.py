@@ -1,19 +1,21 @@
-import torch
-from opensentiment.models.bert_model import SentimentClassifier
-import transformers
-import numpy as np
-from collections import defaultdict
-import hydra
-from omegaconf import DictConfig
-import wandb
-import os
 import logging
-from torch.utils.data import DataLoader
+import os
+from collections import defaultdict
+from typing import Any, Dict, Tuple
+
+import hydra
+import numpy as np
+import torch
+import transformers
+from omegaconf import DictConfig
 from torch import nn
-from typing import Any, Tuple, Dict
-from opensentiment.utils import get_project_root
-from opensentiment.gcp.storage_utils import save_to_model_gs
+from torch.utils.data import DataLoader
 from tqdm import tqdm
+
+import wandb
+from opensentiment.gcp.storage_utils import save_to_model_gs
+from opensentiment.models.bert_model import SentimentClassifier
+from opensentiment.utils import get_project_root
 
 logger = logging.getLogger(__name__)
 

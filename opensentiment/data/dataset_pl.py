@@ -1,10 +1,11 @@
-import pytorch_lightning as pl
-from transformers import AutoTokenizer
+import os
+
 import datasets
+import pytorch_lightning as pl
 from torch.utils.data.dataloader import DataLoader
+from transformers import AutoTokenizer
 
 from opensentiment.utils import get_project_root
-import os
 
 
 class AmazonPolarityDataModule(pl.LightningDataModule):

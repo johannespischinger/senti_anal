@@ -1,16 +1,18 @@
 """Code based on https://github.com/Nitesh0406/-Fine-Tuning-BERT-base-for-Sentiment-Analysis./blob/main
 /BERT_Sentiment.ipynb """
 # -*- coding: utf-8 -*-
-from datasets import load_dataset
-from opensentiment.data.dataset import AmazonPolarity
-import transformers
-import os
-import pytorch_lightning as pl
-import torch
 import logging
+import os
+
 import hydra
 import omegaconf
-from opensentiment.utils import get_project_root, get_logger_default
+import pytorch_lightning as pl
+import torch
+import transformers
+from datasets import load_dataset
+
+from opensentiment.data.dataset import AmazonPolarity
+from opensentiment.utils import get_logger_default, get_project_root
 
 
 def get_datasets(

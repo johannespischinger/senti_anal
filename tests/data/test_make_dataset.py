@@ -1,12 +1,12 @@
+import os
 from signal import default_int_handler
-from opensentiment.data.make_dataset import get_datasets, inital_cache_dataset
-import pytest
+
 import hydra
 import omegaconf
-import os
+import pytest
 import pytorch_lightning as pl
 
-
+from opensentiment.data.make_dataset import get_datasets, inital_cache_dataset
 from opensentiment.utils import get_project_root
 
 

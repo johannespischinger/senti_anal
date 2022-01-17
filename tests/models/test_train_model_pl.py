@@ -1,12 +1,14 @@
 import os
-from opensentiment.utils import get_project_root
-import pytorch_lightning as pl
-import pytest
-import omegaconf
-from opensentiment.models import train_model_pl
-from typing import List, Tuple
-from hydra import compose, initialize_config_dir
 from collections import abc
+from typing import List, Tuple
+
+import omegaconf
+import pytest
+import pytorch_lightning as pl
+from hydra import compose, initialize_config_dir
+
+from opensentiment.models import train_model_pl
+from opensentiment.utils import get_project_root
 
 
 def deep_update(src: dict, overrides: dict):
