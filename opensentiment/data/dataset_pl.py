@@ -50,9 +50,7 @@ class AmazonPolarityDataModule(pl.LightningDataModule):
         if not hasattr(self, "dataset_path"):
             self.dataset_path = "amazon_polarity"
             self.dataset_args.update(
-                {
-                    "revision": "56923eeb72030cb6c4ea30c8a4e1162c26b25973475ac1f44340f0ec0f2936f4"
-                }
+                {"revision": "d30d25d3dad590dffe2d3004b4b301dd562dd4f2"}
             )
         print(f"using dataset path {self.dataset_path}")
         self.dataset_args.update({"path": self.dataset_path})
