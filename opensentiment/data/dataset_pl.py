@@ -75,7 +75,7 @@ class AmazonPolarityDataModule(pl.LightningDataModule):
         # get a random val split
         train_val = self.dataset["train"].train_test_split(0.1, shuffle=False)
         self.dataset["train"] = train_val["train"]
-        self.dataset["val"] = train_val["test"]
+        self.dataset["validation"] = train_val["test"]
         self.dataset["test"] = self.dataset["test"]
 
         for split in self.dataset.keys():

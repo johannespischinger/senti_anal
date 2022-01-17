@@ -3,6 +3,7 @@ import torch
 from torch import nn
 from transformers import AutoConfig, AutoModelForSequenceClassification
 import hydra
+import datasets
 
 
 class SentimentClassifierPL(pl.LightningModule):
@@ -33,6 +34,8 @@ class SentimentClassifierPL(pl.LightningModule):
                     param.requires_grad = False
         self.criterion = torch.nn.CrossEntropyLoss()
 
+        self.metric = datasets.load_metric("accuracy")
+
     def forward(self, input_ids: torch.LongTensor, attention_mask: torch.FloatTensor):
         """
         inputs:
@@ -54,17 +57,20 @@ class SentimentClassifierPL(pl.LightningModule):
         return loss
 
     def validation_step(self, batch, batch_idx, dataloader_idx=0):
-        outputs = self(**batch)
-        val_loss, logits = outputs[:2]
+        input_ids, attention_masks, targets = (
+            batch["input_ids"],
+            batch["attention_mask"],
+            batch["labels"],
+        )
+        predictions = self(input_ids, attention_masks)[0]
+        val_loss = self.criterion(predictions, targets)
 
-        if self.hparams.num_labels >= 1:
-            preds = torch.argmax(logits, axis=1)
-        elif self.hparams.num_labels == 1:
-            preds = logits.squeeze()
+        if predictions.ndim >= 1:
+            preds = torch.argmax(predictions, axis=1)
+        elif predictions.ndim == 1:
+            preds = predictions.squeeze()
 
-        labels = batch["labels"]
-
-        return {"loss": val_loss, "preds": preds, "labels": labels}
+        return {"loss": val_loss, "preds": preds, "labels": targets}
 
     def validation_epoch_end(self, outputs):
         preds = torch.cat([x["preds"] for x in outputs]).detach().cpu().numpy()
