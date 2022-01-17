@@ -6,40 +6,9 @@ import hydra
 import omegaconf
 import pytest
 import pytorch_lightning as pl
+from ... import helpers
 
-from opensentiment.utils import get_project_root
-
-
-def deep_update(src: dict, overrides: dict):
-    """
-    Update a nested dictionary or similar mapping.
-    Modify ``src`` in place.
-    https://stackoverflow.com/questions/3232943/update-value-of-a-nested-dictionary-of-varying-depth
-    """
-    for key, value in overrides.items():
-        if isinstance(value, abc.Mapping) and value:
-            returned = deep_update(src.get(key, {}), value)
-            src[key] = returned
-        else:
-            src[key] = overrides[key]
-    return src
-
-
-def return_omegaconf_modified(modification_data: dict):
-    """read the default config of config/data/default.yaml and apply deep modified dict.
-
-    returns:
-        omegaconf.Omegaconfig:
-    """
-    config_data = dict(
-        omegaconf.OmegaConf.load(
-            os.path.join(get_project_root(), "config", "data", "default.yaml")
-        )
-    )
-    config_data = deep_update(config_data, modification_data)
-
-    config_full = omegaconf.OmegaConf.create({"data": dict(config_data)})
-    return config_full
+from opensentiment.utils import get_project_root, return_omegaconf_modified
 
 
 @pytest.mark.parametrize(
@@ -48,9 +17,11 @@ def return_omegaconf_modified(modification_data: dict):
         (
             return_omegaconf_modified(
                 {
-                    "datamodule": {
-                        "only_take_every_n_sample": 512,
-                        "num_workers": {"train": 0},
+                    "data": {
+                        "datamodule": {
+                            "only_take_every_n_sample": 512,
+                            "num_workers": {"train": 0},
+                        }
                     }
                 }
             ),
@@ -64,15 +35,17 @@ def return_omegaconf_modified(modification_data: dict):
         (
             return_omegaconf_modified(
                 {
-                    "datamodule": {
-                        "only_take_every_n_sample": 512,
-                        "max_seq_length": 32,
-                        "batch_size": {
-                            "train": 16,
-                            "val": 16,
-                            "test": 16,
-                        },
-                    },
+                    "data": {
+                        "datamodule": {
+                            "only_take_every_n_sample": 512,
+                            "max_seq_length": 32,
+                            "batch_size": {
+                                "train": 16,
+                                "val": 16,
+                                "test": 16,
+                            },
+                        }
+                    }
                 }
             ),
             [
