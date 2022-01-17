@@ -1,18 +1,15 @@
 import pytorch_lightning as pl
-from transformers import BertTokenizerFast
+from transformers import AutoTokenizer
 import datasets
 from torch.utils.data.dataloader import DataLoader
+
+from opensentiment.utils import get_project_root
+import os
 
 
 class AmazonPolarityDataModule(pl.LightningDataModule):
     """
     based on https://pytorch-lightning.readthedocs.io/en/stable/notebooks/lightning_examples/text-transformers.html
-
-    Args:
-        pl ([type]): [description]
-
-    Returns:
-        [type]: [description]
     """
 
     loader_columns = [
@@ -27,37 +24,60 @@ class AmazonPolarityDataModule(pl.LightningDataModule):
 
     def __init__(
         self,
-        model_name_or_path: str,
-        max_seq_length: int = 128,
-        train_batch_size: int = 32,
-        eval_batch_size: int = 32,
-        only_take_every_n_sample: int = 1,
         **kwargs,
     ):
         """[summary]
 
         Args:
             model_name_or_path (str): [description]
+            dataset_path (str, optional): [huggiingface dataset path parameter. name or os.path to dir]. Defaults to amazon_polarity.
             max_seq_length (int, optional): [description]. Defaults to 128.
-            train_batch_size (int, optional): [description]. Defaults to 32.
-            eval_batch_size (int, optional): [description]. Defaults to 32.
             only_take_every_n_sample (int, optional): [description]. Defaults to 1.
         """
         super().__init__()
-        self.model_name_or_path = model_name_or_path
-        self.max_seq_length = max_seq_length
-        self.train_batch_size = train_batch_size
-        self.eval_batch_size = eval_batch_size
-        self.only_take_every_n_sample = only_take_every_n_sample
+        for (k, v) in kwargs.items():
+            setattr(self, k, v)
 
-        self.tokenizer = BertTokenizerFast.from_pretrained(self.model_name_or_path)
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            self.model_name_or_path, use_fast=True
+        )
+        self.init_dataset_loading()
+
+    def init_dataset_loading(self):
+        self.dataset_args = {}
+
+        if not hasattr(self, "dataset_path"):
+            self.dataset_path = "amazon_polarity"
+            self.dataset_args.update(
+                {
+                    "revision": "56923eeb72030cb6c4ea30c8a4e1162c26b25973475ac1f44340f0ec0f2936f4"
+                }
+            )
+        print(f"using dataset path {self.dataset_path}")
+        self.dataset_args.update({"path": self.dataset_path})
+        if hasattr(self, "cache_dir"):
+            cache_dir = os.path.join(
+                *[
+                    i if not (i == "__projectroot__") else str(get_project_root())
+                    for i in self.cache_dir
+                ]
+            )  # convert list of str with __projectroot__ to abspath
+
+            self.dataset_args.update(
+                {"cache_dir": cache_dir}
+            )  # add option where to store
+            print(f"retrieve from / download if not exists to {cache_dir}")
 
     def setup(self, stage: str):
         batch_size_preprocess = 4096
-        self.dataset = datasets.load_dataset("amazon_polarity")
+        self.dataset = datasets.load_dataset(**self.dataset_args)
 
-        # TODO: option for small dataset
-        # even_dataset = dataset.filter(lambda example, indice: indice % 2 == 0, with_indices=True)
+        # get a random val split
+        train_val = self.dataset["train"].train_test_split(0.1, shuffle=False)
+        self.dataset["train"] = train_val["train"]
+        self.dataset["val"] = train_val["test"]
+        self.dataset["test"] = self.dataset["test"]
+
         for split in self.dataset.keys():
             self.dataset[split] = (
                 self.dataset[split]
@@ -80,29 +100,48 @@ class AmazonPolarityDataModule(pl.LightningDataModule):
         self.eval_splits = [x for x in self.dataset.keys() if "validation" in x]
 
     def prepare_data(self):
-        datasets.load_dataset("amazon_polarity")
-        BertTokenizerFast.from_pretrained(self.model_name_or_path)
+        """initiate first downloads"""
+        datasets.load_dataset(**self.dataset_args)
+        AutoTokenizer.from_pretrained(self.model_name_or_path)
 
     def train_dataloader(self):
-        return DataLoader(self.dataset["train"], batch_size=self.train_batch_size)
+        return DataLoader(
+            self.dataset["train"],
+            batch_size=self.batch_size["train"],
+            num_workers=self.num_workers["train"],
+        )
 
     def val_dataloader(self):
         if len(self.eval_splits) == 1:
             return DataLoader(
-                self.dataset["validation"], batch_size=self.eval_batch_size
+                self.dataset["validation"],
+                batch_size=self.batch_size["val"],
+                num_workers=self.num_workers["val"],
             )
         elif len(self.eval_splits) > 1:
             return [
-                DataLoader(self.dataset[x], batch_size=self.eval_batch_size)
+                DataLoader(
+                    self.dataset[x],
+                    batch_size=self.batch_size["val"],
+                    num_workers=self.num_workers["val"],
+                )
                 for x in self.eval_splits
             ]
 
     def test_dataloader(self):
         if len(self.eval_splits) == 1:
-            return DataLoader(self.dataset["test"], batch_size=self.eval_batch_size)
+            return DataLoader(
+                self.dataset["test"],
+                batch_size=self.batch_size["test"],
+                num_workers=self.num_workers["test"],
+            )
         elif len(self.eval_splits) > 1:
             return [
-                DataLoader(self.dataset[x], batch_size=self.eval_batch_size)
+                DataLoader(
+                    self.dataset[x],
+                    batch_size=self.batch_size["test"],
+                    num_workers=self.num_workers["test"],
+                )
                 for x in self.eval_splits
             ]
 
@@ -125,7 +164,7 @@ class AmazonPolarityDataModule(pl.LightningDataModule):
 
 
 if __name__ == "__main__":
-    dm = AmazonPolarityDataModule("bert-base-cased", only_take_every_n_sample=64)
+    dm = AmazonPolarityDataModule()
     dm.prepare_data()
     dm.setup("fit")
     sample = next(iter(dm.train_dataloader()))

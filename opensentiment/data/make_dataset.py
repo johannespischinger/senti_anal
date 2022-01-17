@@ -5,9 +5,11 @@ from datasets import load_dataset
 from opensentiment.data.dataset import AmazonPolarity
 import transformers
 import os
-from pathlib import Path
+import pytorch_lightning as pl
 import torch
 import logging
+import hydra
+import omegaconf
 from opensentiment.utils import get_project_root, get_logger_default
 
 
@@ -71,8 +73,20 @@ def get_datasets(
     logger.info("... datasets successfully created and saved")
 
 
+@hydra.main(
+    config_path=str(os.path.join(get_project_root(), "config")),
+    config_name="default.yaml",
+)
+def inital_cache_dataset(cfg: omegaconf.DictConfig):
+    data_module: pl.LightningDataModule = hydra.utils.instantiate(
+        cfg.data.datamodule, _recursive_=False
+    )
+    data_module.prepare_data()
+
+
 if __name__ == "__main__":
     log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     logging.basicConfig(level=logging.INFO, format=log_fmt)
 
+    inital_cache_dataset()
     get_datasets()
