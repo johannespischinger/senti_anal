@@ -123,6 +123,7 @@ def train(cfg: DictConfig) -> Tuple[Dict, str]:
     best_accuracy = 0
     best_model_name = "untrained_model.pt"
 
+    logger.info("Start training:")
     for epoch in range(config.epochs):
         # training part
         print(f"epoch : {epoch + 1}/{config.epochs}")
@@ -160,9 +161,11 @@ def train(cfg: DictConfig) -> Tuple[Dict, str]:
             best_model_name = f"best_model_state_{val_acc:.2}.pt"
             best_accuracy = val_acc
 
-    if cfg.job_dir_gs:
-        save_to_model_gs(cfg.job_dir_gs, cfg.model_name)
     torch.save(model.state_dict(), os.path.join(os.getcwd(), best_model_name))
+    if cfg.job_dir_gs:
+        logger.info(f"Uploading model google bucket: {cfg.job_dir_gs}")
+        save_to_model_gs(cfg.job_dir_gs, best_model_name)
+
     return history, best_model_name
 
 

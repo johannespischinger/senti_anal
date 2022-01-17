@@ -19,6 +19,7 @@ def get_logger_default(name: Union[None, str]) -> logging.Logger:
     """
     configure logger
 
+
     args:
         name
     returns:
