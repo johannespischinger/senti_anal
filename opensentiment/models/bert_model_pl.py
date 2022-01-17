@@ -13,7 +13,6 @@ class SentimentClassifierPL(pl.LightningModule):
         Args:
             model_name_or_path (str, optional): [transformer setup name]. Defaults to "bert-base-cased".
             num_classes (int, optional): [number of outputs]. Defaults to 2.
-            train_batch_size (int, optional): [batch size, 2**n]. Defaults to 64.
             transformer_freeze (bool, optional): [freeze weights in backprop of transformer]. Defaults to True.
         """
 
@@ -92,7 +91,7 @@ class SentimentClassifierPL(pl.LightningModule):
     #     train_loader = self.train_dataloader()
 
     #     # Calculate total steps
-    #     tb_size = self.train_batch_size * max(1, self.trainer.gpus)
+    #     tb_size = self.batch_size * max(1, self.trainer.gpus)
     #     ab_size = self.trainer.accumulate_grad_batches * float(self.trainer.max_epochs)
     #     self.total_steps = (len(train_loader.dataset) // tb_size) // ab_size
 
