@@ -6,7 +6,6 @@ import hydra
 import omegaconf
 import pytest
 import pytorch_lightning as pl
-from ... import helpers
 
 from opensentiment.utils import get_project_root, return_omegaconf_modified
 

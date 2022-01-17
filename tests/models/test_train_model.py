@@ -2,18 +2,18 @@ import os
 from datetime import datetime
 
 import pytest
-from hydra import compose, initialize
+
 from omegaconf import OmegaConf
 
 from opensentiment.models.predict_model import predict
 from opensentiment.models.train_model import train
-from opensentiment.utils import get_project_root
+from opensentiment.utils import get_project_root, return_omegaconf_modified
 
 
+@pytest.mark.skip
 @pytest.mark.long
 def test_train_model():
-    initialize(config_path="config", job_name="test")
-    config = compose(config_name="default_test_config.yaml")
+    config = return_omegaconf_modified({})
     assert os.path.exists(
         os.path.join(get_project_root(), config.experiments.data_path)
     ), f"{os.path.join(get_project_root(), config.experiments.data_path)}"

@@ -32,7 +32,9 @@ def build_callbacks(cfg: omegaconf.DictConfig) -> List[pl.Callback]:
     return callbacks
 
 
-def train(cfg: omegaconf.DictConfig, hydra_dir: os.path) -> Tuple[Dict, str]:
+def train(
+    cfg: omegaconf.DictConfig, hydra_dir: os.path, use_val_test=True
+) -> Tuple[Dict, str]:
     # based on https://github.com/lucmos/nn-template/blob/main/src/run.py
     if cfg.train.deterministic:
         pl.seed_everything(cfg.train.random_seed)
@@ -118,9 +120,11 @@ def train(cfg: omegaconf.DictConfig, hydra_dir: os.path) -> Tuple[Dict, str]:
     hydra.utils.log.info("Starting training!")
     trainer.fit(model=model, datamodule=data_module)
 
-    hydra.utils.log.info("Starting testing!")
-    trainer.validate(datamodule=data_module)
-    trainer.test(datamodule=data_module)
+    if use_val_test:
+        # perform eval and test on best model
+        hydra.utils.log.info("Starting testing!")
+        trainer.validate(datamodule=data_module)
+        trainer.test(datamodule=data_module)
 
     # Logger closing to release resources/avoid multi-run conflicts
     if wandb_logger is not None:
