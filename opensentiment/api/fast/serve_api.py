@@ -1,5 +1,7 @@
 from typing import Optional
+
 from fastapi import FastAPI
+
 from opensentiment.api.fast.serve_api_helper import score_model
 
 app = FastAPI(

@@ -1,13 +1,29 @@
-from opensentiment.data.dataset_pl import AmazonPolarityDataModule
-import torch
+import os
+from collections import abc
+from typing import Dict, List, Tuple, Union
+
+import hydra
+import omegaconf
 import pytest
+import pytorch_lightning as pl
+
+from opensentiment.utils import get_project_root, return_omegaconf_modified
 
 
 @pytest.mark.parametrize(
-    "module_inputs,shapes_desired",
+    "config,shapes_desired",
     [
         (
-            {"only_take_every_n_sample": 512},
+            return_omegaconf_modified(
+                {
+                    "data": {
+                        "datamodule": {
+                            "only_take_every_n_sample": 512,
+                            "num_workers": {"train": 0},
+                        }
+                    }
+                }
+            ),
             [
                 ("attention_mask", [32, 128]),
                 ("input_ids", [32, 128]),
@@ -16,22 +32,36 @@ import pytest
             ],
         ),
         (
-            {
-                "only_take_every_n_sample": 512,
-                "train_batch_size": 16,
-                "max_seq_length": 8,
-            },
+            return_omegaconf_modified(
+                {
+                    "data": {
+                        "datamodule": {
+                            "only_take_every_n_sample": 512,
+                            "max_seq_length": 32,
+                            "batch_size": {
+                                "train": 16,
+                                "val": 16,
+                                "test": 16,
+                            },
+                        }
+                    }
+                }
+            ),
             [
-                ("attention_mask", [16, 8]),
-                ("input_ids", [16, 8]),
+                ("attention_mask", [16, 32]),
+                ("input_ids", [16, 32]),
                 ("labels", [16]),
-                ("token_type_ids", [16, 8]),
+                ("token_type_ids", [16, 32]),
             ],
         ),
     ],
 )
-def test_dataset(module_inputs, shapes_desired):
-    dm = AmazonPolarityDataModule("bert-base-cased", **module_inputs)
+def test_dataset(
+    config: omegaconf.OmegaConf, shapes_desired: List[Tuple[str, List[int]]]
+):
+    dm: pl.LightningDataModule = hydra.utils.instantiate(
+        config.data.datamodule, _recursive_=False
+    )
     dm.prepare_data()
     dm.setup("fit")
     sample = next(iter(dm.train_dataloader()))

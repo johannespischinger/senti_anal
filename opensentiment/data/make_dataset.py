@@ -1,14 +1,18 @@
 """Code based on https://github.com/Nitesh0406/-Fine-Tuning-BERT-base-for-Sentiment-Analysis./blob/main
 /BERT_Sentiment.ipynb """
 # -*- coding: utf-8 -*-
-from datasets import load_dataset
-from opensentiment.data.dataset import AmazonPolarity
-import transformers
-import os
-from pathlib import Path
-import torch
 import logging
-from opensentiment.utils import get_project_root, get_logger_default
+import os
+
+import hydra
+import omegaconf
+import pytorch_lightning as pl
+import torch
+import transformers
+from datasets import load_dataset
+
+from opensentiment.data.dataset import AmazonPolarity
+from opensentiment.utils import get_logger_default, get_project_root
 
 
 def get_datasets(
@@ -71,8 +75,20 @@ def get_datasets(
     logger.info("... datasets successfully created and saved")
 
 
+@hydra.main(
+    config_path=str(os.path.join(get_project_root(), "config")),
+    config_name="default.yaml",
+)
+def inital_cache_dataset(cfg: omegaconf.DictConfig):
+    data_module: pl.LightningDataModule = hydra.utils.instantiate(
+        cfg.data.datamodule, _recursive_=False
+    )
+    data_module.prepare_data()
+
+
 if __name__ == "__main__":
     log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     logging.basicConfig(level=logging.INFO, format=log_fmt)
 
+    inital_cache_dataset()
     get_datasets()

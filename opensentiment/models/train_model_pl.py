@@ -1,169 +1,147 @@
-import torch
-from opensentiment.models.bert_model import SentimentClassifier
-import transformers
-import numpy as np
-from collections import defaultdict
-import hydra
-from omegaconf import DictConfig
-import wandb
-import os
 import logging
-from torch.utils.data import DataLoader
-from torch import nn
-from typing import Any, Tuple, Dict
-from opensentiment.utils import get_project_root, save_to_model_gs
-from tqdm import tqdm
-from typing import List
+import os
+from pathlib import Path
+from typing import Any, Dict, List, Tuple
+
+import hydra
+import omegaconf
+import pytorch_lightning as pl
+from pytorch_lightning.loggers import WandbLogger
+
+import wandb
+from opensentiment.utils import get_project_root
 
 logger = logging.getLogger(__name__)
 
 
-def train_model(
-    model: nn.Module,
-    data_loader: DataLoader,
-    criterion: Any,
-    optimizer: Any,
-    scheduler: Any,
-    max_norm: float = 1.0,
-) -> List[torch.Tensor, np.float64]:
-    model.train()
-    train_loss = []
-    correct_pred = 0
-    total_pred = 0
-    for d in tqdm(data_loader):
-        input_ids = d["input_id"]
-        attention_masks = d["attention_mask"]
-        targets = d["target"]
+def build_callbacks(cfg: omegaconf.DictConfig) -> List[pl.Callback]:
+    callbacks: List[pl.Callback] = []
 
-        # forward prop
-        predictions = model(input_ids, attention_masks)
-        loss = criterion(predictions, targets)
-        _, pred_classes = torch.max(predictions, dim=1)
-        # backprop
-        loss.backward()
-        nn.utils.clip_grad_norm_(model.parameters(), max_norm=max_norm)
-        optimizer.step()
-        scheduler.step()
-        optimizer.zero_grad()
-        # training loss and number of correct prediction
-        train_loss.append(loss.item())
-        correct_pred += torch.sum(pred_classes == targets)
-        total_pred += targets.shape[0]
-    return correct_pred / total_pred, np.mean(train_loss)
+    callbacks.append(pl.callbacks.progress.TQDMProgressBar(refresh_rate=20))
+
+    hydra.utils.log.info("Adding callback <ModelCheckpoint>")
+    callbacks.append(
+        pl.callbacks.ModelCheckpoint(
+            monitor=cfg.train.monitor_metric,
+            mode=cfg.train.monitor_metric_mode,
+            save_top_k=cfg.train.model_checkpoints.save_top_k,
+            verbose=cfg.train.model_checkpoints.verbose,
+        )
+    )
+
+    return callbacks
 
 
-def eval_model(
-    model: nn.Module,
-    data_loader: DataLoader,
-    criterion: Any,
-) -> [torch.Tensor, float]:
-    model.eval()
-    eval_loss = []
-    correct_pred = 0
-    total_pred = 0
+def train(
+    cfg: omegaconf.DictConfig, hydra_dir: os.path, use_val_test=True
+) -> Tuple[Dict, str]:
+    # based on https://github.com/lucmos/nn-template/blob/main/src/run.py
+    if cfg.train.deterministic:
+        pl.seed_everything(cfg.train.random_seed)
 
-    with torch.no_grad():
-        for d in tqdm(data_loader):
-            input_ids = d["input_id"]
-            attention_masks = d["attention_mask"]
-            targets = d["target"]
+    if cfg.train.pl_trainer.fast_dev_run:
+        hydra.utils.log.info(
+            f"Debug mode <{cfg.train.pl_trainer.fast_dev_run=}>. "
+            f"Forcing debugger friendly configuration!"
+        )
+        # Debuggers don't like GPUs nor multiprocessing
+        cfg.train.pl_trainer.gpus = 0
+        cfg.data.datamodule.num_workers.train = 0
+        cfg.data.datamodule.num_workers.val = 0
+        cfg.data.datamodule.num_workers.test = 0
+        cfg.data.datamodule.only_take_every_n_sample = 128
 
-            # forward prop
-            predictions = model(input_ids, attention_masks)
-            loss = criterion(predictions, targets)
-            _, pred_classes = torch.max(predictions, dim=1)
+        # Switch wandb mode to offline to prevent online logging
+        cfg.logging.wandb.mode = "offline"
 
-            eval_loss.append(loss.item())
+    # prepare data module
+    hydra.utils.log.info(f"Instantiating <{cfg.data.datamodule._target_}>")
+    data_module: pl.LightningDataModule = hydra.utils.instantiate(
+        cfg.data.datamodule, _recursive_=False
+    )
+    data_module.prepare_data()
+    data_module.setup("fit")
 
-            correct_pred += torch.sum(pred_classes == targets)
-            total_pred += targets.shape[0]
-    return correct_pred / total_pred, np.mean(eval_loss)
+    sizes = [
+        (k, len(k()))
+        for k in [
+            data_module.train_dataloader,
+            data_module.val_dataloader,
+            data_module.test_dataloader,
+        ]
+    ]
+    hydra.utils.log.info(f"lenght of dataloaders in batches {sizes}")
 
+    # prepare model
+    hydra.utils.log.info(f"Instantiating <{cfg.model._target_}>")
+    model: pl.LightningModule = hydra.utils.instantiate(
+        cfg.model,
+        **{
+            "model_name_or_path": cfg.data.datamodule.model_name_or_path,
+            "train_batch_size": cfg.data.datamodule.batch_size.train,
+        },
+        optim=cfg.optim,
+        data=cfg.data,
+        logging=cfg.logging,
+        _recursive_=False,
+    )
 
-@hydra.main(config_path="config", config_name="default_config.yaml")
-def train(cfg: DictConfig) -> Tuple[Dict, str]:
-    if cfg.wandb_key_api:
+    # Instantiate the callbacks
+    callbacks: List[pl.Callback] = build_callbacks(cfg=cfg)
+
+    hydra.utils.log.info("Instantiating <WandbLogger>")
+    if cfg.logging.wandb_key_api:
         os.environ["WANDB_API_KEY"] = cfg.wandb_key_api
-    wandb.init(
-        project="BERT",
-        entity="senti_anal",
+    os.environ["WANDB_DIR"] = str(get_project_root())
+    wandb_config = cfg.logging.wandb
+    wandb_logger = WandbLogger(
+        **wandb_config,
         name=os.getcwd().split("/")[-1],
-        job_type="train",
+        tags=cfg.core.tags,
     )
-    config = cfg.experiments
-    torch.manual_seed(config.seed)
-
-    train_set = torch.load(
-        os.path.join(get_project_root(), f"{config.data_path}/train_dataset.pt")
-    )
-    val_set = torch.load(
-        os.path.join(get_project_root(), f"{config.data_path}/val_dataset.pt")
+    hydra.utils.log.info(f"W&B is now watching <{cfg.logging.wandb_watch.log}>!")
+    wandb_logger.watch(
+        model,
+        log=cfg.logging.wandb_watch.log,
+        log_freq=cfg.logging.wandb_watch.log_freq,
     )
 
-    train_loader = DataLoader(train_set, batch_size=config.batch_size)
-    val_loader = DataLoader(val_set, batch_size=config.batch_size)
+    # pl trainer
 
-    model = SentimentClassifier()
-    wandb.watch(model, log_freq=100)
-
-    total_steps = len(train_loader) * config.epochs
-    criterion = torch.nn.CrossEntropyLoss()
-    optimizer = transformers.AdamW(
-        params=model.parameters(), lr=config.learning_rate, correct_bias=False
+    trainer = pl.Trainer(
+        default_root_dir=hydra_dir,
+        logger=wandb_logger,
+        callbacks=callbacks,
+        deterministic=cfg.train.deterministic,
+        val_check_interval=cfg.logging.val_check_interval,
+        progress_bar_refresh_rate=cfg.logging.progress_bar_refresh_rate,
+        **cfg.train.pl_trainer,
     )
-    scheduler = transformers.get_linear_schedule_with_warmup(
-        optimizer=optimizer,
-        num_warmup_steps=config.num_warmup_steps,
-        num_training_steps=total_steps,
-    )
+    hydra.utils.log.info("Starting training!")
+    trainer.fit(model=model, datamodule=data_module)
 
-    history = defaultdict(list)
-    best_accuracy = 0
-    best_model_name = "untrained_model.pt"
+    if use_val_test:
+        # perform eval and test on best model
+        hydra.utils.log.info("Starting testing!")
+        trainer.validate(datamodule=data_module)
+        trainer.test(datamodule=data_module)
 
-    for epoch in range(config.epochs):
+    # Logger closing to release resources/avoid multi-run conflicts
+    if wandb_logger is not None:
+        wandb_logger.experiment.finish()
 
-        # training part
-        print(f"epoch : {epoch + 1}/{config.epochs}")
-        train_acc, train_loss = train_model(
-            model,
-            train_loader,
-            criterion,
-            optimizer,
-            scheduler,
-            config.max_norm,
-        )
-        # validation part
-        val_acc, val_loss = eval_model(model, val_loader, criterion)
+    print("done")
+    # for epoch in range(config.epochs):
 
-        # saving training logs
-        history["train_acc"].append(train_acc)
-        history["train_loss"].append(train_loss)
-        history["val_acc"].append(val_acc)
-        history["val_loss"].append(val_loss)
 
-        wandb.log(
-            {
-                "train_loss": train_loss,
-                "train_acc": train_acc,
-                "val_loss": val_loss,
-                "val_acc": val_acc,
-            }
-        )
-        logger.info(
-            f"train_loss: {train_loss}, train_acc: {train_acc} ,val_loss: {val_loss}, val_acc: {val_acc}"
-        )
-
-        # saving model if performance improved
-        if val_acc > best_accuracy:
-            best_model_name = f"best_model_state_{val_acc:.2}.pt"
-            best_accuracy = val_acc
-
-    if cfg.job_dir_gs:
-        save_to_model_gs(cfg.job_dir_gs, cfg.model_name)
-    torch.save(model.state_dict(), os.path.join(os.getcwd(), best_model_name))
-    return history, best_model_name
+@hydra.main(
+    config_path=str(os.path.join(get_project_root(), "config")),
+    config_name="default.yaml",
+)
+def main(cfg: omegaconf.DictConfig):
+    hydra_dir = Path(hydra.core.hydra_config.HydraConfig.get().run.dir)
+    train(cfg, hydra_dir)
 
 
 if __name__ == "__main__":
-    train()
+    main()
