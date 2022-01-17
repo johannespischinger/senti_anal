@@ -63,14 +63,17 @@ class SentimentClassifierPL(pl.LightningModule):
             batch["labels"],
         )
         predictions = self(input_ids, attention_masks)[0]
-        val_loss = self.criterion(predictions, targets)
+        loss = self.criterion(predictions, targets)
 
         if predictions.ndim >= 1:
             preds = torch.argmax(predictions, axis=1)
         elif predictions.ndim == 1:
             preds = predictions.squeeze()
 
-        return {"loss": val_loss, "preds": preds, "labels": targets}
+        return {"loss": loss, "preds": preds, "labels": targets}
+
+    def test_step(self, **kwargs):
+        return self.validation_step(kwargs)
 
     def validation_epoch_end(self, outputs):
         preds = torch.cat([x["preds"] for x in outputs]).detach().cpu().numpy()

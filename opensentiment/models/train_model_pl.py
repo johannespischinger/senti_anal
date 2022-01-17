@@ -1,7 +1,6 @@
 from pytorch_lightning.loggers import WandbLogger
 from pathlib import Path
-from opensentiment.models.bert_model_pl import SentimentClassifierPL
-from opensentiment.data.dataset_pl import AmazonPolarityDataModule
+
 import pytorch_lightning as pl
 import hydra
 import omegaconf
@@ -33,7 +32,7 @@ def build_callbacks(cfg: omegaconf.DictConfig) -> List[pl.Callback]:
     return callbacks
 
 
-def train(cfg: omegaconf.DictConfig) -> Tuple[Dict, str]:
+def train(cfg: omegaconf.DictConfig, hydra_dir: os.path) -> Tuple[Dict, str]:
     # based on https://github.com/lucmos/nn-template/blob/main/src/run.py
     if cfg.train.deterministic:
         pl.seed_everything(cfg.train.random_seed)
@@ -52,9 +51,6 @@ def train(cfg: omegaconf.DictConfig) -> Tuple[Dict, str]:
 
         # Switch wandb mode to offline to prevent online logging
         cfg.logging.wandb.mode = "offline"
-
-    # Hydra run directory
-    hydra_dir = Path(hydra.core.hydra_config.HydraConfig.get().run.dir)
 
     # prepare data module
     hydra.utils.log.info(f"Instantiating <{cfg.data.datamodule._target_}>")
@@ -112,7 +108,7 @@ def train(cfg: omegaconf.DictConfig) -> Tuple[Dict, str]:
 
     trainer = pl.Trainer(
         default_root_dir=hydra_dir,
-        logger=pl.loggers.TensorBoardLogger("logs/"),  # TODO replace with torch
+        logger=wandb_logger,
         callbacks=callbacks,
         deterministic=cfg.train.deterministic,
         val_check_interval=cfg.logging.val_check_interval,
@@ -139,7 +135,8 @@ def train(cfg: omegaconf.DictConfig) -> Tuple[Dict, str]:
     config_name="default.yaml",
 )
 def main(cfg: omegaconf.DictConfig):
-    train(cfg)
+    hydra_dir = Path(hydra.core.hydra_config.HydraConfig.get().run.dir)
+    train(cfg, hydra_dir)
 
 
 if __name__ == "__main__":
