@@ -1,26 +1,34 @@
 from pathlib import Path
-from google.cloud import storage
-from datetime import datetime
+import logging
+from typing import Union
 
 
 def get_project_root() -> Path:
-    """return Path to the project directory, top folder of opensentiment"""
-    return Path(__file__).parent.parent
+    """
+    return Path to the project directory, top folder of opensentiment
+    """
+    return Path(__file__).parent.parent.resolve()
 
 
-def save_to_model_gs(save_dir: str, model_name: str) -> None:
-    scheme = "gs://"
-    bucket_name = save_dir[len(scheme) :].split("/")[0]
-    prefix = "{}{}/".format(scheme, bucket_name)
-    bucket_path = save_dir[len(prefix) :].rstrip("/")
+def get_logger_default(name: Union[None, str]) -> logging.Logger:
+    """
+    configure logger
 
-    datetime_ = datetime.now().strftime("model_%Y%m%d_%H%M%S")
+    args:
+        name
+    returns:
+        logger
+    """
+    if name is None:
+        name = __name__
+    logger = logging.getLogger(name)
 
-    if bucket_path:
-        model_path = "{}/{}/{}".format(bucket_path, datetime_, model_name)
-    else:
-        model_path = "{}/{}".format(datetime_, model_name)
+    # configure logger below
+    log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    fmt = logging.Formatter(fmt=log_fmt)
+    ch = logging.StreamHandler()
+    ch.setFormatter(fmt)
+    logger.addHandler(ch)
+    # return modified logger
 
-    bucket = storage.Client().bucket(bucket_name)
-    blob = bucket.blob(model_path)
-    blob.upload_from_filename(model_name)
+    return logger
