@@ -1,3 +1,9 @@
 # Add patterns of files dvc should ignore, which could improve
 # the performance. Learn more at
 # https://dvc.org/doc/user-guide/dvcignore
+
+!.dvcignore
+# ignore temporary downloads, cache.arrow and lock files
+data/raw/huggingface-cache/**/_*.lock
+data/raw/huggingface-cache/**/downloads/
+data/**/cache-*.arrow

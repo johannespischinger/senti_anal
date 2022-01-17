@@ -1,14 +1,14 @@
 """Code based on https://github.com/Nitesh0406/-Fine-Tuning-BERT-base-for-Sentiment-Analysis./blob/main
 /BERT_Sentiment.ipynb """
 # -*- coding: utf-8 -*-
-import logging
 from datasets import load_dataset
 from opensentiment.data.dataset import AmazonPolarity
 import transformers
 import os
 from pathlib import Path
 import torch
-from opensentiment.utils import get_project_root
+import logging
+from opensentiment.utils import get_project_root, get_logger_default
 
 
 def get_datasets(
@@ -20,13 +20,13 @@ def get_datasets(
     Runs data processing scripts to turn raw data from (../raw) into
     cleaned data ready to be analyzed (saved in ../processed).
     """
-    logger = logging.getLogger(__name__)
+    logger = get_logger_default(__name__)
     logger.info("Downloading data...")
 
     training_dataset = load_dataset(
         "amazon_polarity",
         split="train",
-        cache_dir=os.path.join(get_project_root(), "data/raw"),
+        cache_dir=os.path.join(get_project_root(), "data", "raw", "huggingface-cache"),
     )
     train_split = training_dataset.train_test_split(test_size=val_size)
     train_dataset = train_split["train"]
