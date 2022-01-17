@@ -39,12 +39,12 @@ def return_omegaconf_modified(modification_full: dict = {}):
     return omegaconf.OmegaConf.create(config_full)
 
 
-@pytest.mark.long
+@pytest.mark.long  # 8 min
 @pytest.mark.parametrize(
     "config",
-    [(return_omegaconf_modified({"train": {"pl_trainer": {"max_steps": 800}}}))],
+    [(return_omegaconf_modified({"train": {"pl_trainer": {"max_steps": 400}}}))],
 )
-def test_dataset(
+def test_train(
     config: omegaconf.OmegaConf,
 ):
     hydra_dir = os.path.join(get_project_root(), ".cache", "Hydratest")

@@ -72,8 +72,8 @@ class SentimentClassifierPL(pl.LightningModule):
 
         return {"loss": loss, "preds": preds, "labels": targets}
 
-    def test_step(self, **kwargs):
-        return self.validation_step(kwargs)
+    def test_step(self, batch, batch_idx, dataloader_idx=0):
+        return self.validation_step(batch, batch_idx, dataloader_idx)
 
     def validation_epoch_end(self, outputs):
         preds = torch.cat([x["preds"] for x in outputs]).detach().cpu().numpy()
