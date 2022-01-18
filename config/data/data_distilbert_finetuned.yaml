@@ -1,0 +1,17 @@
+datamodule:
+  _target_: opensentiment.data.dataset_pl.AmazonPolarityDataModule
+
+  cache_dir: ["__projectroot__", "data", "raw", "huggingface-cache"]
+  model_name_or_path: "distilbert-base-uncased-finetuned-sst-2-english"
+  only_take_every_n_sample: 16
+  max_seq_length: 128
+
+  num_workers:
+    train: 8
+    val: 4
+    test: 4
+
+  batch_size:
+    train: 128
+    val: 128
+    test: 128

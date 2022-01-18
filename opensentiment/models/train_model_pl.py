@@ -97,6 +97,7 @@ def train(
     wandb_logger = WandbLogger(
         **wandb_config,
         name=os.getcwd().split("/")[-1],
+        save_dir=hydra_dir,
         tags=cfg.core.tags,
     )
     hydra.utils.log.info(f"W&B is now watching <{cfg.logging.wandb_watch.log}>!")
@@ -139,7 +140,7 @@ def train(
     config_name="default.yaml",
 )
 def main(cfg: omegaconf.DictConfig):
-    hydra_dir = Path(hydra.core.hydra_config.HydraConfig.get().run.dir)
+    hydra_dir = os.getcwd()
     train(cfg, hydra_dir)
 
 
