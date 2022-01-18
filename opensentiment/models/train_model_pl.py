@@ -115,7 +115,7 @@ def train(
         else:
             cfg.train.pl_trainer.gpus = 0
         hydra.utils.log.info(
-            "Configured {cfg.train.pl_trainer.gpus} GPUs from max_available"
+            f"Configured {cfg.train.pl_trainer.gpus} GPUs from max_available"
         )
 
     trainer = pl.Trainer(
