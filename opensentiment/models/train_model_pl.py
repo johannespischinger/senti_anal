@@ -7,8 +7,7 @@ import hydra
 import omegaconf
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
-
-import wandb
+import torch
 from opensentiment.utils import get_project_root
 
 logger = logging.getLogger(__name__)
@@ -92,7 +91,7 @@ def train(
     hydra.utils.log.info("Instantiating <WandbLogger>")
     if cfg.logging.wandb_key_api:
         os.environ["WANDB_API_KEY"] = cfg.wandb_key_api
-    os.environ["WANDB_DIR"] = str(get_project_root())
+
     wandb_config = cfg.logging.wandb
     wandb_logger = WandbLogger(
         **wandb_config,
@@ -108,6 +107,16 @@ def train(
     )
 
     # pl trainer
+
+    if "max_available" in cfg.train.pl_trainer.gpus:
+        # fix gpu limit
+        if torch.cuda.is_available():
+            cfg.train.pl_trainer.gpus = -1
+        else:
+            cfg.train.pl_trainer.gpus = 0
+        hydra.utils.log.infof(
+            "Configured {cfg.train.pl_trainer.gpus} GPUs from max_available"
+        )
 
     trainer = pl.Trainer(
         default_root_dir=hydra_dir,

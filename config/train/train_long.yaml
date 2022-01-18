@@ -6,7 +6,7 @@ random_seed: 42
 
 pl_trainer:
   fast_dev_run: False # Enable this for debug purposes
-  gpus: -1
+  gpus: "max_available"
   precision: 32
   max_steps: 100000
   accumulate_grad_batches: 1
