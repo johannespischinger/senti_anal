@@ -1,0 +1,29 @@
+opensentiment.api.fast package
+==============================
+
+Submodules
+----------
+
+opensentiment.api.fast.serve\_api module
+----------------------------------------
+
+.. automodule:: opensentiment.api.fast.serve_api
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+opensentiment.api.fast.serve\_api\_helper module
+------------------------------------------------
+
+.. automodule:: opensentiment.api.fast.serve_api_helper
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: opensentiment.api.fast
+   :members:
+   :undoc-members:
+   :show-inheritance:

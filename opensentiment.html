@@ -43,9 +43,24 @@
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="opensentiment.api.html">opensentiment.api package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="opensentiment.api.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="opensentiment.api.fast.html">opensentiment.api.fast package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="opensentiment.api.fast.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opensentiment.api.fast.html#module-opensentiment.api.fast.serve_api">opensentiment.api.fast.serve_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opensentiment.api.fast.html#module-opensentiment.api.fast.serve_api_helper">opensentiment.api.fast.serve_api_helper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opensentiment.api.fast.html#module-opensentiment.api.fast">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opensentiment.api.html#module-opensentiment.api">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="opensentiment.data.html">opensentiment.data package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.data.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.data.html#module-opensentiment.data.dataset">opensentiment.data.dataset module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opensentiment.data.html#module-opensentiment.data.dataset_pl">opensentiment.data.dataset_pl module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.data.html#module-opensentiment.data.make_dataset">opensentiment.data.make_dataset module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.data.html#module-opensentiment.data.utils">opensentiment.data.utils module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.data.html#module-opensentiment.data">Module contents</a></li>
@@ -60,8 +75,10 @@
 <li class="toctree-l1"><a class="reference internal" href="opensentiment.models.html">opensentiment.models package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#module-opensentiment.models.bert_model">opensentiment.models.bert_model module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#module-opensentiment.models.bert_model_pl">opensentiment.models.bert_model_pl module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#module-opensentiment.models.predict_model">opensentiment.models.predict_model module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#module-opensentiment.models.train_model">opensentiment.models.train_model module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#module-opensentiment.models.train_model_pl">opensentiment.models.train_model_pl module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#module-opensentiment.models">Module contents</a></li>
 </ul>
 </li>
@@ -80,9 +97,39 @@
 <section id="module-opensentiment.utils">
 <span id="opensentiment-utils-module"></span><h2>opensentiment.utils module<a class="headerlink" href="#module-opensentiment.utils" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="opensentiment.utils.deep_update">
+<span class="sig-prename descclassname"><span class="pre">opensentiment.utils.</span></span><span class="sig-name descname"><span class="pre">deep_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overrides</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#opensentiment.utils.deep_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a nested dictionary or similar mapping.
+Modify <code class="docutils literal notranslate"><span class="pre">src</span></code> in place.
+<a class="reference external" href="https://stackoverflow.com/questions/3232943/update-value-of-a-nested-dictionary-of-varying-depth">https://stackoverflow.com/questions/3232943/update-value-of-a-nested-dictionary-of-varying-depth</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opensentiment.utils.get_logger_default">
+<span class="sig-prename descclassname"><span class="pre">opensentiment.utils.</span></span><span class="sig-name descname"><span class="pre">get_logger_default</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">logging.Logger</span></span></span><a class="headerlink" href="#opensentiment.utils.get_logger_default" title="Permalink to this definition">¶</a></dt>
+<dd><p>configure logger</p>
+<dl class="simple">
+<dt>args:</dt><dd><p>name</p>
+</dd>
+<dt>returns:</dt><dd><p>logger</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="opensentiment.utils.get_project_root">
 <span class="sig-prename descclassname"><span class="pre">opensentiment.utils.</span></span><span class="sig-name descname"><span class="pre">get_project_root</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pathlib.Path</span></span></span><a class="headerlink" href="#opensentiment.utils.get_project_root" title="Permalink to this definition">¶</a></dt>
 <dd><p>return Path to the project directory, top folder of opensentiment</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opensentiment.utils.return_omegaconf_modified">
+<span class="sig-prename descclassname"><span class="pre">opensentiment.utils.</span></span><span class="sig-name descname"><span class="pre">return_omegaconf_modified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modification_full</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rel_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'config'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_yaml</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'unittest.yaml'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#opensentiment.utils.return_omegaconf_modified" title="Permalink to this definition">¶</a></dt>
+<dd><p>read the default config of config/default.yaml and apply deep modified dict.</p>
+<dl class="simple">
+<dt>returns:</dt><dd><p>omegaconf.Omegaconfig:</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

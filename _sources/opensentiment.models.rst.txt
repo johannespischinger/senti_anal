@@ -12,6 +12,14 @@ opensentiment.models.bert\_model module
    :undoc-members:
    :show-inheritance:
 
+opensentiment.models.bert\_model\_pl module
+-------------------------------------------
+
+.. automodule:: opensentiment.models.bert_model_pl
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 opensentiment.models.predict\_model module
 ------------------------------------------
 
@@ -24,6 +32,14 @@ opensentiment.models.train\_model module
 ----------------------------------------
 
 .. automodule:: opensentiment.models.train_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+opensentiment.models.train\_model\_pl module
+--------------------------------------------
+
+.. automodule:: opensentiment.models.train_model_pl
    :members:
    :undoc-members:
    :show-inheritance:

@@ -12,6 +12,14 @@ opensentiment.data.dataset module
    :undoc-members:
    :show-inheritance:
 
+opensentiment.data.dataset\_pl module
+-------------------------------------
+
+.. automodule:: opensentiment.data.dataset_pl
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 opensentiment.data.make\_dataset module
 ---------------------------------------
 

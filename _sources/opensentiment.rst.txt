@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   opensentiment.api
    opensentiment.data
    opensentiment.features
    opensentiment.models

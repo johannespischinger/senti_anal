@@ -69,11 +69,333 @@
 </dd></dl>
 
 </section>
+<section id="module-opensentiment.models.bert_model_pl">
+<span id="opensentiment-models-bert-model-pl-module"></span><h2>opensentiment.models.bert_model_pl module<a class="headerlink" href="#module-opensentiment.models.bert_model_pl" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="opensentiment.models.bert_model_pl.SentimentClassifierPL">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">opensentiment.models.bert_model_pl.</span></span><span class="sig-name descname"><span class="pre">SentimentClassifierPL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#opensentiment.models.bert_model_pl.SentimentClassifierPL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pytorch_lightning.core.lightning.LightningModule</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="opensentiment.models.bert_model_pl.SentimentClassifierPL.configure_optimizers">
+<span class="sig-name descname"><span class="pre">configure_optimizers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#opensentiment.models.bert_model_pl.SentimentClassifierPL.configure_optimizers" title="Permalink to this definition">¶</a></dt>
+<dd><p>[summary]</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>[type]: [optimizer]
+[type]: [scheduler]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="opensentiment.models.bert_model_pl.SentimentClassifierPL.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.LongTensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.FloatTensor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#opensentiment.models.bert_model_pl.SentimentClassifierPL.forward" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>inputs:</dt><dd><dl class="simple">
+<dt>input_ids: Indices of input sequence tokens in the vocabulary from BertTokenizer</dt><dd><p>shape (batch_size, sequence_length)</p>
+</dd>
+</dl>
+<p>attention_mask: Mask to avoid performing attention on padding token indices.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="opensentiment.models.bert_model_pl.SentimentClassifierPL.test_step">
+<span class="sig-name descname"><span class="pre">test_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataloader_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#opensentiment.models.bert_model_pl.SentimentClassifierPL.test_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Operates on a single batch of data from the test set.
+In this step you’d normally generate examples or calculate anything of interest
+such as accuracy.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># the pseudocode for these calls</span>
+<span class="n">test_outs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">test_batch</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">:</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">test_step</span><span class="p">(</span><span class="n">test_batch</span><span class="p">)</span>
+    <span class="n">test_outs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">test_epoch_end</span><span class="p">(</span><span class="n">test_outs</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>batch (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> | (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>, …) | [<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>, …]):</dt><dd><p>The output of your <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>. A tensor, tuple or list.</p>
+</dd>
+</dl>
+<p>batch_idx (int): The index of this batch.
+dataloader_idx (int): The index of the dataloader that produced this batch</p>
+<blockquote>
+<div><p>(only if multiple test dataloaders used).</p>
+</div></blockquote>
+</dd>
+<dt>Return:</dt><dd><p>Any of.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Any object or value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code> - Testing will skip to the next batch</p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># if you have one test dataloader:</span>
+<span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
+    <span class="o">...</span>
+
+
+<span class="c1"># if you have multiple test dataloaders:</span>
+<span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">dataloader_idx</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># CASE 1: A single test dataset</span>
+<span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
+
+    <span class="c1"># implement your own</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="c1"># log 6 example images</span>
+    <span class="c1"># or generated text... or whatever</span>
+    <span class="n">sample_imgs</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">make_grid</span><span class="p">(</span><span class="n">sample_imgs</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">add_image</span><span class="p">(</span><span class="s1">&#39;example_images&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># calculate acc</span>
+    <span class="n">labels_hat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">test_acc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="n">labels_hat</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="c1"># log the outputs!</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">log_dict</span><span class="p">({</span><span class="s1">&#39;test_loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s1">&#39;test_acc&#39;</span><span class="p">:</span> <span class="n">test_acc</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>If you pass in multiple test dataloaders, <a class="reference internal" href="#opensentiment.models.bert_model_pl.SentimentClassifierPL.test_step" title="opensentiment.models.bert_model_pl.SentimentClassifierPL.test_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">test_step()</span></code></a> will have an additional argument.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># CASE 2: multiple test dataloaders</span>
+<span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">dataloader_idx</span><span class="p">):</span>
+    <span class="c1"># dataloader_idx tells you which dataset this is.</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>Note:</dt><dd><p>If you don’t need to test you don’t need to implement this method.</p>
+</dd>
+<dt>Note:</dt><dd><p>When the <a class="reference internal" href="#opensentiment.models.bert_model_pl.SentimentClassifierPL.test_step" title="opensentiment.models.bert_model_pl.SentimentClassifierPL.test_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">test_step()</span></code></a> is called, the model has been put in eval mode and
+PyTorch gradients have been disabled. At the end of the test epoch, the model goes back
+to training mode and gradients are enabled.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="opensentiment.models.bert_model_pl.SentimentClassifierPL.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#opensentiment.models.bert_model_pl.SentimentClassifierPL.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="opensentiment.models.bert_model_pl.SentimentClassifierPL.training_step">
+<span class="sig-name descname"><span class="pre">training_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#opensentiment.models.bert_model_pl.SentimentClassifierPL.training_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Here you compute and return the training loss and some additional metrics for e.g.
+the progress bar or logger.</p>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>batch (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> | (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>, …) | [<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>, …]):</dt><dd><p>The output of your <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>. A tensor, tuple or list.</p>
+</dd>
+</dl>
+<p>batch_idx (<code class="docutils literal notranslate"><span class="pre">int</span></code>): Integer displaying index of this batch
+optimizer_idx (<code class="docutils literal notranslate"><span class="pre">int</span></code>): When using multiple optimizers, this argument will also be present.
+hiddens (<code class="docutils literal notranslate"><span class="pre">Any</span></code>): Passed in if</p>
+<blockquote>
+<div><p><a href="#id1"><span class="problematic" id="id2">:paramref:`~pytorch_lightning.core.lightning.LightningModule.truncated_bptt_steps`</span></a> &gt; 0.</p>
+</div></blockquote>
+</dd>
+<dt>Return:</dt><dd><p>Any of.</p>
+<ul class="simple">
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> - The loss tensor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dict</span></code> - A dictionary. Can include any keys, but must include the key <code class="docutils literal notranslate"><span class="pre">'loss'</span></code></p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">None</span></code> - Training will skip to the next batch. This is only for automatic optimization.</dt><dd><p>This is not supported for multi-GPU, TPU, IPU, or DeepSpeed.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p>In this step you’d normally do the forward pass and calculate the loss for a batch.
+You can also do fancier things like multiple forward passes or something model specific.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">batch</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">loss</span>
+</pre></div>
+</div>
+<p>If you define multiple optimizers, this step will be called with an additional
+<code class="docutils literal notranslate"><span class="pre">optimizer_idx</span></code> parameter.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multiple optimizers (e.g.: GANs)</span>
+<span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">optimizer_idx</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">optimizer_idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># do training_step with encoder</span>
+        <span class="o">...</span>
+    <span class="k">if</span> <span class="n">optimizer_idx</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># do training_step with decoder</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p>If you add truncated back propagation through time you will also get an additional
+argument with the hidden states of the previous step.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Truncated back-propagation through time</span>
+<span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">hiddens</span><span class="p">):</span>
+    <span class="c1"># hiddens are the hidden states from the previous truncated backprop step</span>
+    <span class="n">out</span><span class="p">,</span> <span class="n">hiddens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstm</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">hiddens</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s2">&quot;hiddens&quot;</span><span class="p">:</span> <span class="n">hiddens</span><span class="p">}</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>Note:</dt><dd><p>The loss value shown in the progress bar is smoothed (averaged) over the last values,
+so it differs from the actual loss returned in train/validation step.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="opensentiment.models.bert_model_pl.SentimentClassifierPL.validation_epoch_end">
+<span class="sig-name descname"><span class="pre">validation_epoch_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#opensentiment.models.bert_model_pl.SentimentClassifierPL.validation_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called at the end of the validation epoch with the outputs of all validation steps.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># the pseudocode for these calls</span>
+<span class="n">val_outs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">val_batch</span> <span class="ow">in</span> <span class="n">val_data</span><span class="p">:</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">validation_step</span><span class="p">(</span><span class="n">val_batch</span><span class="p">)</span>
+    <span class="n">val_outs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">validation_epoch_end</span><span class="p">(</span><span class="n">val_outs</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>outputs: List of outputs you defined in <a class="reference internal" href="#opensentiment.models.bert_model_pl.SentimentClassifierPL.validation_step" title="opensentiment.models.bert_model_pl.SentimentClassifierPL.validation_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">validation_step()</span></code></a>, or if there</dt><dd><p>are multiple dataloaders, a list containing a list of outputs for each dataloader.</p>
+</dd>
+</dl>
+</dd>
+<dt>Return:</dt><dd><p>None</p>
+</dd>
+<dt>Note:</dt><dd><p>If you didn’t define a <a class="reference internal" href="#opensentiment.models.bert_model_pl.SentimentClassifierPL.validation_step" title="opensentiment.models.bert_model_pl.SentimentClassifierPL.validation_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">validation_step()</span></code></a>, this won’t be called.</p>
+</dd>
+<dt>Examples:</dt><dd><p>With a single dataloader:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val_step_outputs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">val_step_outputs</span><span class="p">:</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p>With multiple dataloaders, <cite>outputs</cite> will be a list of lists. The outer list contains
+one entry per dataloader, while the inner list contains the individual outputs of
+each validation step for that dataloader.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">dataloader_output_result</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+        <span class="n">dataloader_outs</span> <span class="o">=</span> <span class="n">dataloader_output_result</span><span class="o">.</span><span class="n">dataloader_i_outputs</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;final_metric&quot;</span><span class="p">,</span> <span class="n">final_value</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="opensentiment.models.bert_model_pl.SentimentClassifierPL.validation_step">
+<span class="sig-name descname"><span class="pre">validation_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataloader_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#opensentiment.models.bert_model_pl.SentimentClassifierPL.validation_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Operates on a single batch of data from the validation set.
+In this step you’d might generate examples or calculate anything of interest like accuracy.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># the pseudocode for these calls</span>
+<span class="n">val_outs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">val_batch</span> <span class="ow">in</span> <span class="n">val_data</span><span class="p">:</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">validation_step</span><span class="p">(</span><span class="n">val_batch</span><span class="p">)</span>
+    <span class="n">val_outs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">validation_epoch_end</span><span class="p">(</span><span class="n">val_outs</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>batch (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> | (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>, …) | [<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>, …]):</dt><dd><p>The output of your <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>. A tensor, tuple or list.</p>
+</dd>
+</dl>
+<p>batch_idx (int): The index of this batch
+dataloader_idx (int): The index of the dataloader that produced this batch</p>
+<blockquote>
+<div><p>(only if multiple val dataloaders used)</p>
+</div></blockquote>
+</dd>
+<dt>Return:</dt><dd><ul class="simple">
+<li><p>Any object or value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code> - Validation will skip to the next batch</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pseudocode of order</span>
+<span class="n">val_outs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">val_batch</span> <span class="ow">in</span> <span class="n">val_data</span><span class="p">:</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">validation_step</span><span class="p">(</span><span class="n">val_batch</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">defined</span><span class="p">(</span><span class="s2">&quot;validation_step_end&quot;</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">validation_step_end</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+    <span class="n">val_outs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">val_outs</span> <span class="o">=</span> <span class="n">validation_epoch_end</span><span class="p">(</span><span class="n">val_outs</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># if you have one val dataloader:</span>
+<span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
+    <span class="o">...</span>
+
+
+<span class="c1"># if you have multiple val dataloaders:</span>
+<span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">dataloader_idx</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># CASE 1: A single validation dataset</span>
+<span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
+
+    <span class="c1"># implement your own</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="c1"># log 6 example images</span>
+    <span class="c1"># or generated text... or whatever</span>
+    <span class="n">sample_imgs</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">make_grid</span><span class="p">(</span><span class="n">sample_imgs</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">add_image</span><span class="p">(</span><span class="s1">&#39;example_images&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># calculate acc</span>
+    <span class="n">labels_hat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">val_acc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="n">labels_hat</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="c1"># log the outputs!</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">log_dict</span><span class="p">({</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s1">&#39;val_acc&#39;</span><span class="p">:</span> <span class="n">val_acc</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>If you pass in multiple val dataloaders, <a class="reference internal" href="#opensentiment.models.bert_model_pl.SentimentClassifierPL.validation_step" title="opensentiment.models.bert_model_pl.SentimentClassifierPL.validation_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">validation_step()</span></code></a> will have an additional argument.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># CASE 2: multiple validation dataloaders</span>
+<span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">dataloader_idx</span><span class="p">):</span>
+    <span class="c1"># dataloader_idx tells you which dataset this is.</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>Note:</dt><dd><p>If you don’t need to validate you don’t need to implement this method.</p>
+</dd>
+<dt>Note:</dt><dd><p>When the <a class="reference internal" href="#opensentiment.models.bert_model_pl.SentimentClassifierPL.validation_step" title="opensentiment.models.bert_model_pl.SentimentClassifierPL.validation_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">validation_step()</span></code></a> is called, the model has been put in eval mode
+and PyTorch gradients have been disabled. At the end of validation,
+the model goes back to training mode and gradients are enabled.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-opensentiment.models.predict_model">
 <span id="opensentiment-models-predict-model-module"></span><h2>opensentiment.models.predict_model module<a class="headerlink" href="#module-opensentiment.models.predict_model" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="opensentiment.models.predict_model.predict">
-<span class="sig-prename descclassname"><span class="pre">opensentiment.models.predict_model.</span></span><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'tests/dummy_dataset'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#opensentiment.models.predict_model.predict" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">opensentiment.models.predict_model.</span></span><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">models_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'tests/dummy_dataset'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#opensentiment.models.predict_model.predict" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -95,6 +417,24 @@
 <dd></dd></dl>
 
 </section>
+<section id="module-opensentiment.models.train_model_pl">
+<span id="opensentiment-models-train-model-pl-module"></span><h2>opensentiment.models.train_model_pl module<a class="headerlink" href="#module-opensentiment.models.train_model_pl" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="opensentiment.models.train_model_pl.build_callbacks">
+<span class="sig-prename descclassname"><span class="pre">opensentiment.models.train_model_pl.</span></span><span class="sig-name descname"><span class="pre">build_callbacks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.dictconfig.DictConfig</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pytorch_lightning.callbacks.base.Callback</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#opensentiment.models.train_model_pl.build_callbacks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opensentiment.models.train_model_pl.main">
+<span class="sig-prename descclassname"><span class="pre">opensentiment.models.train_model_pl.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.dictconfig.DictConfig</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#opensentiment.models.train_model_pl.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opensentiment.models.train_model_pl.train">
+<span class="sig-prename descclassname"><span class="pre">opensentiment.models.train_model_pl.</span></span><span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg:</span> <span class="pre">omegaconf.dictconfig.DictConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hydra_dir:</span> <span class="pre">&lt;module</span> <span class="pre">'posixpath'</span> <span class="pre">from</span> <span class="pre">'/opt/hostedtoolcache/Python/3.9.9/x64/lib/python3.9/posixpath.py'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_val_test=True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#opensentiment.models.train_model_pl.train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
 <section id="module-opensentiment.models">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-opensentiment.models" title="Permalink to this headline">¶</a></h2>
 </section>
@@ -112,8 +452,10 @@
 <li><a class="reference internal" href="#">opensentiment.models package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-opensentiment.models.bert_model">opensentiment.models.bert_model module</a></li>
+<li><a class="reference internal" href="#module-opensentiment.models.bert_model_pl">opensentiment.models.bert_model_pl module</a></li>
 <li><a class="reference internal" href="#module-opensentiment.models.predict_model">opensentiment.models.predict_model module</a></li>
 <li><a class="reference internal" href="#module-opensentiment.models.train_model">opensentiment.models.train_model module</a></li>
+<li><a class="reference internal" href="#module-opensentiment.models.train_model_pl">opensentiment.models.train_model_pl module</a></li>
 <li><a class="reference internal" href="#module-opensentiment.models">Module contents</a></li>
 </ul>
 </li>
