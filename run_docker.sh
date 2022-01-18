@@ -1,6 +1,6 @@
 #! /bash/sh
 
-echo "experiments=$a"
+echo "experiments=$1"
 echo "wandb_key_api=$2"
 echo "git_tag=$3"
 echo "job_dir_gs=$4"
@@ -16,9 +16,6 @@ else
 fi
 dvc pull
 
-if [ "$a" != "" ]
-then
-  export a=exp0
-fi
-echo "Using $a experiment setting!"
-python -u opensentiment/models/train_model.py "experiments=$a" "wandb_key_api=$2" "job_dir_gs=$4"
+
+echo "Using $1 experiment setting!"
+python -u opensentiment/models/train_model.py "experiments=$1" "wandb_key_api=$2" "job_dir_gs=$4"
