@@ -17,14 +17,14 @@ from opensentiment.utils import get_project_root, return_omegaconf_modified
         (
             return_omegaconf_modified(
                 {
-                    "train": {"pl_trainer": {"max_steps": 800}},
+                    "train": {"pl_trainer": {"max_steps": 800, "fast_dev_run": False}},
                     "logging": {"wandb": {"mode": "offline"}},
                 }
             )
         )
     ],
 )
-@pytest.mark.long  # 8 min
+@pytest.mark.long  # 8 min on gpu, 40min
 def test_train(
     config: omegaconf.OmegaConf,
 ):
@@ -34,14 +34,14 @@ def test_train(
     train_model_pl.train(config, hydra_dir, use_val_test=True)
 
 
-# 8 min
+# @pytest.mark.long  # 4 min on gpu, 40min
 @pytest.mark.parametrize(
     "config",
     [
         (
             return_omegaconf_modified(
                 {
-                    "train": {"pl_trainer": {"fast_dev_run": True}},
+                    "train": {"pl_trainer": {"fast_dev_run": True, "gpus": 0}},
                     "logging": {"wandb": {"mode": "offline"}},
                 }
             )

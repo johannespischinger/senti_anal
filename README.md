@@ -110,6 +110,8 @@ pip install -r requirements.txt
 pip install -r requirements_dev.txt
 pip install -e .
 pre-commit install
+# verify everything is working
+coverage run -m --source=./opensentiment pytest tests -m "not (download or long)"
 ```
 
 CUDA 11.3 configuration

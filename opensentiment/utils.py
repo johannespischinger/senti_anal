@@ -55,15 +55,17 @@ def deep_update(src: dict, overrides: dict):
     return src
 
 
-def return_omegaconf_modified(modification_full: dict = {}):
+def return_omegaconf_modified(
+    modification_full: dict = {}, rel_path="config", name_yaml="unittest.yaml"
+):
     """read the default config of config/default.yaml and apply deep modified dict.
 
     returns:
         omegaconf.Omegaconfig:
     """
     hydra.core.global_hydra.GlobalHydra.instance().clear()
-    initialize_config_dir(str(os.path.join(get_project_root(), "config")))
-    config_full = compose("unittest.yaml")
+    initialize_config_dir(str(os.path.join(get_project_root(), rel_path)))
+    config_full = compose(name_yaml)
     config_full = deep_update(dict(config_full), modification_full)
 
     return omegaconf.OmegaConf.create(config_full)
