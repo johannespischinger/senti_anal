@@ -61,8 +61,8 @@ jobs:
     name: gcp-deplyment
     runs-on: ubuntu-latest
     needs: [build-linux]
-    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
     
+    # if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
     steps:
     - uses: actions/checkout@v2
       with:
