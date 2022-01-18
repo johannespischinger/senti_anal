@@ -26,3 +26,6 @@ hydra-core==1.1.1
 fastapi==0.71.0
 uvicorn==0.16.0 
 uvicorn[standard]
+pytest~=6.2.5
+opensentiment~=0.1.0
+tqdm~=4.62.3
