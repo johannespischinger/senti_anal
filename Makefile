@@ -81,6 +81,9 @@ endif
 test_environment:
 	$(PYTHON_INTERPRETER) tests/test_environment.py
 
+tests_and_calc_coverage: requirements
+	coverage run -m --source=./opensentiment pytest tests -m "not (download or long)"
+	coverage report
 #################################################################################
 # PROJECT RULES                                                                 #
 #################################################################################
