@@ -22,6 +22,6 @@ ADD https://api.github.com/repos/$USER/$REPO/git/refs/heads/$BRANCH version.json
 RUN git clone -b $BRANCH https://github.com/$USER/$REPO.git
 WORKDIR senti_anal
 # install requirements
-RUN pip3 install -r requirements_gpu.txt --no-cache-dir
+RUN pip3 install --no-cache-dir -r requirements_gpu.txt
 
 ENTRYPOINT ["python", "-u"," opensentiment/models/train_model_pl.py"]
