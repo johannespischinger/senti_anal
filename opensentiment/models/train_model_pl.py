@@ -59,10 +59,10 @@ def train(
     data_module: pl.LightningDataModule = hydra.utils.instantiate(
         cfg.data.datamodule, _recursive_=False
     )
-    with open("dataloader.pickle", "wb") as handle:
+    with open("data_module.pickle", "wb") as handle:
         # save for later usage at prediction
         pickle.dump(data_module, handle, protocol=pickle.HIGHEST_PROTOCOL)
-    with open("dataloader.pickle", "rb") as handle:
+    with open("data_module.pickle", "rb") as handle:
         # load to ensure object was pickleable
         data_module = pickle.load(handle)
     data_module.prepare_data()
