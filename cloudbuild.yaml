@@ -1,0 +1,7 @@
+# TODO: Directories anpassen fuer images
+
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-f','-dir','-t', 'gcr.io/sensi-anal/folder/imagename', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-f','-dir', '-t', 'gcr.io/sensi-anal/folder/imagename', '.']
