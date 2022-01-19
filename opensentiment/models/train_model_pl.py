@@ -41,7 +41,7 @@ def train(
 
     if cfg.train.pl_trainer.fast_dev_run:
         hydra.utils.log.info(
-            f"Debug mode <{cfg.train.pl_trainer.fast_dev_run=}>. "
+            f"Debug mode <{cfg.train.pl_trainer.fast_dev_run}>."
             f"Forcing debugger friendly configuration!"
         )
         # Debuggers don't like GPUs nor multiprocessing
