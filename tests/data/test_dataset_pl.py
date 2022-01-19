@@ -29,7 +29,6 @@ from opensentiment.utils import return_omegaconf_modified
                 ("attention_mask", [32, 128]),
                 ("input_ids", [32, 128]),
                 ("labels", [32]),
-                ("token_type_ids", [32, 128]),
             ],
         ),
         (
@@ -53,7 +52,6 @@ from opensentiment.utils import return_omegaconf_modified
                 ("attention_mask", [16, 32]),
                 ("input_ids", [16, 32]),
                 ("labels", [16]),
-                ("token_type_ids", [16, 32]),
             ],
         ),
     ],

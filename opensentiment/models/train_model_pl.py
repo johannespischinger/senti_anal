@@ -103,15 +103,20 @@ def train(
         log_freq=cfg.logging.wandb_watch.log_freq,
     )
 
-    if "max_available" in cfg.train.pl_trainer.gpus:
-        # fix gpu limit
-        if torch.cuda.is_available():
-            cfg.train.pl_trainer.gpus = -1
+    if type(cfg.train.pl_trainer.gpus) == str:
+        if "max_available" in cfg.train.pl_trainer.gpus:
+            # fix gpu limit
+            if torch.cuda.is_available():
+                cfg.train.pl_trainer.gpus = -1
+            else:
+                cfg.train.pl_trainer.gpus = 0
+            hydra.utils.log.info(
+                f"Configured {cfg.train.pl_trainer.gpus} GPUs from max_available"
+            )
         else:
-            cfg.train.pl_trainer.gpus = 0
-        hydra.utils.log.info(
-            f"Configured {cfg.train.pl_trainer.gpus} GPUs from max_available"
-        )
+            raise Exception(
+                f"Configured {cfg.train.pl_trainer.gpus} needs to be int or str(max_available)"
+            )
 
     trainer = pl.Trainer(
         default_root_dir=hydra_dir,
