@@ -1,7 +1,13 @@
 # TODO: Directories anpassen fuer images
 
 steps:
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-f','-dir','-t', 'gcr.io/sensi-anal/folder/imagename', '.']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-f','-dir', '-t', 'gcr.io/sensi-anal/folder/imagename', '.']
+# fastapicbuild
+- name: 'build gcr.io/sensi-anal/fastapicbuild'
+  args: ['build', '--file=./setup/docker/fastapipredict.dockerfile','--tag=gcr.io/sensi-anal/fastapicbuild', '.']
+- name: 'push gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/sensi-anal/fastapicbuild']
+# # next
+# - name: 'build gcr.io/cloud-builders/docker'
+#   args: ['build', '-f','-dir', '-t', 'gcr.io/sensi-anal/folder/imagename', '.']
+# - name: 'push gcr.io/cloud-builders/docker'
+#   args: ['push', 'gcr.io/sensi-anal/fastapicbuild']
