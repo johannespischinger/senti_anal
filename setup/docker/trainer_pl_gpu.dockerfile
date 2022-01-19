@@ -15,7 +15,11 @@ RUN python3 -m venv /home/venv
 ENV PATH="/home/venv/bin:$PATH"
 
 # get files
-RUN git clone --branch dev  https://github.com/johannespischinger/senti_anal.git
+ENV BRANCH=dev
+ENV USER=johannespischinger
+ENV REPO=senti_anal
+ADD https://api.github.com/repos/$USER/$REPO/git/refs/heads/$BRANCH version.json
+RUN git clone -b $BRANCH https://github.com/$USER/$REPO.git
 WORKDIR senti_anal
 # install requirements
 RUN pip3 install -r requirements_gpu.txt --no-cache-dir
