@@ -3,7 +3,7 @@ datamodule:
 
   cache_dir: ["__projectroot__", "data", "raw", "huggingface-cache"]
   model_name_or_path: "bert-base-cased"
-  only_take_every_n_sample: 128
+  only_take_every_n_sample: 8192
   max_seq_length: 128
 
   num_workers:

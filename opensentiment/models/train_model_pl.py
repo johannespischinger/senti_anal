@@ -1,14 +1,16 @@
 import logging
 import os
-from pathlib import Path
-from typing import Any, Dict, List, Tuple
-
+from typing import Dict, List, Tuple
+import subprocess
+import pickle
 import hydra
 import omegaconf
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
 import torch
+
 from opensentiment.utils import get_project_root
+from opensentiment.gcp import storage_utils, gcp_settings
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +29,6 @@ def build_callbacks(cfg: omegaconf.DictConfig) -> List[pl.Callback]:
             verbose=cfg.train.model_checkpoints.verbose,
         )
     )
-
     return callbacks
 
 
@@ -58,18 +59,14 @@ def train(
     data_module: pl.LightningDataModule = hydra.utils.instantiate(
         cfg.data.datamodule, _recursive_=False
     )
+    with open("dataloader.pickle", "wb") as handle:
+        # save for later usage at prediction
+        pickle.dump(data_module, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    with open("dataloader.pickle", "rb") as handle:
+        # load to ensure object was pickleable
+        data_module = pickle.load(handle)
     data_module.prepare_data()
     data_module.setup("fit")
-
-    sizes = [
-        (k, len(k()))
-        for k in [
-            data_module.train_dataloader,
-            data_module.val_dataloader,
-            data_module.test_dataloader,
-        ]
-    ]
-    hydra.utils.log.info(f"lenght of dataloaders in batches {sizes}")
 
     # prepare model
     hydra.utils.log.info(f"Instantiating <{cfg.model._target_}>")
@@ -90,7 +87,7 @@ def train(
 
     hydra.utils.log.info("Instantiating <WandbLogger>")
     if cfg.logging.wandb_key_api:
-        os.environ["WANDB_API_KEY"] = cfg.wandb_key_api
+        os.environ["WANDB_API_KEY"] = cfg.logging.wandb_key_api
 
     wandb_config = cfg.logging.wandb
     wandb_logger = WandbLogger(
@@ -106,8 +103,6 @@ def train(
         log_freq=cfg.logging.wandb_watch.log_freq,
     )
 
-    # pl trainer
-
     if "max_available" in cfg.train.pl_trainer.gpus:
         # fix gpu limit
         if torch.cuda.is_available():
@@ -115,7 +110,7 @@ def train(
         else:
             cfg.train.pl_trainer.gpus = 0
         hydra.utils.log.info(
-            "Configured {cfg.train.pl_trainer.gpus} GPUs from max_available"
+            f"Configured {cfg.train.pl_trainer.gpus} GPUs from max_available"
         )
 
     trainer = pl.Trainer(
@@ -140,8 +135,12 @@ def train(
     if wandb_logger is not None:
         wandb_logger.experiment.finish()
 
+    # upload model to gs
+    if gcp_settings.SAVE_TO_GS:
+        hydra.utils.log.info(f"Uploading model to gcp bucket: {gcp_settings.GS_BUCKET}")
+        subprocess.call(["gsutil", "-m", "cp", "-r", hydra_dir, gcp_settings.GS_BUCKET])
+
     print("done")
-    # for epoch in range(config.epochs):
 
 
 @hydra.main(
@@ -150,7 +149,7 @@ def train(
 )
 def main(cfg: omegaconf.DictConfig):
     hydra_dir = os.getcwd()
-    train(cfg, hydra_dir)
+    train(cfg, hydra_dir, use_val_test=False)
 
 
 if __name__ == "__main__":
