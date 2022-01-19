@@ -32,5 +32,5 @@ WORKDIR senti_anal
 RUN pip install -r requirements.txt --no-cache-dir
 
 RUN dvc pull
-ENTRYPOINT ["python", "-u", "opensentiment/models/train_model_pl.py"]
+ENTRYPOINT ["sh", ""]
 

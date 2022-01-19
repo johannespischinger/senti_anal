@@ -59,6 +59,7 @@ def train(
     data_module: pl.LightningDataModule = hydra.utils.instantiate(
         cfg.data.datamodule, _recursive_=False
     )
+
     data_module.prepare_data()
     data_module.setup("fit")
 
