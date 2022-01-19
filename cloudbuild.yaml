@@ -2,9 +2,9 @@
 
 steps:
 # fastapicbuild
-- name: 'build gcr.io/sensi-anal/fastapicbuild'
+- name: 'gcr.io/sensi-anal/fastapicbuild'
   args: ['build', '--file=./setup/docker/fastapipredict.dockerfile','--tag=gcr.io/sensi-anal/fastapicbuild', '.']
-- name: 'push gcr.io/cloud-builders/docker'
+- name: 'gcr.io/sensi-anal/fastapicbuild'
   args: ['push', 'gcr.io/sensi-anal/fastapicbuild']
 # # next
 # - name: 'build gcr.io/cloud-builders/docker'
