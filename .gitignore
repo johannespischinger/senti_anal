@@ -102,5 +102,6 @@ models/runs
 **/*model*.pt
 
 #
-/models
-/model_store
+
+models
+model_store

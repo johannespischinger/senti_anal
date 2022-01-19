@@ -2,16 +2,26 @@
 #   docker build -t trainer_pl_gpu:0.0.1 -f setup/docker/trainer_pl_gpu.dockerfile .
 # RUN ENTRYPOINT with
 #   docker run --entrypoint /bin/python trainer_pl_gpu:0.0.1 -u opensentiment/models/train_model_pl.py $my-hydra-commands
-#   e.g. docker run --entrypoint python trainer_pl_gpu:0.0.1 -u opensentiment/models/train_model_pl.py model=trainable logging.wandb_key_api=abcd
+#   e.g. docker run --gpus all  --entrypoint python trainer_pl_gpu:0.0.1 -u opensentiment/models/train_model_pl.py model=trainable logging.wandb_key_api=abcd
 #   
-FROM python:3.9-slim
+FROM pytorch/pytorch:1.10.0-cuda11.3-cudnn8-runtime
 
-# only for debugging purposes!
-# RUN git clone --branch dev https://github.com/johannespischinger/senti_anal.git
+# get docker
+RUN apt-get update && \
+    apt-get install -y git
+# manage venv
+RUN python3 -m pip install --user virtualenv
+RUN python3 -m venv /home/venv
+ENV PATH="/home/venv/bin:$PATH"
 
+# get files
+ENV BRANCH=dev
+ENV USER=johannespischinger
+ENV REPO=senti_anal
+ADD https://api.github.com/repos/$USER/$REPO/git/refs/heads/$BRANCH version.json
+RUN git clone -b $BRANCH https://github.com/$USER/$REPO.git
 WORKDIR senti_anal
-COPY . .
+# install requirements
+RUN pip3 install -r requirements_gpu.txt --no-cache-dir
 
-RUN pip install -r requirements_gpu.txt --no-cache-dir
-
-ENTRYPOINT ["echo", "pass entrypoint like: docker run --entrypoint python trainer_pl_gpu:0.0.1 -u opensentiment/models/train_model_pl.py model=trainable"]
+ENTRYPOINT ["python", "-u"," opensentiment/models/train_model_pl.py"]
