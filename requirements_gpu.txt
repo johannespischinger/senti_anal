@@ -4,7 +4,7 @@
 # to fix relative path issues
 
 # install pytorch specifics first
--r setup/pip/torch_cpu.txt
+-r setup/pip/torch_gpu.txt
 # defaults
 -r setup/pip/default.txt
 # development
