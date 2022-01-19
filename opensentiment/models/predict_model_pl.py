@@ -1,49 +1,59 @@
-import os
 import torch
 import pytorch_lightning as pl
 from opensentiment.models.bert_model_pl import SentimentClassifierPL
 from opensentiment.utils import get_project_root
 import hydra
-from hydra import compose, initialize, initialize_config_module
-import omegaconf
-from transformers import AutoModelForSequenceClassification, AutoConfig, BertTokenizer
-import pickle
 
 
 class Prediction:
-    def __init__(self, path_to_checkpoint: str = "", path_to_datamodule: str = ""):
-        self.model = SentimentClassifierPL.load_from_checkpoint(
-            os.path.join(get_project_root(), path_to_checkpoint)
+    def __init__(self, path_to_checkpoint: str = ""):
+        self.loaded_model = SentimentClassifierPL.load_from_checkpoint(
+            path_to_checkpoint
+        )
+        self.loaded_model.eval()
+
+        self.data_module: pl.LightningDataModule = hydra.utils.instantiate(
+            self.loaded_model.data["datamodule"], _recursive_=False
         )
 
-        with open(path_to_datamodule, "rb") as handle:
-            self.data_module = pickle.load(handle)
-
-    def predict(self, x: dict = None):
+    def predict(self, x: dict):
+        """
+        x: dict
+            x['content']: list of strings
+            x["label"]: Any / list of labels, currently not used, dummy required
+            x["title"]: list of strings, currently not used
+        """
         # x as dict with x['content'] with List of inputs & x['label']=None
         features = self.data_module.convert_to_features(x)
-        input_ids, attention_masks, _ = (
+        input_ids, attention_masks = (
             features["input_ids"],
             features["attention_mask"],
-            features["labels"],
         )
         dict_class = {0: "Negativ", 1: "Positive"}
-        out = self.model.forward(
-            torch.LongTensor(input_ids), torch.FloatTensor(attention_masks)
-        )[0]
-        _, sentiment = torch.max(out, dim=1)
+        with torch.no_grad():
+            out = self.loaded_model.forward(
+                torch.LongTensor(input_ids), torch.FloatTensor(attention_masks)
+            )[0]
+        out_p = torch.nn.functional.softmax(out, dim=1)
+        # out_p = torch.exp(out) # softmax
+        _, sentiment = torch.max(out_p, dim=1)
 
         return [
-            (sentence, dict_class[int(x)])
-            for sentence, x in zip(x["content"], sentiment)
+            (sentence, dict_class[int(x)], out_p[count].tolist())
+            for count, (sentence, x) in enumerate(zip(x["content"], sentiment))
         ]
 
 
 if __name__ == "__main__":
 
     prediction_model = Prediction(
-        "models/16-01-06/BERT/14knak32/checkpoints/epoch=1-step=14.ckpt",
-        "./models/dataloader.pickle",
+        str(get_project_root())
+        + "/.cache/2022-01-19/17-49-18/BERT/14yg4vjs/checkpoints/epoch=1-step=14.ckpt",
     )
-    x = {"content": ["This is good", "This is bad"], "label": None}
-    prediction_model.predict(x)
+    x = {
+        "content": ["This is horrible", "not recommended", "This is perfect bitch", ""],
+        "label": None,
+    }
+    answer = prediction_model.predict(x)
+    x = {"content": ["This is very good"], "label": None}
+    answer = prediction_model.predict(x)
