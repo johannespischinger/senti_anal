@@ -1,5 +1,4 @@
 # usual requirements
-click
 flake8~=4.0.1
 python-dotenv>=0.5.1
 pytorch-lightning==1.5.8
