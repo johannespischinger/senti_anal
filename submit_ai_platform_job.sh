@@ -11,4 +11,5 @@ gcloud ai-platform jobs submit training $JOB_NAME \
   --region $REGION \
   --master-image-uri $IMAGE_URI \
   -- \
-  logging.wandb_key_api=
+  logging.wandb_key_api=15389710194bb8f1832918d0696ca145fff8af98 \
+  logging.gcp.save_to_gs=True

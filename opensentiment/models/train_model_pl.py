@@ -140,9 +140,9 @@ def train(
         wandb_logger.experiment.finish()
 
     # upload model to gs
-    if gcp_settings.SAVE_TO_GS:
-        hydra.utils.log.info(f"Uploading model to gcp bucket: {gcp_settings.GS_BUCKET}")
-        subprocess.call(["gsutil", "-m", "cp", "-r", hydra_dir, gcp_settings.GS_BUCKET])
+    if cfg.logging.gcp.save_to_gs:
+        hydra.utils.log.info(f"Uploading model to gcp bucket: {cfg.logging.gcp.gs_bucket}")
+        subprocess.call(["gsutil", "-m", "cp", "-r", hydra_dir, cfg.logging.gcp.gs_bucket])
 
     print("done")
 

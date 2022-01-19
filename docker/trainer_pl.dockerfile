@@ -28,10 +28,9 @@ RUN wget -nv \
 ENV PATH $PATH:/root/tools/google-cloud-sdk/bin
 
 RUN git clone --branch dev https://github.com/johannespischinger/senti_anal.git
-COPY ../data/ data/
-WORKDIR /senti_anal
+WORKDIR senti_anal
 RUN pip install -r requirements.txt --no-cache-dir
 
+RUN dvc pull
 ENTRYPOINT ["python", "-u", "opensentiment/models/train_model_pl.py"]
-
 

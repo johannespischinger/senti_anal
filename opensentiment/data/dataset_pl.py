@@ -95,11 +95,13 @@ class AmazonPolarityDataModule(pl.LightningDataModule):
                 c for c in self.dataset[split].column_names if c in self.loader_columns
             ]
             self.dataset[split].set_format(type="torch", columns=self.columns)
-
         self.eval_splits = [x for x in self.dataset.keys() if "validation" in x]
 
     def prepare_data(self):
         """initiate first downloads"""
+        processed_data_path = os.path.join(get_project_root(), "data", "processed")
+        # if os.path.isfile(os.path.join(processed_data_path, "train_dataset_pl.pt")):
+
         datasets.load_dataset(**self.dataset_args)
         AutoTokenizer.from_pretrained(self.model_name_or_path)
 
