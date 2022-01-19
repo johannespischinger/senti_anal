@@ -2,7 +2,7 @@ import logging
 import os
 from typing import Dict, List, Tuple
 import subprocess
-
+import pickle
 import hydra
 import omegaconf
 import pytorch_lightning as pl
@@ -59,18 +59,14 @@ def train(
     data_module: pl.LightningDataModule = hydra.utils.instantiate(
         cfg.data.datamodule, _recursive_=False
     )
+    with open("dataloader.pickle", "wb") as handle:
+        # save for later usage at prediction
+        pickle.dump(data_module, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    with open("dataloader.pickle", "rb") as handle:
+        # load to ensure object was pickleable
+        data_module = pickle.load(handle)
     data_module.prepare_data()
     data_module.setup("fit")
-
-    sizes = [
-        (k, len(k()))
-        for k in [
-            data_module.train_dataloader,
-            data_module.val_dataloader,
-            data_module.test_dataloader,
-        ]
-    ]
-    hydra.utils.log.info(f"length of dataloaders in batches {sizes}")
 
     # prepare model
     hydra.utils.log.info(f"Instantiating <{cfg.model._target_}>")
