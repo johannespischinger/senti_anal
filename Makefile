@@ -24,7 +24,6 @@ endif
 requirements: test_environment
 	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
-	$(PYTHON_INTERPRETER) -m pip install -r requirements_dev.txt
 
 ## Make Dataset
 data: requirements
