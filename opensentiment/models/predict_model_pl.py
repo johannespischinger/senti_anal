@@ -34,7 +34,8 @@ class Prediction:
         _, sentiment = torch.max(out, dim=1)
 
         return [
-            (sentence, dict_class[x]) for sentence, x in zip(x["content"], sentiment)
+            (sentence, dict_class[int(x)])
+            for sentence, x in zip(x["content"], sentiment)
         ]
 
 
@@ -42,7 +43,7 @@ if __name__ == "__main__":
 
     prediction_model = Prediction(
         "models/16-01-06/BERT/14knak32/checkpoints/epoch=1-step=14.ckpt",
-        "./models/16-01-06/dataloader.pickle",
+        "./models/dataloader.pickle",
     )
     x = {"content": ["This is good", "This is bad"], "label": None}
     prediction_model.predict(x)
