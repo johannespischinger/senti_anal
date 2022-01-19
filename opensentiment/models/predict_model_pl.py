@@ -33,6 +33,7 @@ class Prediction:
         )[0]
         _, sentiment = torch.max(out, dim=1)
 
+        torch.save_pretrained("./model_store/bert_prediction.pt")
         return [
             (sentence, dict_class[int(x)])
             for sentence, x in zip(x["content"], sentiment)
@@ -43,7 +44,7 @@ if __name__ == "__main__":
 
     prediction_model = Prediction(
         "models/16-01-06/BERT/14knak32/checkpoints/epoch=1-step=14.ckpt",
-        "./models/dataloader.pickle",
+        "./models/16-01-06/dataloader.pickle",
     )
     x = {"content": ["This is good", "This is bad"], "label": None}
     prediction_model.predict(x)
