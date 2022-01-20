@@ -1,0 +1,18 @@
+# to run  with small context / "avoid building tarball"
+# gcloud builds submit --config cloudbuild.yaml ./setup/docker
+
+steps:
+# fastapipredict
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/sensi-anal/fastapicloudb:0.0.1', "--file", "fastapipredict.dockerfile", '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/sensi-anal/fastapicloudb:0.0.1']
+images:
+  - gcr.io/sensi-anal/fastapipredict
+
+timeout: 1000s
+# # next
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: ['build', '-f','-dir', '-t', 'gcr.io/sensi-anal/folder/imagename', '.']
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: ['push', 'gcr.io/sensi-anal/fastapicbuild']

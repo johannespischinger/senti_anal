@@ -10,7 +10,7 @@ class Prediction:
 
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.loaded_model = SentimentClassifierPL.load_from_checkpoint(
-            path_to_checkpoint, map_location=device
+            path_to_checkpoint, map_location=device, load_pretrain_weights=False
         )
         self.loaded_model.eval()
 
