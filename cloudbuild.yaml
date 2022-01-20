@@ -1,13 +1,12 @@
-# TODO: Directories anpassen fuer images
-
 steps:
-# fastapicbuild
+# docker fastapi
 - name: 'gcr.io/sensi-anal/fastapicbuild'
-  args: ['build', '--file=./setup/docker/fastapipredict.dockerfile','--tag=gcr.io/sensi-anal/fastapicbuild', '.']
-- name: 'gcr.io/sensi-anal/fastapicbuild'
-  args: ['push', 'gcr.io/sensi-anal/fastapicbuild']
-# # next
-# - name: 'build gcr.io/cloud-builders/docker'
-#   args: ['build', '-f','-dir', '-t', 'gcr.io/sensi-anal/folder/imagename', '.']
-# - name: 'push gcr.io/cloud-builders/docker'
-#   args: ['push', 'gcr.io/sensi-anal/fastapicbuild']
+  args: ['build', '-f', 'setup/docker/fastapipredict.dockerfile']
+
+# docker training-gpu
+- name: 'gcr.io/sensi-anal/training_gpu'
+  args: ['build', '-f', 'setup/docker/trainer_pl_gpu.dockerfile']
+
+# docker training-cpu
+- name: 'gcr.io/sensi-anal/training_cpu'
+  args: ['build', '-f', 'setup/docker/trainer_pl_cpu.dockerfile']
