@@ -58,8 +58,8 @@ jobs:
         # The above command will fail if no changes were present, so we ignore
         # that.
 
-    - name: Push changes to github repo/gh-pages
-      uses: ad-m/github-push-action@master
-      with:
-         branch: refs/heads/gh-pages
-         directory: gh-pages-dir/
+    # - name: Push changes to github repo/gh-pages
+    #   uses: ad-m/github-push-action@master
+    #   with:
+    #      branch: refs/heads/gh-pages
+    #      directory: gh-pages-dir/

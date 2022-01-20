@@ -2,7 +2,7 @@ import logging
 import os
 from typing import Dict, List, Tuple
 import subprocess
-import pickle
+
 import hydra
 import omegaconf
 import pytorch_lightning as pl
@@ -59,13 +59,6 @@ def train(
     data_module: pl.LightningDataModule = hydra.utils.instantiate(
         cfg.data.datamodule, _recursive_=False
     )
-    picklepath = os.path.join(hydra_dir, "data_module.pickle")
-    with open(picklepath, "wb") as handle:
-        # save for later usage at prediction
-        pickle.dump(data_module, handle, protocol=pickle.HIGHEST_PROTOCOL)
-    with open(picklepath, "rb") as handle:
-        # load to ensure object was pickleable
-        data_module = pickle.load(handle)
     data_module.prepare_data()
     data_module.setup("fit")
 
@@ -104,7 +97,7 @@ def train(
         log_freq=cfg.logging.wandb_watch.log_freq,
     )
 
-    if type(cfg.train.pl_trainer.gpus) == str:
+    if type(cfg.train.pl_trainer.gpus) is str:
         if "max_available" in cfg.train.pl_trainer.gpus:
             # fix gpu limit
             if torch.cuda.is_available():
