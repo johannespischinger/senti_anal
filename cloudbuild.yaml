@@ -1,6 +1,6 @@
 steps:
 # docker training-gpu
-- name: 'gcr.io/sensi-anal/training_gpu'
+- name: 'gcr.io/sensi-anal/training_gpu:0.0.1'
   args: ['build', '-f', 'setup/docker/trainer_pl_gpu.dockerfile', '-t', 'gcr.io/sensi-anal/training_gpu:0.0.1']
 
 # docker training-cpu
