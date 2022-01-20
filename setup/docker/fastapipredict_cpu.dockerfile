@@ -23,7 +23,6 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 RUN git fetch --all --tags
 # RUN git checkout tags/3.0
 RUN dvc pull
-RUN pip install gunicorn
 
 # ENTRYPOINT ["uvicorn", "opensentiment.api.fast.serve_api:app", "--host", "0.0.0.0", "--port", "80"]
 CMD exec gunicorn --bind :$PORT --workers 1 --worker-class uvicorn.workers.UvicornWorker  --threads 8 opensentiment.api.fast.serve_api:app

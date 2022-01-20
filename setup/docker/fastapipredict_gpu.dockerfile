@@ -25,7 +25,7 @@ RUN git fetch --all --tags
 # RUN git checkout tags/3.0
 RUN dvc pull
 
-ENTRYPOINT ["uvicorn", "opensentiment.api.fast.serve_api:app", "--host", "0.0.0.0", "--port", "80"]
+CMD exec gunicorn --bind :$PORT --workers 1 --worker-class uvicorn.workers.UvicornWorker  --threads 8 opensentiment.api.fast.serve_api:app
 
 # docker build -t gcr.io/sensi-anal/fastapipredict:0.0.1 .
 
