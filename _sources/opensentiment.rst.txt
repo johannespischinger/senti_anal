@@ -9,9 +9,7 @@ Subpackages
 
    opensentiment.api
    opensentiment.data
-   opensentiment.features
    opensentiment.models
-   opensentiment.visualization
 
 Submodules
 ----------

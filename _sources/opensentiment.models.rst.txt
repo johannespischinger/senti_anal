@@ -28,6 +28,14 @@ opensentiment.models.predict\_model module
    :undoc-members:
    :show-inheritance:
 
+opensentiment.models.predict\_model\_pl module
+----------------------------------------------
+
+.. automodule:: opensentiment.models.predict_model_pl
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 opensentiment.models.train\_model module
 ----------------------------------------
 

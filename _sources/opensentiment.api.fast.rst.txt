@@ -12,10 +12,10 @@ opensentiment.api.fast.serve\_api module
    :undoc-members:
    :show-inheritance:
 
-opensentiment.api.fast.serve\_api\_helper module
+opensentiment.api.fast.serve\_api\_config module
 ------------------------------------------------
 
-.. automodule:: opensentiment.api.fast.serve_api_helper
+.. automodule:: opensentiment.api.fast.serve_api_config
    :members:
    :undoc-members:
    :show-inheritance:

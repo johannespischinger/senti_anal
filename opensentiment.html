@@ -48,7 +48,7 @@
 <li class="toctree-l3"><a class="reference internal" href="opensentiment.api.fast.html">opensentiment.api.fast package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="opensentiment.api.fast.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="opensentiment.api.fast.html#module-opensentiment.api.fast.serve_api">opensentiment.api.fast.serve_api module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="opensentiment.api.fast.html#module-opensentiment.api.fast.serve_api_helper">opensentiment.api.fast.serve_api_helper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opensentiment.api.fast.html#module-opensentiment.api.fast.serve_api_config">opensentiment.api.fast.serve_api_config module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="opensentiment.api.fast.html#module-opensentiment.api.fast">Module contents</a></li>
 </ul>
 </li>
@@ -66,26 +66,15 @@
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.data.html#module-opensentiment.data">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="opensentiment.features.html">opensentiment.features package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="opensentiment.features.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="opensentiment.features.html#module-opensentiment.features.build_features">opensentiment.features.build_features module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="opensentiment.features.html#module-opensentiment.features">Module contents</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="opensentiment.models.html">opensentiment.models package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#module-opensentiment.models.bert_model">opensentiment.models.bert_model module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#module-opensentiment.models.bert_model_pl">opensentiment.models.bert_model_pl module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#module-opensentiment.models.predict_model">opensentiment.models.predict_model module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#module-opensentiment.models.predict_model_pl">opensentiment.models.predict_model_pl module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#module-opensentiment.models.train_model">opensentiment.models.train_model module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#module-opensentiment.models.train_model_pl">opensentiment.models.train_model_pl module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="opensentiment.models.html#module-opensentiment.models">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="opensentiment.visualization.html">opensentiment.visualization package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="opensentiment.visualization.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="opensentiment.visualization.html#module-opensentiment.visualization.visualize">opensentiment.visualization.visualize module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="opensentiment.visualization.html#module-opensentiment.visualization">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -120,6 +109,16 @@ Modify <code class="docutils literal notranslate"><span class="pre">src</span></
 <dt class="sig sig-object py" id="opensentiment.utils.get_project_root">
 <span class="sig-prename descclassname"><span class="pre">opensentiment.utils.</span></span><span class="sig-name descname"><span class="pre">get_project_root</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pathlib.Path</span></span></span><a class="headerlink" href="#opensentiment.utils.get_project_root" title="Permalink to this definition">¶</a></dt>
 <dd><p>return Path to the project directory, top folder of opensentiment</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opensentiment.utils.paths_to_file_ext">
+<span class="sig-prename descclassname"><span class="pre">opensentiment.utils.</span></span><span class="sig-name descname"><span class="pre">paths_to_file_ext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'model_store'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ckpt'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#opensentiment.utils.paths_to_file_ext" title="Permalink to this definition">¶</a></dt>
+<dd><p>get path to all files with ext if exists.</p>
+<dl class="simple">
+<dt>return</dt><dd><p>List of os.path if fileext exists otherwise list with empty string</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">

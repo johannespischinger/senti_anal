@@ -44,11 +44,22 @@
   <section id="commands">
 <h1>Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h1>
 <p>The Makefile contains the central entry points for common tasks related to this project.</p>
-<section id="syncing-data-to-s3">
-<h2>Syncing data to S3<a class="headerlink" href="#syncing-data-to-s3" title="Permalink to this headline">¶</a></h2>
+<section id="syncing-data-from-dvc">
+<h2>Syncing data from dvc<a class="headerlink" href="#syncing-data-from-dvc" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><cite>make sync_data_to_s3</cite> will use <cite>aws s3 sync</cite> to recursively sync files in <cite>data/</cite> up to <cite>s3://[OPTIONAL] your-bucket-for-syncing-data (do not include ‘s3://’)/data/</cite>.</p></li>
-<li><p><cite>make sync_data_from_s3</cite> will use <cite>aws s3 sync</cite> to recursively sync files from <cite>s3://[OPTIONAL] your-bucket-for-syncing-data (do not include ‘s3://’)/data/</cite> to <cite>data/</cite>.</p></li>
+<li><p><cite>dvc pull</cite></p></li>
+</ul>
+</section>
+<section id="start-tests-and-calc-coverage">
+<h2>Start tests and calc coverage<a class="headerlink" href="#start-tests-and-calc-coverage" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><cite>make tests_and_calc_coverage</cite></p></li>
+</ul>
+</section>
+<section id="start-training">
+<h2>Start training<a class="headerlink" href="#start-training" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><cite>make train</cite></p></li>
 </ul>
 </section>
 </section>
@@ -63,7 +74,9 @@
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Commands</a><ul>
-<li><a class="reference internal" href="#syncing-data-to-s3">Syncing data to S3</a></li>
+<li><a class="reference internal" href="#syncing-data-from-dvc">Syncing data from dvc</a></li>
+<li><a class="reference internal" href="#start-tests-and-calc-coverage">Start tests and calc coverage</a></li>
+<li><a class="reference internal" href="#start-training">Start training</a></li>
 </ul>
 </li>
 </ul>
