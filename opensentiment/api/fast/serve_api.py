@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.logger import logger
 from opensentiment.models.predict_model_pl import Prediction
 from opensentiment.api.fast.serve_api_config import CONFIG
@@ -43,7 +43,10 @@ def read_root():
 
 @app.get("/api/v1/serve_single")
 def inference_single(query_text: str):
-    # set up
+    """
+    query like:
+        /api/v1/serve_single?q=bar
+    """
     prediction_input = {"content": [query_text], "label": None}
     prediction = app.package["model_predict"].predict(prediction_input)
 
@@ -54,21 +57,19 @@ def inference_single(query_text: str):
 
 
 @app.get("/api/v1/serve_batch")
-def inference_batch(query_list: List[str]):
+def inference_batch(q: List[str] = Query(..., min_length=1)):
     """
-    {
-        "query_list": [
-            "review 1",
-            "review 2"
-        ]
-    }
+    query a list of
+
+    query like:
+        /api/v1/serve_batch?q=foo&q=bar
     """
 
     # set up
-    prediction_input = {"content": query_list, "label": None}
+    prediction_input = {"content": q, "label": None}
     prediction = app.package["model_predict"].predict(prediction_input)
 
     return {
         "prediction": prediction,
-        "query_list": query_list,
+        "query_list": q,
     }
