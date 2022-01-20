@@ -1,7 +1,12 @@
-# for deploy: add build context ./setup/docker/  -> makes tarball small
-#  gcloud builds submit --config cloudbuild.yaml ./setup/docker/ 
-
 steps:
+# docker training-gpu
+- name: 'gcr.io/sensi-anal/training_gpu'
+  args: ['build', '-f', 'setup/docker/trainer_pl_gpu.dockerfile']
+
+# docker training-cpu
+- name: 'gcr.io/sensi-anal/training_cpu'
+  args: ['build', '-f', 'setup/docker/trainer_pl_cpu.dockerfile']
+
 # fastapipredict
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/sensi-anal/fastapicloudb:0.0.1', "--file", "fastapipredict.dockerfile", '.']
@@ -9,10 +14,3 @@ steps:
   args: ['push', 'gcr.io/sensi-anal/fastapicloudb:0.0.1']
 images:
   - gcr.io/sensi-anal/fastapicloudb
-
-timeout: 1000s
-# # next
-# - name: 'build gcr.io/cloud-builders/docker'
-#   args: ['build', '-f','-dir', '-t', 'gcr.io/sensi-anal/folder/imagename', '.']
-# - name: 'push gcr.io/cloud-builders/docker'
-#   args: ['push', 'gcr.io/sensi-anal/fastapicbuild']

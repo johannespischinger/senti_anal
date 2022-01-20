@@ -2,7 +2,7 @@ import logging
 import os
 from typing import Dict, List, Tuple
 import subprocess
-import pickle
+
 import hydra
 import omegaconf
 import pytorch_lightning as pl
@@ -41,7 +41,7 @@ def train(
 
     if cfg.train.pl_trainer.fast_dev_run:
         hydra.utils.log.info(
-            f"Debug mode <{cfg.train.pl_trainer.fast_dev_run}>."
+            f"Debug mode <{cfg.train.pl_trainer.fast_dev_run=}>. "
             f"Forcing debugger friendly configuration!"
         )
         # Debuggers don't like GPUs nor multiprocessing
@@ -59,15 +59,18 @@ def train(
     data_module: pl.LightningDataModule = hydra.utils.instantiate(
         cfg.data.datamodule, _recursive_=False
     )
-    picklepath = os.path.join(hydra_dir, "data_module.pickle")
-    with open(picklepath, "wb") as handle:
-        # save for later usage at prediction
-        pickle.dump(data_module, handle, protocol=pickle.HIGHEST_PROTOCOL)
-    with open(picklepath, "rb") as handle:
-        # load to ensure object was pickleable
-        data_module = pickle.load(handle)
     data_module.prepare_data()
     data_module.setup("fit")
+
+    sizes = [
+        (k, len(k()))
+        for k in [
+            data_module.train_dataloader,
+            data_module.val_dataloader,
+            data_module.test_dataloader,
+        ]
+    ]
+    hydra.utils.log.info(f"length of dataloaders in batches {sizes}")
 
     # prepare model
     hydra.utils.log.info(f"Instantiating <{cfg.model._target_}>")
@@ -104,20 +107,15 @@ def train(
         log_freq=cfg.logging.wandb_watch.log_freq,
     )
 
-    if type(cfg.train.pl_trainer.gpus) == str:
-        if "max_available" in cfg.train.pl_trainer.gpus:
-            # fix gpu limit
-            if torch.cuda.is_available():
-                cfg.train.pl_trainer.gpus = -1
-            else:
-                cfg.train.pl_trainer.gpus = 0
-            hydra.utils.log.info(
-                f"Configured {cfg.train.pl_trainer.gpus} GPUs from max_available"
-            )
+    if "max_available" in cfg.train.pl_trainer.gpus:
+        # fix gpu limit
+        if torch.cuda.is_available():
+            cfg.train.pl_trainer.gpus = -1
         else:
-            raise Exception(
-                f"Configured {cfg.train.pl_trainer.gpus} needs to be int or str(max_available)"
-            )
+            cfg.train.pl_trainer.gpus = 0
+        hydra.utils.log.info(
+            f"Configured {cfg.train.pl_trainer.gpus} GPUs from max_available"
+        )
 
     trainer = pl.Trainer(
         default_root_dir=hydra_dir,

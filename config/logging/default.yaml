@@ -2,6 +2,10 @@
 val_check_interval: 1.0
 progress_bar_refresh_rate: 20
 
+gcp:
+  save_to_gs: True
+  gs_bucket: "gs://model_senti_anal"
+
 wandb:
   project: BERT
   entity: senti_anal
