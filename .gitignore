@@ -90,7 +90,7 @@ target/
 /data
 
 # models runs
-models/runs
+./models/
 
 # amazon polarity files
 /**.lock
@@ -104,3 +104,5 @@ models/runs
 # model files
 **/*model*.pt
 
+#
+/model_store/

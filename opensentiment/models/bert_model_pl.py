@@ -21,7 +21,9 @@ class SentimentClassifierPL(pl.LightningModule):
             setattr(self, k, v)
         self.save_hyperparameters()  # populate self.hparams with args and kwargs automagically!
 
-        self.config = AutoConfig.from_pretrained(self.model_name_or_path)
+        self.config = AutoConfig.from_pretrained(
+            self.model_name_or_path, num_labels=self.num_classes
+        )
         self.model = AutoModelForSequenceClassification.from_pretrained(
             self.model_name_or_path, config=self.config
         )

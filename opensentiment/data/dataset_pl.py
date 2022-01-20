@@ -36,6 +36,8 @@ class AmazonPolarityDataModule(pl.LightningDataModule):
             only_take_every_n_sample (int, optional): [description]. Defaults to 1.
         """
         super().__init__()
+        self.save_hyperparameters()
+
         for (k, v) in kwargs.items():
             setattr(self, k, v)
 

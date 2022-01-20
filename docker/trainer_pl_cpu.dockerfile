@@ -31,6 +31,5 @@ RUN git clone --branch feature-64-docker-refactoring https://github.com/johannes
 WORKDIR senti_anal
 RUN pip install -r requirements.txt --no-cache-dir
 
-RUN dvc pull
-ENTRYPOINT ["sh", ""]
+ENTRYPOINT ["sh", "setup/docker/run_trainer.sh"]
 
