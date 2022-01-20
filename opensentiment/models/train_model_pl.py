@@ -41,7 +41,7 @@ def train(
 
     if cfg.train.pl_trainer.fast_dev_run:
         hydra.utils.log.info(
-            f"Debug mode <{cfg.train.pl_trainer.fast_dev_run=}>. "
+            f"Debug mode <{cfg.train.pl_trainer.fast_dev_run}>."
             f"Forcing debugger friendly configuration!"
         )
         # Debuggers don't like GPUs nor multiprocessing
@@ -61,16 +61,6 @@ def train(
     )
     data_module.prepare_data()
     data_module.setup("fit")
-
-    sizes = [
-        (k, len(k()))
-        for k in [
-            data_module.train_dataloader,
-            data_module.val_dataloader,
-            data_module.test_dataloader,
-        ]
-    ]
-    hydra.utils.log.info(f"length of dataloaders in batches {sizes}")
 
     # prepare model
     hydra.utils.log.info(f"Instantiating <{cfg.model._target_}>")
@@ -107,15 +97,20 @@ def train(
         log_freq=cfg.logging.wandb_watch.log_freq,
     )
 
-    if type(cfg.train.pl_trainer.gpus) == str:
-        # fix gpu limit
-        if torch.cuda.is_available():
-            cfg.train.pl_trainer.gpus = -1
+    if type(cfg.train.pl_trainer.gpus) is str:
+        if "max_available" in cfg.train.pl_trainer.gpus:
+            # fix gpu limit
+            if torch.cuda.is_available():
+                cfg.train.pl_trainer.gpus = -1
+            else:
+                cfg.train.pl_trainer.gpus = 0
+            hydra.utils.log.info(
+                f"Configured {cfg.train.pl_trainer.gpus} GPUs from max_available"
+            )
         else:
-            cfg.train.pl_trainer.gpus = 0
-        hydra.utils.log.info(
-            f"Configured {cfg.train.pl_trainer.gpus} GPUs from max_available"
-        )
+            raise Exception(
+                f"Configured {cfg.train.pl_trainer.gpus} needs to be int or str(max_available)"
+            )
 
     trainer = pl.Trainer(
         default_root_dir=hydra_dir,
