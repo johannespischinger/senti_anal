@@ -5,14 +5,12 @@ model = Prediction(
 )
 
 
+# google function
 def get_sentiment(request):
     request_json = request.get_json()
-    if request_json and 'message' in request_json:
+    if request_json and "message" in request_json:
         input_data = request_json["message"]
         input_dict = {"content": input_data, "label": None}
         return f"{model.predict(input_dict)}"
     else:
-        return f'No data received!'
-
-
-
+        return "No data received!"
