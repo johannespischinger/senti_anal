@@ -2,18 +2,18 @@ steps:
 # docker training-gpu
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-f', 'setup/docker/trainer_pl_gpu.dockerfile', '-t', 'gcr.io/sensi-anal/training_gpu:0.0.1', './']
-  timeout: 10000s
+
 
 # docker training-cpu
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-f', 'setup/docker/trainer_pl_cpu.dockerfile', '-t', 'gcr.io/sensi-anal/training_cpu:0.0.1', './']
-  timeout: 10000s
 
 # fastapipredict
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/sensi-anal/fastapicloudb:0.0.1', "--file", "fastapipredict.dockerfile", '.']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/sensi-anal/fastapicloudb:0.0.1']
-  timeout: 10000s
+
 images:
   - gcr.io/sensi-anal/fastapicloudb
+timeout: 10000s
