@@ -27,8 +27,9 @@ RUN wget -nv \
 # Path configuration
 ENV PATH $PATH:/root/tools/google-cloud-sdk/bin
 
-RUN git clone --branch feature-64-docker-refactoring https://github.com/johannespischinger/senti_anal.git
+RUN git clone --branch dev https://github.com/johannespischinger/senti_anal.git
 WORKDIR senti_anal
 RUN pip install -r requirements.txt --no-cache-dir
 
+RUN dvc pull
 ENTRYPOINT ["bash", "setup/docker/run_trainer_pl.sh"]
