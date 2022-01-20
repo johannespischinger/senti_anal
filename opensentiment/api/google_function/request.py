@@ -14,5 +14,11 @@ def print_answers(_url, _payload):
 
 if __name__ == "__main__":
     url = 'https://us-central1-sensi-anal.cloudfunctions.net/senti_anal_2'
-    payload = {'message': ['this is bad', 'this great', 'badass product guys']}
+    payload = {'message': ['DTU MLOPs course is a great course',
+                           'The workload was a lot though',
+                           'I learned a lot of new things',
+                           'BERT is way too big',
+                           'Distilled BERT is amazing',
+                           'Scripting a transformer model is a mess',
+                           ]}
     print_answers(url, payload)
