@@ -59,10 +59,11 @@ def train(
     data_module: pl.LightningDataModule = hydra.utils.instantiate(
         cfg.data.datamodule, _recursive_=False
     )
-    with open("data_module.pickle", "wb") as handle:
+    picklepath = os.path.join(hydra_dir, "data_module.pickle")
+    with open(picklepath, "wb") as handle:
         # save for later usage at prediction
         pickle.dump(data_module, handle, protocol=pickle.HIGHEST_PROTOCOL)
-    with open("data_module.pickle", "rb") as handle:
+    with open(picklepath, "rb") as handle:
         # load to ensure object was pickleable
         data_module = pickle.load(handle)
     data_module.prepare_data()
@@ -103,15 +104,20 @@ def train(
         log_freq=cfg.logging.wandb_watch.log_freq,
     )
 
-    if "max_available" in cfg.train.pl_trainer.gpus:
-        # fix gpu limit
-        if torch.cuda.is_available():
-            cfg.train.pl_trainer.gpus = -1
+    if type(cfg.train.pl_trainer.gpus) == str:
+        if "max_available" in cfg.train.pl_trainer.gpus:
+            # fix gpu limit
+            if torch.cuda.is_available():
+                cfg.train.pl_trainer.gpus = -1
+            else:
+                cfg.train.pl_trainer.gpus = 0
+            hydra.utils.log.info(
+                f"Configured {cfg.train.pl_trainer.gpus} GPUs from max_available"
+            )
         else:
-            cfg.train.pl_trainer.gpus = 0
-        hydra.utils.log.info(
-            f"Configured {cfg.train.pl_trainer.gpus} GPUs from max_available"
-        )
+            raise Exception(
+                f"Configured {cfg.train.pl_trainer.gpus} needs to be int or str(max_available)"
+            )
 
     trainer = pl.Trainer(
         default_root_dir=hydra_dir,

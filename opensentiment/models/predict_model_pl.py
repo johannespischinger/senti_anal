@@ -7,8 +7,10 @@ import hydra
 
 class Prediction:
     def __init__(self, path_to_checkpoint: str = ""):
+
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.loaded_model = SentimentClassifierPL.load_from_checkpoint(
-            path_to_checkpoint
+            path_to_checkpoint, map_location=device
         )
         self.loaded_model.eval()
 
@@ -57,3 +59,4 @@ if __name__ == "__main__":
     answer = prediction_model.predict(x)
     x = {"content": ["This is very good"], "label": None}
     answer = prediction_model.predict(x)
+    print(answer)
