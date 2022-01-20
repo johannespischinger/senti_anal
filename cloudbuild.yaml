@@ -3,7 +3,7 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-f', 'setup/docker/trainer_pl_cpu.dockerfile', '-t', 'gcr.io/sensi-anal/training_cpu:cb.0.1', './']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/sensi-anal/training_cpu:.cb.0.1']
+  args: ['push', 'gcr.io/sensi-anal/training_cpu:cb.0.1']
 # fastapipredict cpu
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-f', 'setup/docker/fastapipredict_cpu.dockerfile', '-t', 'gcr.io/sensi-anal/fastapipredict_cpu:cb.0.1', './']
