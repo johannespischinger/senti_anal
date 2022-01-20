@@ -33,6 +33,11 @@ jobs:
       run: |
         pip install -r requirements.txt
         pip install -e .
+    
+    - name: pull from dvc
+      run: |
+        # pull model and cache of dataset, to avoid downloading.
+        dvc pull
 
     - name: Lint with flake8
       run: |
