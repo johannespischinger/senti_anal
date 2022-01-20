@@ -21,5 +21,7 @@ steps:
   args: ['push', 'gcr.io/sensi-anal/fastapipredict_gpu:0.0.1']
 images:
   - gcr.io/sensi-anal/fastapipredict_gpu
-  - 
+  - gcr.io/sensi-anal/fastapipredict_cpu
+  - gcr.io/sensi-anal/training_cpu
+  - gcr.io/sensi-anal/trainer_pl_gpu
 timeout: 20000s
