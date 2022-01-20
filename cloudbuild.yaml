@@ -10,9 +10,7 @@ steps:
 
 # fastapipredict
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/sensi-anal/fastapicloudb:0.0.1', "--file", "fastapipredict.dockerfile", '.']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/sensi-anal/fastapicloudb:0.0.1']
+  args: ['build', '-f', 'setup/docker/fastapipredict.dockerfile' '-t', 'gcr.io/sensi-anal/fastapicloudb:0.0.1', './']
 
 images:
   - gcr.io/sensi-anal/fastapicloudb
