@@ -47,7 +47,7 @@ RUN git clone -b $BRANCH https://github.com/$USER/$REPO.git
 WORKDIR senti_anal
 # install requirements
 RUN pip3 install --no-cache-dir -r requirements_gpu.txt
-
+RUN dvc pull
 # [specifics below]
 
 ENTRYPOINT ["python", "-u"," opensentiment/models/train_model_pl.py"]
