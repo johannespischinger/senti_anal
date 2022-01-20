@@ -7,4 +7,3 @@
 data/raw/huggingface-cache/**/_*.lock
 data/raw/huggingface-cache/**/downloads/
 data/**/cache-*.arrow
-!model_store/pretrained-distilbert-2022-01-19

@@ -22,7 +22,7 @@ RUN pip3 install --no-cache-dir -r requirements_gpu.txt
 
 # [specifics below]
 RUN git fetch --all --tags
-RUN git checkout tags/3.0
+# RUN git checkout tags/3.0
 RUN dvc pull
 
 ENTRYPOINT ["uvicorn", "opensentiment.api.fast.serve_api:app", "--host", "0.0.0.0", "--port", "80"]
