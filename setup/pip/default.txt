@@ -10,7 +10,6 @@ pre-commit~=2.16.0
 pipreqs
 black~=21.12b0
 scikit-learn~=1.0.2
-dvc~=2.9.3
 dvc[gs]
 numpy~=1.21.5
 wandb~=0.12.9
@@ -22,3 +21,4 @@ uvicorn[standard]
 pytest~=6.2.5
 gcsfs==2021.11.1
 google-cloud-storage==2.0.0
+requests~=2.27.1

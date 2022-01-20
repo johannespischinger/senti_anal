@@ -14,5 +14,4 @@
 
 # do not any default packages below, add them to ./requirements
 opensentiment~=0.1.0
-requests~=2.27.1
 tqdm~=4.62.3
