@@ -1,11 +1,11 @@
 steps:
 # docker training-gpu
 - name: 'gcr.io/sensi-anal/training_gpu'
-  args: ['build', '-f', 'setup/docker/trainer_pl_gpu.dockerfile']
+  args: ['build', '-f', 'setup/docker/trainer_pl_gpu.dockerfile', '-t', 'gcr.io/sensi-anal/training_gpu:0.0.1']
 
 # docker training-cpu
 - name: 'gcr.io/sensi-anal/training_cpu'
-  args: ['build', '-f', 'setup/docker/trainer_pl_cpu.dockerfile']
+  args: ['build', '-f', 'setup/docker/trainer_pl_cpu.dockerfile', '-t', 'gcr.io/sensi-anal/training_cpu:0.0.1']
 
 # fastapipredict
 - name: 'gcr.io/cloud-builders/docker'
