@@ -30,5 +30,6 @@ ENV PATH $PATH:/root/tools/google-cloud-sdk/bin
 RUN git clone --branch dev https://github.com/johannespischinger/senti_anal.git
 WORKDIR senti_anal
 RUN pip install -r requirements.txt --no-cache-dir
+RUN dvc pull
 
-ENTRYPOINT ["bash", "setup/docker/run_trainer_pl.sh"]
+ENTRYPOINT ["python", "-u"," opensentiment/models/train_model_pl.py"]
