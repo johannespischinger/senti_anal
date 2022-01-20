@@ -1,7 +1,7 @@
 Sentiment Analysis
 ==============================
 
-Final project for course MLOps course at DTU. 
+Final project for course[MLOps course at DTU](https://skaftenicki.github.io/dtu_mlops/). 
 
 [![codecov](https://codecov.io/gh/johannespischinger/senti_anal/branch/dev/graph/badge.svg?token=CI49NOMH1J)](https://codecov.io/gh/johannespischinger/senti_anal)![CI pytest](https://github.com/johannespischinger/senti_anal/actions/workflows/python_pip_unittests_lint.yml/badge.svg)
 ![build-docs](https://github.com/johannespischinger/senti_anal/actions/workflows/build-docs-ghpages.yml/badge.svg?branch=dev)
