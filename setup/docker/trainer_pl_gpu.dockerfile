@@ -4,9 +4,11 @@
 #   docker run --entrypoint /bin/python trainer_pl_gpu:0.0.1 -u opensentiment/models/train_model_pl.py $my-hydra-commands
 #   e.g. docker run --gpus all  --entrypoint python trainer_pl_gpu:0.0.1 -u opensentiment/models/train_model_pl.py model=trainable logging.wandb_key_api=abcd
 #   
+# general GPU setup
 FROM pytorch/pytorch:1.10.0-cuda11.3-cudnn8-runtime
 
-# get docker
+WORKDIR app
+# get git
 RUN apt-get update && \
     apt-get install -y git
 # manage venv
@@ -23,5 +25,7 @@ RUN git clone -b $BRANCH https://github.com/$USER/$REPO.git
 WORKDIR senti_anal
 # install requirements
 RUN pip3 install --no-cache-dir -r requirements_gpu.txt
+
+# [specifics below]
 
 ENTRYPOINT ["python", "-u"," opensentiment/models/train_model_pl.py"]

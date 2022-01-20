@@ -1,5 +1,5 @@
-# for deploy: add build context ./setup/docker/  -> makes tarball small
-#  gcloud builds submit --config cloudbuild.yaml ./setup/docker/ 
+# to run  with small context / "avoid building tarball"
+# gcloud builds submit --config cloudbuild.yaml ./setup/docker
 
 steps:
 # fastapipredict
@@ -8,11 +8,11 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/sensi-anal/fastapicloudb:0.0.1']
 images:
-  - gcr.io/sensi-anal/fastapicloudb
+  - gcr.io/sensi-anal/fastapipredict
 
 timeout: 1000s
 # # next
-# - name: 'build gcr.io/cloud-builders/docker'
+# - name: 'gcr.io/cloud-builders/docker'
 #   args: ['build', '-f','-dir', '-t', 'gcr.io/sensi-anal/folder/imagename', '.']
-# - name: 'push gcr.io/cloud-builders/docker'
+# - name: 'gcr.io/cloud-builders/docker'
 #   args: ['push', 'gcr.io/sensi-anal/fastapicbuild']

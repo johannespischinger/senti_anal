@@ -2,7 +2,9 @@ from fastapi import FastAPI, Query
 from fastapi.logger import logger
 from opensentiment.models.predict_model_pl import Prediction
 from opensentiment.api.fast.serve_api_config import CONFIG
+from opensentiment.utils import paths_to_file_ext
 from typing import List
+import os
 
 app = FastAPI(
     title="Model Serve API",
@@ -25,14 +27,28 @@ app = FastAPI(
 @app.on_event("startup")
 async def startup_event():
     """
-    Initialize FastAPI and load model
+    Initialize FastAPI on startup and load model
     """
+    desired_path = CONFIG["MODEL_CPTH_PATH"]
+    if not os.path.exists(desired_path):
+        desired_path = paths_to_file_ext(
+            folder=CONFIG["FALLBACK_MODEL"][0], file_ext=CONFIG["FALLBACK_MODEL"][1]
+        )[0]
+        logger.warning(
+            f"CONFIG['MODEL_CPTH_PATH'] {CONFIG['MODEL_CPTH_PATH']} does not exist. "
+            f"fallback is {CONFIG['FALLBACK_MODEL']}"
+            f"overwriting with FALLBACK{desired_path}"
+        )
 
-    logger.info("Running envirnoment: {}".format(CONFIG["MODEL_CPTH_PATH"]))
+    if not desired_path:
+        logger.critical(
+            f"Running environment: {CONFIG['MODEL_CPTH_PATH']} is not defined or available. please add to config"
+        )
 
+    logger.info(f"Running environment from model path {CONFIG['MODEL_CPTH_PATH']}")
     # Initialize the pytorch model prediction
     model_predict = Prediction(CONFIG["MODEL_CPTH_PATH"])
-    # add model
+    # save model to app objects
     app.package = {"model_predict": model_predict}
 
 
