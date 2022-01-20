@@ -33,6 +33,11 @@ jobs:
       run: |
         pip install -r requirements.txt
         pip install -e .
+    
+    # - name: pull from dvc
+    #   run: |
+    #     # pull model and cache of dataset, to avoid downloading.
+    #     dvc pull
 
     - name: Lint with flake8
       run: |
@@ -60,6 +65,10 @@ jobs:
     name: gcp-deplyment
     runs-on: ubuntu-latest
     needs: [build-linux]
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     
     # if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
     steps:

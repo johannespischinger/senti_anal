@@ -10,3 +10,4 @@ steps:
 # docker training-cpu
 - name: 'gcr.io/sensi-anal/training_cpu'
   args: ['build', '-f', 'setup/docker/trainer_pl_cpu.dockerfile']
+

@@ -3,15 +3,15 @@ datamodule:
 
   cache_dir: ["__projectroot__", "data", "raw", "huggingface-cache"]
   model_name_or_path: "distilbert-base-uncased-finetuned-sst-2-english"
-  only_take_every_n_sample: 64
+  only_take_every_n_sample: 16
   max_seq_length: 128
 
   num_workers:
-    train: 8
-    val: 4
-    test: 4
+    train: 4
+    val: 2
+    test: 1
 
   batch_size:
-    train: 32
-    val: 32
-    test: 32
+    train: 16
+    val: 16
+    test: 16
