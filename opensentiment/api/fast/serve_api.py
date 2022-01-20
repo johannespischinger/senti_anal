@@ -1,8 +1,8 @@
-from typing import Optional
-
-from fastapi import FastAPI
-
-from opensentiment.api.fast.serve_api_helper import score_model
+from fastapi import FastAPI, Query
+from fastapi.logger import logger
+from opensentiment.models.predict_model_pl import Prediction
+from opensentiment.api.fast.serve_api_config import CONFIG
+from typing import List
 
 app = FastAPI(
     title="Model Serve API",
@@ -22,6 +22,18 @@ app = FastAPI(
 
 
 # FastAPI app stuff:
+@app.on_event("startup")
+async def startup_event():
+    """
+    Initialize FastAPI and load model
+    """
+
+    logger.info("Running envirnoment: {}".format(CONFIG["MODEL_CPTH_PATH"]))
+
+    # Initialize the pytorch model prediction
+    model_predict = Prediction(CONFIG["MODEL_CPTH_PATH"])
+    # add model
+    app.package = {"model_predict": model_predict}
 
 
 @app.get("/")
@@ -29,20 +41,35 @@ def read_root():
     return {"Model Serve API": "running"}
 
 
-@app.get("/serve_single")
-def read_item(modelname: str, query_text: str):
-    # set up
-    args = {}
-    return_dict = {
-        "modelname": modelname,
-        "answer": [],
-        "success": False,
-        "error": "",
+@app.get("/api/v1/serve_single")
+def inference_single(query_text: str):
+    """
+    query like:
+        /api/v1/serve_single?q=bar
+    """
+    prediction_input = {"content": [query_text], "label": None}
+    prediction = app.package["model_predict"].predict(prediction_input)
+
+    return {
+        "prediction": prediction,
         "query_text": query_text,
     }
 
-    args.update({"query_str": query_text})
 
-    success, answer = score_model(args)
-    return_dict.update({"answer": answer, "success": success})
-    return return_dict
+@app.get("/api/v1/serve_batch")
+def inference_batch(q: List[str] = Query(..., min_length=1)):
+    """
+    query a list of
+
+    query like:
+        /api/v1/serve_batch?q=foo&q=bar
+    """
+
+    # set up
+    prediction_input = {"content": q, "label": None}
+    prediction = app.package["model_predict"].predict(prediction_input)
+
+    return {
+        "prediction": prediction,
+        "query_list": q,
+    }

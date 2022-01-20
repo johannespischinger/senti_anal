@@ -36,6 +36,8 @@ class AmazonPolarityDataModule(pl.LightningDataModule):
             only_take_every_n_sample (int, optional): [description]. Defaults to 1.
         """
         super().__init__()
+        self.save_hyperparameters()
+
         for (k, v) in kwargs.items():
             setattr(self, k, v)
 
@@ -52,7 +54,7 @@ class AmazonPolarityDataModule(pl.LightningDataModule):
             self.dataset_args.update(
                 {"revision": "d30d25d3dad590dffe2d3004b4b301dd562dd4f2"}
             )
-        print(f"using dataset path {self.dataset_path}")
+
         self.dataset_args.update({"path": self.dataset_path})
         if hasattr(self, "cache_dir"):
             cache_dir = os.path.join(
@@ -65,9 +67,10 @@ class AmazonPolarityDataModule(pl.LightningDataModule):
             self.dataset_args.update(
                 {"cache_dir": cache_dir}
             )  # add option where to store
-            print(f"retrieve from / download if not exists to {cache_dir}")
+        print("init AmazonPolarityDataModule done")
 
     def setup(self, stage: str):
+        print(f"load_dataset using args {self.dataset_args}")
         batch_size_preprocess = 4096
         self.dataset = datasets.load_dataset(**self.dataset_args)
 

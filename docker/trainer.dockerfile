@@ -14,7 +14,7 @@ RUN apt update && \
 
 RUN git clone --branch dev https://github.com/johannespischinger/senti_anal.git
 WORKDIR /senti_anal
-COPY data/ data/
+COPY ../data data/
 RUN pip install -r requirements.txt --no-cache-dir
 
 ENTRYPOINT ["sh", "run_docker.sh"]

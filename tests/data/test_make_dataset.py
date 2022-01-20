@@ -7,7 +7,7 @@ import pytest
 import pytorch_lightning as pl
 
 from opensentiment.data.make_dataset import get_datasets, inital_cache_dataset
-from opensentiment.utils import get_project_root
+from opensentiment.utils import get_project_root, return_omegaconf_modified
 
 
 @pytest.mark.skip
@@ -25,10 +25,6 @@ def test_make_dataset_get_datasets():
 
 
 def test_make_dataset_cache_dataset():
-
-    config_data = omegaconf.OmegaConf.load(
-        os.path.join(get_project_root(), "config", "data", "default.yaml")
-    )
-    cfg = omegaconf.OmegaConf.create({"data": dict(config_data)})
+    cfg = return_omegaconf_modified({})
 
     inital_cache_dataset(cfg)

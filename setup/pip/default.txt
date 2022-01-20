@@ -1,0 +1,22 @@
+# usual requirements
+flake8~=4.0.1
+python-dotenv>=0.5.1
+pytorch-lightning==1.5.8
+torchserve==0.5.2
+transformers~=4.15.0
+datasets~=1.17.0
+setuptools~=58.0.4
+pre-commit~=2.16.0
+pipreqs
+black~=21.12b0
+scikit-learn~=1.0.2
+dvc~=2.9.3
+dvc[gs]
+numpy~=1.21.5
+wandb~=0.12.9
+omegaconf~=2.1.1
+hydra-core==1.1.1
+fastapi==0.71.0
+uvicorn==0.16.0 
+uvicorn[standard]
+pytest~=6.2.5

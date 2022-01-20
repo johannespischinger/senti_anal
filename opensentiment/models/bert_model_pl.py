@@ -7,7 +7,7 @@ from transformers import AutoConfig, AutoModelForSequenceClassification
 
 
 class SentimentClassifierPL(pl.LightningModule):
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, load_pretrain_weights=True, **kwargs) -> None:
         """[pytorch lightning module of transformer]
 
         Args:
@@ -21,10 +21,21 @@ class SentimentClassifierPL(pl.LightningModule):
             setattr(self, k, v)
         self.save_hyperparameters()  # populate self.hparams with args and kwargs automagically!
 
-        self.config = AutoConfig.from_pretrained(self.model_name_or_path)
-        self.model = AutoModelForSequenceClassification.from_pretrained(
-            self.model_name_or_path, config=self.config
+        self.config = AutoConfig.from_pretrained(
+            self.model_name_or_path, num_labels=self.num_classes
         )
+        if load_pretrain_weights:
+            self.model = AutoModelForSequenceClassification.from_pretrained(
+                self.model_name_or_path, config=self.config
+            )
+            print(
+                f"init SentimentClassifierPL {self.model_name_or_path} from pretrained"
+            )
+        else:
+            self.model = AutoModelForSequenceClassification.from_config(
+                config=self.config
+            )
+            print(f"init SentimentClassifierPL {self.model_name_or_path} from config")
 
         # TODO: freeze model / model w.o. classification parameters
         if self.transformer_freeze:

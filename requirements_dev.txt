@@ -1,4 +1,1 @@
-pytest~=6.2.5
-pytest-ordering~=0.6
-Sphinx~=4.3.2
-coverage~=6.2
+# legacy, leave it empty

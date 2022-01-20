@@ -18,6 +18,18 @@ AVAIL_GPU = 0
     [
         (return_omegaconf_modified({"model": {"transformer_freeze": False}})),
         (return_omegaconf_modified({"model": {"transformer_freeze": True}})),
+        (
+            return_omegaconf_modified(
+                {
+                    "model": {"transformer_freeze": False},
+                    "data": {
+                        "datamodule": {
+                            "model_name_or_path": "distilbert-base-uncased-finetuned-sst-2-english"
+                        }
+                    },
+                }
+            )
+        ),
     ],
 )
 def test_model(

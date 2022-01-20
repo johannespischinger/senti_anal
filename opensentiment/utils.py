@@ -1,11 +1,13 @@
 import logging
 from pathlib import Path
-from typing import Union
+from typing import Union, List
 import os
+import glob
 from collections import abc
 import omegaconf
 from hydra import compose, initialize_config_dir
 import hydra
+from datetime import datetime
 
 
 def get_project_root() -> Path:
@@ -18,7 +20,6 @@ def get_project_root() -> Path:
 def get_logger_default(name: Union[None, str]) -> logging.Logger:
     """
     configure logger
-
 
     args:
         name
@@ -38,6 +39,24 @@ def get_logger_default(name: Union[None, str]) -> logging.Logger:
     # return modified logger
 
     return logger
+
+
+def paths_to_file_ext(folder="model_store", file_ext="ckpt") -> List[str]:
+    """
+    get path to all files with ext if exists.
+
+    return
+        List of os.path if fileext exists otherwise list with empty string
+    """
+
+    path_model = os.path.join(get_project_root(), folder)
+    if os.path.exists(path_model):
+        potential_models_checkpoints = glob.glob(
+            os.path.join(path_model, "**", "*.{file_ext}"), recursive=True
+        )
+        if potential_models_checkpoints:
+            return potential_models_checkpoints
+    return [""]
 
 
 def deep_update(src: dict, overrides: dict):
