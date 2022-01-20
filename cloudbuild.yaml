@@ -3,14 +3,13 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-f', 'setup/docker/trainer_pl_gpu.dockerfile', '-t', 'gcr.io/sensi-anal/training_gpu:0.0.1', './']
 
-
 # docker training-cpu
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-f', 'setup/docker/trainer_pl_cpu.dockerfile', '-t', 'gcr.io/sensi-anal/training_cpu:0.0.1', './']
 
 # fastapipredict
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-f', 'setup/docker/fastapipredict.dockerfile' '-t', 'gcr.io/sensi-anal/fastapicloudb:0.0.1', './']
+  args: ['build', '-f', 'setup/docker/fastapipredict.dockerfile', '-t', 'gcr.io/sensi-anal/fastapicloudb:0.0.1', './']
 
 images:
   - gcr.io/sensi-anal/fastapicloudb
