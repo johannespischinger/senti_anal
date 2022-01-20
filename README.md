@@ -93,30 +93,28 @@ Project Organization
     │   ├── docker              <- Folder containing all files to build docker images
     │   ├── pip                 <- Folder containing all files for correct pip setup depening on cpu or gpu
     ├── requirements.txt               <- General requirements file for project
-    ├── requirements_dev.txt               <- Additional requirements file for dev for project
     ├── requirements_gpu.txt               <- Additional requirements file for gpu handling
 
     └── tox.ini             <- tox file with settings for running tox; see tox.readthedocs.io
 
 
 --------
-## Dev Installation
+## Minimal Installation
 
-Default configuration:
+Default configuration (Conda 5.10 / Ubuntu 20.04):
 ```
 conda create -y --name py39senti python=3.9 pip
 conda activate py39senti
+
+# GPU below
 pip install -r requirements.txt
-pip install -e .
+# CUDA 11.3 configuration
+# pip install -r requirements_gpu.txt
+
+# git hooks
 pre-commit install
+# get data
+dvc pull
 # verify everything is working
-coverage run -m --source=./opensentiment pytest tests -m "not (download or long)"
+coverage run -m --source=./opensentiment pytest tests
 ```
-
-CUDA 11.3 configuration
-```
-# run Default configuration
-pip uninstall torch
-pip install torch==1.10.1+cu113 torchvision==0.11.2+cu113 torchaudio==0.10.1+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
-```
-
