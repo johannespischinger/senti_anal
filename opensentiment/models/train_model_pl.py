@@ -107,7 +107,7 @@ def train(
         log_freq=cfg.logging.wandb_watch.log_freq,
     )
 
-    if "max_available" in cfg.train.pl_trainer.gpus:
+    if type(cfg.train.pl_trainer.gpus) == str:
         # fix gpu limit
         if torch.cuda.is_available():
             cfg.train.pl_trainer.gpus = -1

@@ -15,11 +15,13 @@ def test_read_main():
 
 
 class TestAPP:
-    model_exists = not bool(paths_to_file_ext(folder="model_store", file_ext="ckpt")[0])
+    not_model_exists = not bool(
+        paths_to_file_ext(folder="model_store", file_ext="ckpt")[0]
+    )
 
     response_missing = "dummy"
 
-    @pytest.mark.skipif(model_exists, reason="no model found")
+    @pytest.mark.skipif(not_model_exists, reason="no model found")
     @pytest.mark.parametrize(
         "path,expected_status,expected_text,expected_sentiment",
         [
@@ -59,7 +61,7 @@ class TestAPP:
                     r_json["prediction"][0][1] == expected_sentiment
                 ), f"got {r_json}, expected_sentiment {expected_sentiment}"
 
-    @pytest.mark.skipif(model_exists, reason="no model found")
+    @pytest.mark.skipif(not_model_exists, reason="no model found")
     @pytest.mark.parametrize(
         "path,expected_status,expected_text",
         [

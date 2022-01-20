@@ -49,13 +49,10 @@ def paths_to_file_ext(folder="model_store", file_ext="ckpt") -> List[str]:
         List of os.path if fileext exists otherwise list with empty string
     """
 
-    path_model = os.path.join(get_project_root(), folder)
-    if os.path.exists(path_model):
-        potential_models_checkpoints = glob.glob(
-            os.path.join(path_model, "**", "*.{file_ext}"), recursive=True
-        )
-        if potential_models_checkpoints:
-            return potential_models_checkpoints
+    path_model = os.path.join(get_project_root(), folder, "**", f"*.{file_ext}")
+    potential_models_checkpoints = glob.glob(path_model, recursive=True)
+    if potential_models_checkpoints:
+        return potential_models_checkpoints
     return [""]
 
 
