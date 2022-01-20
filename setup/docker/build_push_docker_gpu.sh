@@ -3,7 +3,7 @@
 set -e # exit if sh fails
 
 export PROJECT_ID=sensi-anal
-export IMAGE_REPO_NAME=training_gpu
+export IMAGE_REPO_NAME=training_gpudocker
 export IMAGE_TAG=0.0.1
 export IMAGE_URI=gcr.io/"$PROJECT_ID"/"$IMAGE_REPO_NAME":"$IMAGE_TAG"
 
