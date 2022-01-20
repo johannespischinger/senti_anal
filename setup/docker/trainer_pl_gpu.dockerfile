@@ -50,4 +50,4 @@ RUN pip3 install --no-cache-dir -r requirements_gpu.txt
 RUN dvc pull
 # [specifics below]
 
-ENTRYPOINT ["python", "-u"," opensentiment/models/train_model_pl.py"]
+ENTRYPOINT ["python", "-u","opensentiment/models/train_model_pl.py"]
