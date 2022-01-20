@@ -1,11 +1,16 @@
-# TODO: Directories anpassen fuer images
+# for deploy: add build context ./setup/docker/  -> makes tarball small
+#  gcloud builds submit --config cloudbuild.yaml ./setup/docker/ 
 
 steps:
-# fastapicbuild
-- name: 'gcr.io/sensi-anal/fastapicbuild'
-  args: ['build', '--file=./setup/docker/fastapipredict.dockerfile','--tag=gcr.io/sensi-anal/fastapicbuild', '.']
-- name: 'gcr.io/sensi-anal/fastapicbuild'
-  args: ['push', 'gcr.io/sensi-anal/fastapicbuild']
+# fastapipredict
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/sensi-anal/fastapicloudb:0.0.1', "--file", "fastapipredict.dockerfile", '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/sensi-anal/fastapicloudb:0.0.1']
+images:
+  - gcr.io/sensi-anal/fastapicloudb
+
+timeout: 1000s
 # # next
 # - name: 'build gcr.io/cloud-builders/docker'
 #   args: ['build', '-f','-dir', '-t', 'gcr.io/sensi-anal/folder/imagename', '.']
