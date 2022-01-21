@@ -10,7 +10,6 @@ from opensentiment.models.train_model import train
 from opensentiment.utils import get_project_root, return_omegaconf_modified
 
 
-@pytest.mark.long
 def test_train_model():
     config = return_omegaconf_modified(
         {}, rel_path="opensentiment/models/config", name_yaml="default_test_config"
