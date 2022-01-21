@@ -403,14 +403,14 @@ the model goes back to training mode and gradients are enabled.</p>
 <span id="opensentiment-models-predict-model-pl-module"></span><h2>opensentiment.models.predict_model_pl module<a class="headerlink" href="#module-opensentiment.models.predict_model_pl" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="opensentiment.models.predict_model_pl.Prediction">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">opensentiment.models.predict_model_pl.</span></span><span class="sig-name descname"><span class="pre">Prediction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_checkpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#opensentiment.models.predict_model_pl.Prediction" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">opensentiment.models.predict_model_pl.</span></span><span class="sig-name descname"><span class="pre">Prediction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_checkpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preferred_device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cuda'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#opensentiment.models.predict_model_pl.Prediction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="opensentiment.models.predict_model_pl.Prediction.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#opensentiment.models.predict_model_pl.Prediction.predict" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
+<dd><p>return prediction</p>
+<dl class="simple">
 <dt>x: dict</dt><dd><p>x[‘content’]: list of strings
-x[“label”]: Any / list of labels, currently not used, dummy required
 x[“title”]: list of strings, currently not used</p>
 </dd>
 </dl>
@@ -452,7 +452,8 @@ x[“title”]: list of strings, currently not used</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="opensentiment.models.train_model_pl.train">
 <span class="sig-prename descclassname"><span class="pre">opensentiment.models.train_model_pl.</span></span><span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg:</span> <span class="pre">omegaconf.dictconfig.DictConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hydra_dir:</span> <span class="pre">&lt;module</span> <span class="pre">'posixpath'</span> <span class="pre">from</span> <span class="pre">'/opt/hostedtoolcache/Python/3.9.9/x64/lib/python3.9/posixpath.py'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_val_test=True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#opensentiment.models.train_model_pl.train" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>training of the pytorch lightning after hydra config</p>
+</dd></dl>
 
 </section>
 <section id="module-opensentiment.models">

@@ -47,23 +47,68 @@
             
   <section id="getting-started">
 <h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
-<p>## Dev Installation</p>
-<p>Default configuration:
-`
+<p>## Minimal Installation</p>
+<p>Default configuration (Conda 5.10 / Ubuntu 20.04):
+<a href="#id1"><span class="problematic" id="id2">``</span></a>`
 conda create -y –name py39senti python=3.9 pip
-conda activate py39senti
+conda activate py39senti</p>
+<p># GPU below
 pip install -r requirements.txt
-pip install -e .
+# CUDA 11.3 configuration
+# pip install -r requirements_gpu.txt</p>
+<p># git hooks
 pre-commit install
+# get data
+dvc pull
 # verify everything is working
-coverage run -m –source=./opensentiment pytest tests -m “not (download or long)”
-`</p>
-<p>CUDA 11.3 configuration
-`
-# run Default configuration
-pip uninstall torch
-pip install torch==1.10.1+cu113 torchvision==0.11.2+cu113 torchaudio==0.10.1+cu113 -f <a class="reference external" href="https://download.pytorch.org/whl/cu113/torch_stable.html">https://download.pytorch.org/whl/cu113/torch_stable.html</a>
-`</p>
+coverage run -m –source=./opensentiment pytest tests
+<a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+<section id="project-organization">
+<h2>Project Organization<a class="headerlink" href="#project-organization" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>├── LICENSE
+├── Makefile           &lt;- Makefile with commands like <cite>make data</cite> or <cite>make train</cite>
+├── README.md          &lt;- The top-level README for developers using this project.
+├── data
+│   ├── external            &lt;- Data from third party sources.
+│   ├── interim             &lt;- Intermediate data that has been transformed.
+│   ├── processed           &lt;- The final, canonical data sets for modeling.
+│   └── raw                 &lt;- The original, immutable data dump.
+├── docs               &lt;- A default Sphinx project; see sphinx-doc.org for details
+├── models             &lt;- Trained and serialized models, model predictions, or model summaries
+├── references         &lt;- Data dictionaries, manuals, and all other explanatory materials.
+├── requirements.txt   &lt;- The requirements file for reproducing the analysis environment, e.g.
+│                         generated with <cite>pip freeze &gt; requirements.txt</cite>
+├── setup.py           &lt;- makes project pip installable (pip install -e .) so src can be imported
+├── config             &lt;- Source code for use in this project.
+│   ├── data                &lt;- Config files defining the datamodule
+│   ├── hydra               &lt;- Config files defining hydra setup
+│   ├── logging             &lt;- Config files defining logging in gcp, wandb
+│   ├── model               &lt;- Config files defining used model
+│   ├── optim               &lt;- Config files defining model optimizer
+│   └── train               &lt;- Config files defining train setup (pl.Trainer, metric, early stopping)
+├── models              &lt;- Folder to store pretrained models locally
+├── opensentiment      &lt;- Source code for use in this project.
+│   ├── __init__.py         &lt;- Makes src a Python module
+│   ├── data                &lt;- Script to download or generate data
+│   │   └── make_dataset_pl.py
+│   ├── gcp                 &lt;- Scripts to define settings for google cloud handle
+│   │   └── build_features.py
+│   ├── models              &lt;- Scripts to define and train  model and then use trained models to make
+│   │   │                 predictions
+│   │   ├── predict_model_pl.py
+│   │   └── train_model_pl.py
+│   │   └── bert_model_pl.py
+│   └── api                 &lt;- Scripts to create fastAPI
+├── setup               &lt;- Files to setup docker (.sh, .yaml, .dockerfile) and pip requirements for cpu and gpu use
+│   ├── docker              &lt;- Folder containing all files to build docker images
+│   ├── pip                 &lt;- Folder containing all files for correct pip setup depening on cpu or gpu
+├── requirements.txt               &lt;- General requirements file for project
+├── requirements_gpu.txt               &lt;- Additional requirements file for gpu handling</p>
+<p>└── tox.ini             &lt;- tox file with settings for running tox; see tox.readthedocs.io</p>
+</div></blockquote>
+<hr class="docutils" />
+</section>
 </section>
 
 
@@ -73,6 +118,14 @@ pip install torch==1.10.1+cu113 torchvision==0.11.2+cu113 torchaudio==0.10.1+cu1
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting started</a><ul>
+<li><a class="reference internal" href="#project-organization">Project Organization</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
                         title="previous chapter">opensentiment documentation!</a></p>

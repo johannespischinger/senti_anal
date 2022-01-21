@@ -1,0 +1,29 @@
+opensentiment.api.google\_function package
+==========================================
+
+Submodules
+----------
+
+opensentiment.api.google\_function.main module
+----------------------------------------------
+
+.. automodule:: opensentiment.api.google_function.main
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+opensentiment.api.google\_function.request module
+-------------------------------------------------
+
+.. automodule:: opensentiment.api.google_function.request
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: opensentiment.api.google_function
+   :members:
+   :undoc-members:
+   :show-inheritance:
