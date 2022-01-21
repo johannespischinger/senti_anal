@@ -10,16 +10,16 @@ from opensentiment.models.train_model import train
 from opensentiment.utils import get_project_root, return_omegaconf_modified
 
 
-@pytest.mark.skip
-@pytest.mark.long
 def test_train_model():
-    config = return_omegaconf_modified({"logging": {"wandb": {"mode": "offline"}}})
+    config = return_omegaconf_modified(
+        {}, rel_path="opensentiment/models/config", name_yaml="default_test_config"
+    )
     assert os.path.exists(
         os.path.join(get_project_root(), config.experiments.data_path)
     ), f"{os.path.join(get_project_root(), config.experiments.data_path)}"
 
     datetime_ = datetime.now().strftime("model_%Y%m%d_%H%M%S")
-    wk_dir = os.path.join(get_project_root(), "models", "runs_test", datetime_)
+    wk_dir = os.path.join(get_project_root(), ".cache", "runs_test", datetime_)
     os.makedirs(wk_dir, exist_ok=True)
     os.chdir(wk_dir)
     history, model_name = train(config)
