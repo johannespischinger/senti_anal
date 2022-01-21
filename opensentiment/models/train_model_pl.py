@@ -35,9 +35,16 @@ def build_callbacks(cfg: omegaconf.DictConfig) -> List[pl.Callback]:
 def train(
     cfg: omegaconf.DictConfig, hydra_dir: os.path, use_val_test=True
 ) -> Tuple[Dict, str]:
+    """
+    training of the pytorch lightning after hydra config
+    """
     # based on https://github.com/lucmos/nn-template/blob/main/src/run.py
     if cfg.train.deterministic:
         pl.seed_everything(cfg.train.random_seed)
+        cfg.train.pl_trainer.gpus = 0
+        hydra.utils.log.warning(
+            "Deterministic training mode not avilable on gpu. set gpus to 0."
+        )
 
     if cfg.train.pl_trainer.fast_dev_run:
         hydra.utils.log.info(
